@@ -1,0 +1,15 @@
+#缓存名称前缀 默认 _mybatis_
+org.mybatis.caches.memcached.keyprefix=_mybatis_ifc_
+#缓存服务器，可以配置多个逗号分隔 默认localhost:11211
+org.mybatis.caches.memcached.servers=192.168.100.9\:11211 
+org.mybatis.caches.memcached.connectionfactory=net.spy.memcached.DefaultConnectionFactory
+#缓存的生命周期 15分钟 单位是秒 默认是30天
+org.mybatis.caches.memcached.expiration=900
+#是否启用异步读
+org.mybatis.caches.memcached.asyncget=false
+#使用异步读的timeout时间
+org.mybatis.caches.memcached.timeout=5
+#ä½¿ç¨å¼æ­¥è¯»çtimeoutæ¶é´åä½æ¯ç§
+org.mybatis.caches.memcached.timeoutunit=java.util.concurrent.TimeUnit.SECONDS
+#å¦æå¼å¯ï¼å¯¹è±¡å¨æ¾å°memcacheåä¼ä½¿ç¨GZIP åç¼©
+org.mybatis.caches.memcached.compression=true

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.user.dao.UserMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.user.model.User" >
+	<result column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="pwd" property="pwd"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+	<result column="createdatetime" property="createdatetime"/>
+	<result column="modifydatetime" property="modifydatetime"/>
+</resultMap>
+       
+<!-- t_user table all fields -->
+<sql id="Base_Column_List" >
+	 id,name,pwd,create_time,update_time,createdatetime,modifydatetime
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereTUserClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+	<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+	<if test="pwd != null and pwd != ''" >
+	    and pwd =  #{pwd}
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+	<if test="createdatetime != null and createdatetime != ''" >
+	    and createdatetime =  #{createdatetime}
+	</if>
+	<if test="modifydatetime != null and modifydatetime != ''" >
+	    and modifydatetime =  #{modifydatetime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.user.model.User" >
+  insert into t_user (id,name,pwd,create_time,update_time,createdatetime,modifydatetime)
+ values(#{id, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{pwd, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{createdatetime, jdbcType=TIMESTAMP},#{modifydatetime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记�?->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.user.model.User" >
+  update t_user set id=#{id, jdbcType=VARCHAR},name=#{name, jdbcType=VARCHAR},pwd=#{pwd, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=TIMESTAMP},update_time=#{updateTime, jdbcType=TIMESTAMP},createdatetime=#{createdatetime, jdbcType=TIMESTAMP},modifydatetime=#{modifydatetime, jdbcType=TIMESTAMP} where id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字�?-->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.user.model.User" >
+	update t_user set 
+	<trim  suffixOverrides="," >
+	<if test="name != null  ">
+		name=#{name, jdbcType=VARCHAR},
+	</if>
+	<if test="pwd != null  ">
+		pwd=#{pwd, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null  ">
+		update_time=#{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="createdatetime != null  ">
+		createdatetime=#{createdatetime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="modifydatetime != null  ">
+		modifydatetime=#{modifydatetime, jdbcType=TIMESTAMP}
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from t_user where id = #{id}
+</delete>
+ 
+<!-- 根据id查询 用户�?-->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from t_user where id = #{id}
+</select>
+
+<!-- 分页请参�?-->
+	<select useCache="false" id="getAll" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select ID, CREATEDATETIME, MODIFYDATETIME, NAME, PWD from t_user
+		<where>
+			<if test="object.name !=null and object.name != ''">
+				and name like concat(concat('%', #{object.name}),'%')
+			</if>
+		</where>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				#{item}
+			</foreach>
+		</if> 
+	</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from t_user
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.id != null and object.id != ''" >
+			    and id =  #{object.id}
+			</if>
+							<if test="object.name != null and object.name != ''" >
+			    and name =  #{object.name}
+			</if>
+							<if test="object.pwd != null and object.pwd != ''" >
+			    and pwd =  #{object.pwd}
+			</if>
+							<if test="object.createTime != null and object.createTime != ''" >
+			    and create_time =  #{object.createTime}
+			</if>
+							<if test="object.updateTime != null and object.updateTime != ''" >
+			    and update_time =  #{object.updateTime}
+			</if>
+							<if test="object.createdatetime != null and object.createdatetime != ''" >
+			    and createdatetime =  #{object.createdatetime}
+			</if>
+							<if test="object.modifydatetime != null and object.modifydatetime != ''" >
+			    and modifydatetime =  #{object.modifydatetime}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM t_user 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="id != null and id != ''" >
+			    and id =  #{id}
+			</if>
+							<if test="name != null and name != ''" >
+			    and name =  #{name}
+			</if>
+							<if test="pwd != null and pwd != ''" >
+			    and pwd =  #{pwd}
+			</if>
+							<if test="createTime != null and createTime != ''" >
+			    and create_time =  #{createTime}
+			</if>
+							<if test="updateTime != null and updateTime != ''" >
+			    and update_time =  #{updateTime}
+			</if>
+							<if test="createdatetime != null and createdatetime != ''" >
+			    and createdatetime =  #{createdatetime}
+			</if>
+							<if test="modifydatetime != null and modifydatetime != ''" >
+			    and modifydatetime =  #{modifydatetime}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   
