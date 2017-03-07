@@ -31,6 +31,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			.tree-node-selected {
 				    background: none repeat scroll 0 0 #FFFFFF;
 			}
+			.easyui-accordion .easyui-tree li{
+				line-height:30px; 
+				margin-top: 5px;
+			}
 
         </style>
         <script type="text/javascript">
@@ -67,9 +71,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         }
                     }]
                 });
-                var content = '<iframe scrolling="auto" frameborder="0"  src="${ctx}/common/about.html" style="width:100%;height:100%;"></iframe>';
+                var content = '<iframe scrolling="auto" frameborder="0"  src="${ctx}/common/about.jsp" style="width:100%;height:100%;"></iframe>';
                 $('#main').tabs('add', {
-                    title: "关于",
+                    title: "用户中心",
                     content: content,
                     closable: false
                 });
@@ -113,9 +117,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
                 
                 $(".tabs-inner").dblclick(function(){
-                    var ti = $(this).children("span").text();
-                    if (ti != '简绍') {
+                    var ti = $(this).children("tabs-title").text();
+                    if (ti != '用户中心') {
                         $('#main').tabs('close', ti);
+                    }else{
+                    	$('#main').tabs('', ti);
                     }
                 });
                 
@@ -193,33 +199,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		<iframe frameborder="0"  id="saveFrame" height="100%" width="100%" scrolling="No" frameborder="0" ></iframe>
     </div>
 
-        <div id="top" region="north" border="false"
-			style="height: 66px; background: #ff8F22; color: #000000;">
-			<span style="float:left padding: 4px" >
-				<img src="${ctx }/images/logo.png"/>
+        <div id="top" data-options="region:'north',border:false,bodyCls:'master-header-layout'" border="false"
+			style="height: 30px; background: #B9B9FF; color: #000000;">
+			<span style="float: left; padding-left: 15px; color: #000000; line-height:30px;"> 
+				工aaa
 			</span>
 			<span style="float: right; padding: 4px;"> 
-				<font color="#ddeeff">欢迎您：${loginUser.userCname}|</font>
+				<font color="#000000">欢迎您：${loginUser.userCname}|</font>
 				<!-- <a href="#" onclick="updatePwd();"><font color="#ddeeff">修改密码</font></a><font color="#ddeeff">|</font> -->
-				<a href="#" onclick="logout();"><font color="#ddeeff">退出系统</font> </a> &nbsp;
+				<a href="#" onclick="logout();"><font color="#000000">退出系统</font> </a> &nbsp;
 			</span>
 		</div>
 		
-        <div region="west" split="true" title="功能扩展菜单" style="width:210px;padding:0px;">
+        <div data-options="region:'west',split:true,border:false" split="true" title="功能扩展菜单" style="width:210px;padding:3px;">
             <div id="leftmenu" class="easyui-accordion" fit="true" border="false">
-            	<div title="富文本编辑器" iconCls="icon-undo">
+            	<!-- div title="富文本编辑器" iconCls="icon-undo">
 					<h3 onclick="addTab('富文本编辑器','${ctx}/imageOpt/index.do')">富文本编辑器</h3>
+				</div-->
+				<div title="系统管理"> 
+					<ul class="easyui-tree" data-options="lines: true" style="padding-left: 20px;">
+						<li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理-Demo</a></li>
+						<li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></li>
+					</ul>
 				</div>
-				 <div title="用户管理-Demo" iconCls="icon-undo">
-					<h3 onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理-Demo</h3>
-				</div>
-				<div title="测试" iconCls="icon-undo">
-					<h3 onclick="addTab('产品管理','${ctx}/signInOut/index.do')">测试</h3>
+				<div title="其它" >
+					
 				</div>
             </div>
         </div>
-        <div id="ccc" region="center" title="" border="false">
-            <div id="main">
+        <div id="ccc" data-options="region:'center',border:false"  title="" border="false">
+            <div id="main" class="easyui-panel" data-options="fit:true,border:false" style="background:#fff;">
+            	
             </div>
         </div>
         <script type="text/javascript">
@@ -233,7 +243,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 $('#mm-tabclose').click(function(){
                     var tt = $('#main').data("currtab");
                     $('#main').tabs('select', tt);
-                    if (tt != '关于') {
+                    if (tt != '用户中心') {
                         $('#main').tabs('close', tt);
                     }
                 });
@@ -244,7 +254,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     
                     $('.tabs-inner span').each(function(i, n){
                         var t = $(n).text();
-                        if (t != '关于') {
+                        if (t != '用户中心') {
                             $('#main').tabs('close', t);
                         }
                     });
@@ -256,7 +266,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     
                     $('.tabs-inner span').each(function(i, n){
                         var t = $(n).text();
-                        if (t != tt && t != '关于') {
+                        if (t != tt && t != '用户中心') {
                             $('#main').tabs('close', t);
                         }
                     });
@@ -274,7 +284,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     }
                     nextall.each(function(i, n){
                         var t = $('a:eq(0) span', $(n)).text();
-                        if (t != '关于') {
+                        if (t != '用户中心') {
                             $('#main').tabs('close', t);
                         }
                     });
@@ -287,13 +297,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     
                     var prevall = $('.tabs-selected').prevAll();
                     if (prevall.length <= 1) {
-                        $.messager.alert('信息提示', "【关于】不能关了啊~", 'info', function(){
+                        $.messager.alert('信息提示', "【用户中心】不能关了啊~", 'info', function(){
                             return false;
                         });
                     }
                     prevall.each(function(i, n){
                         var t = $('a:eq(0) span', $(n)).text();
-                        if (t != '关于') {
+                        if (t != '用户中心') {
                             $('#main').tabs('close', t);
                         }
                     });

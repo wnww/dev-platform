@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.roleauth.dao.RoleAuthMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.roleauth.model.RoleAuth" >
+	<result column="id" property="id"/>
+	<result column="role_id" property="roleId"/>
+	<result column="auth_id" property="authId"/>
+</resultMap>
+       
+<!-- role_auth table all fields -->
+<sql id="Base_Column_List" >
+	 id,role_id,auth_id
+</sql>
+   
+   
+<sql id="whereRoleAuthClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+	<if test="roleId != null and roleId != ''" >
+	    and role_id =  #{roleId}
+	</if>
+	<if test="authId != null and authId != ''" >
+	    and auth_id =  #{authId}
+	</if>
+</trim>
+</sql>
+   
+
+<insert id="insert" parameterType="com.yhhl.roleauth.model.RoleAuth" >
+  insert into role_auth (id,role_id,auth_id)
+ values(#{id, jdbcType=VARCHAR},#{roleId, jdbcType=VARCHAR},#{authId, jdbcType=VARCHAR})
+</insert>
+
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.roleauth.model.RoleAuth" >
+  update role_auth set id=#{id, jdbcType=VARCHAR},role_id=#{roleId, jdbcType=VARCHAR},auth_id=#{authId, jdbcType=VARCHAR} where id=#{id}
+ </update>
+ 
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.roleauth.model.RoleAuth" >
+	update role_auth set 
+	<trim  suffixOverrides="," >
+	<if test="roleId != null  ">
+		role_id=#{roleId, jdbcType=VARCHAR},
+	</if>
+	<if test="authId != null  ">
+		auth_id=#{authId, jdbcType=VARCHAR}
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from role_auth where id = #{id}
+</delete>
+ 
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from role_auth where id = #{id}
+</select>
+
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from role_auth
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.id != null and object.id != ''" >
+			    and id =  #{object.id}
+			</if>
+							<if test="object.roleId != null and object.roleId != ''" >
+			    and role_id =  #{object.roleId}
+			</if>
+							<if test="object.authId != null and object.authId != ''" >
+			    and auth_id =  #{object.authId}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM role_auth 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="id != null and id != ''" >
+			    and id =  #{id}
+			</if>
+							<if test="roleId != null and roleId != ''" >
+			    and role_id =  #{roleId}
+			</if>
+							<if test="authId != null and authId != ''" >
+			    and auth_id =  #{authId}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

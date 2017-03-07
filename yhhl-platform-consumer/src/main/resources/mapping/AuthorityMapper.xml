@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.authority.dao.AuthorityMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.authority.model.Authority" >
+	<result column="auth_id" property="authId"/>
+	<result column="auth_name" property="authName"/>
+	<result column="auth_type" property="authType"/>
+	<result column="auth_mark" property="authMark"/>
+</resultMap>
+       
+<!-- authority table all fields -->
+<sql id="Base_Column_List" >
+	 auth_id,auth_name,auth_type,auth_mark
+</sql>
+   
+   
+<sql id="whereAuthorityClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="authId != null and authId != ''" >
+	    and auth_id =  #{authId}
+	</if>
+	<if test="authName != null and authName != ''" >
+	    and auth_name =  #{authName}
+	</if>
+	<if test="authType != null and authType != ''" >
+	    and auth_type =  #{authType}
+	</if>
+	<if test="authMark != null and authMark != ''" >
+	    and auth_mark =  #{authMark}
+	</if>
+</trim>
+</sql>
+   
+
+<insert id="insert" parameterType="com.yhhl.authority.model.Authority" >
+  insert into authority (auth_id,auth_name,auth_type,auth_mark)
+ values(#{authId, jdbcType=VARCHAR},#{authName, jdbcType=VARCHAR},#{authType, jdbcType=VARCHAR},#{authMark, jdbcType=VARCHAR})
+</insert>
+
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.authority.model.Authority" >
+  update authority set auth_id=#{authId, jdbcType=VARCHAR},auth_name=#{authName, jdbcType=VARCHAR},auth_type=#{authType, jdbcType=VARCHAR},auth_mark=#{authMark, jdbcType=VARCHAR} where auth_id=#{authId}
+ </update>
+ 
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.authority.model.Authority" >
+	update authority set 
+	<trim  suffixOverrides="," >
+	<if test="authName != null  ">
+		auth_name=#{authName, jdbcType=VARCHAR},
+	</if>
+	<if test="authType != null  ">
+		auth_type=#{authType, jdbcType=VARCHAR},
+	</if>
+	<if test="authMark != null  ">
+		auth_mark=#{authMark, jdbcType=VARCHAR}
+	</if>
+	</trim> where auth_id=#{authId}
+</update>
+
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from authority where auth_id = #{authId}
+</delete>
+ 
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from authority where auth_id = #{authId}
+</select>
+
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from authority
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.authId != null and object.authId != ''" >
+			    and auth_id =  #{object.authId}
+			</if>
+							<if test="object.authName != null and object.authName != ''" >
+			    and auth_name =  #{object.authName}
+			</if>
+							<if test="object.authType != null and object.authType != ''" >
+			    and auth_type =  #{object.authType}
+			</if>
+							<if test="object.authMark != null and object.authMark != ''" >
+			    and auth_mark =  #{object.authMark}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM authority 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="authId != null and authId != ''" >
+			    and auth_id =  #{authId}
+			</if>
+							<if test="authName != null and authName != ''" >
+			    and auth_name =  #{authName}
+			</if>
+							<if test="authType != null and authType != ''" >
+			    and auth_type =  #{authType}
+			</if>
+							<if test="authMark != null and authMark != ''" >
+			    and auth_mark =  #{authMark}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   
