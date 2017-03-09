@@ -1,11 +1,13 @@
 package com.yhhl.roleuser.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
+
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.roleuser.dao.RoleUserMapper;
@@ -40,6 +42,23 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 	public void saveRoleUser(RoleUser roleUser){
 				roleUser.setId(UUID.randomUUID().toString().replace("-", ""));
 				roleUserMapper.insert(roleUser);
+	}
+	
+	@Override
+	public RoleUser getByUserIdAndRoleId(String userId,String roleId) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("roleId", roleId);
+		return roleUserMapper.getByUserIdAndRoleId(map);
+	}
+	
+
+	@Override
+	public int deleteByUserIdAndRoleId(String userId, String roleId) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("roleId", roleId);
+		return roleUserMapper.deleteByUserIdAndRoleId(map);
 	}
 
 	/**

@@ -24,6 +24,9 @@ public interface RoleUserMapper {
 	List<RoleUser> getPage(SearchPageUtil searchPageUtil) throws DataAccessException;
 
 	List<RoleUser> findPageByParams(Map<String, Object> filterMap) throws DataAccessException;
+	
+	RoleUser getByUserIdAndRoleId(Map<String, String> map);
+	int deleteByUserIdAndRoleId(Map<String, String> map);
 
 	int deleteByPrimaryKey(String id) throws DataAccessException;
 

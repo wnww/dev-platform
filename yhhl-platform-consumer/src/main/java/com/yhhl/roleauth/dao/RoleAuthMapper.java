@@ -25,6 +25,9 @@ public interface RoleAuthMapper {
 
 	List<RoleAuth> findPageByParams(Map<String, Object> filterMap) throws DataAccessException;
 
+	RoleAuth getByAuthIdAndRoleId(Map<String, String> map);
+	int deleteByAuthIdAndRoleId(Map<String, String> map);
+	
 	int deleteByPrimaryKey(String id) throws DataAccessException;
 
 	int insert(RoleAuth record) throws DataAccessException;

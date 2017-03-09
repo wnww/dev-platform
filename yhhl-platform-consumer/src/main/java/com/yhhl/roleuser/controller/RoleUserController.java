@@ -77,7 +77,6 @@ public class RoleUserController {
 	 * @return
 	 */
 	@RequestMapping("/initAddRoleUser")
-	@Token(save = true)
 	public ModelAndView initAddRoleUser(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if(StringUtil.isNotEmpty(id)){
@@ -94,21 +93,18 @@ public class RoleUserController {
 	 * @return
 	 */
 	@RequestMapping("/saveRoleUser")
-	@Token(remove = true)
 	@ResponseBody
 	public Map<String, Object> saveRoleUser(RoleUser roleUser, HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if(StringUtil.isNotEmpty(roleUser.getId())){
-			RoleUser roleUserTemp = roleUserService.getById(roleUser.getId());
-			// 将页面修改的信息在这里替换
-			roleUserService.updateRoleUser(roleUserTemp);
+		RoleUser ru = roleUserService.getByUserIdAndRoleId(roleUser.getUserId(),roleUser.getRoleId());
+		if(ru==null){
+			roleUserService.saveRoleUser(roleUser);
 			map.put("flag", "T");
-			map.put("msg", "修改成功");
-			return map;
+			map.put("msg", "保存成功");
+		}else{
+			map.put("flag", "F");
+			map.put("msg", "已经拥有该角色！");
 		}
-		roleUserService.saveRoleUser(roleUser);
-		map.put("flag", "T");
-		map.put("msg", "保存成功");
 		return map;
 	}
 	
@@ -120,11 +116,16 @@ public class RoleUserController {
 	*/
 	@RequestMapping("/delRoleUser")
 	@ResponseBody
-	public Map<String, Object> delRoleUser(HttpServletRequest request,String id){
+	public Map<String, Object> delRoleUser(HttpServletRequest request,String userId,String roleId){
 		Map<String, Object> map = new HashMap<String, Object>();
-		roleUserService.deleteById(id);
-		map.put("flag", "T");
-		map.put("msg", "删除成功");
+		int row = roleUserService.deleteByUserIdAndRoleId(userId,roleId);
+		if(row >= 1){
+			map.put("flag", "T");
+			map.put("msg", "删除成功");
+		}else{
+			map.put("flag", "F");
+			map.put("msg", "删除失败");
+		}
 		return map;
 	}
 

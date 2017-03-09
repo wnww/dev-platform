@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.yhhl.core.Page;
 import com.yhhl.roleauth.model.RoleAuth;
+import com.yhhl.roleuser.model.RoleUser;
 
 /**
  * 
@@ -24,6 +25,9 @@ public interface RoleAuthServiceI {
 	Page<RoleAuth> getPage(Map<String,Object> filterMap, Page<RoleAuth> page, int pageNo, int pageSize);
 	
 	int getCount(Map<String, Object> filterMap);
+	
+	RoleAuth getByAuthIdAndRoleId(String authId, String roleId);
+	int deleteByAuthIdAndRoleId(String authId, String roleId);
 	
 	public void saveRoleAuth(RoleAuth roleAuth);
 	

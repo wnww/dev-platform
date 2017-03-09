@@ -41,23 +41,23 @@
 </head>
 <body>
 <div id="tip"> </div>
-
-<form action="${ctx}/user/addUser.do" id="inputForm" name="inputForm">
-<input type="hidden" name="token" id="token" value="${token}"/>
-<input type="hidden" name="id" id="id" value="${user.id}"/>
-<table class="datagrid-body" >
-	<tr>
-		<td class="datagrid-header">用户名</td>
-		<td><input type="text" name="name" value="${user.name }"></td>
-	</tr>
-	<tr>
-		<td class="datagrid-header">密码</td>
-		<td><input type="password" name="pwd" value="${user.pwd }"></td>
-	</tr>
-	<tr>
-		<td colspan="2"><a href="javascript:void(0);" class="easyui-linkbutton" id="bt1" iconCls="icon-save" onclick="doSubmit();">提交</a></td>
-	</tr>
-</table>
+<div class="easyui-panel" title="" style="width:100%; max-width:450px;padding:20px 150px 20px 20px;">
+	<form action="${ctx}/user/addUser.do" id="inputForm" name="inputForm" method="post">
+	<input type="hidden" name="token" id="token" value="${token}"/>
+	<input type="hidden" name="id" id="id" value="${user.id}"/>
+	
+	<div style="margin-bottom:20px">
+        <label class="label-top">用户名</label>
+        <input class="easyui-textbox theme-textbox-radius" type="text" name="name" value="${user.name }" style="width:100%;" data-options="required:true">
+    </div>
+    <div style="margin-bottom:20px">
+        <label class="label-top">密码</label>
+        <input class="easyui-textbox theme-textbox-radius" type="password" name="pwd" value="${user.pwd }" style="width:100%;" data-options="required:true">
+    </div>
+	<div>
+        <a href="javascript:void(0);" class="easyui-linkbutton button-default" iconCls="icon-ok" style="width:100%;height:32px" onclick="doSubmit();">提交</a>
+    </div>
+</div>
 </form>
 </body>
 </html>

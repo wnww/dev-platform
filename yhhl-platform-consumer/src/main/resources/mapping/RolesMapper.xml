@@ -7,12 +7,13 @@
 <resultMap id="BaseResultMap" type="com.yhhl.roles.model.Roles" >
 	<result column="role_id" property="roleId"/>
 	<result column="role_name" property="roleName"/>
+	<result column="user_id" property="userId"/>
 	<result column="remark" property="remark"/>
 </resultMap>
        
 <!-- roles table all fields -->
 <sql id="Base_Column_List" >
-	 role_id,role_name,remark
+	 r.role_id,role_name,remark
 </sql>
    
    
@@ -59,11 +60,11 @@ where 1=1
  
 <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
 	select <include refid="Base_Column_List" /> 
-	 from roles where role_id = #{roleId}
+	 from roles r where role_id = #{roleId}
 </select>
 
 	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
-		select <include refid="Base_Column_List"/> from roles
+		select <include refid="Base_Column_List"/> from roles r
 		where 1=1
 		<trim  suffixOverrides="," >
 							<if test="object.roleId != null and object.roleId != ''" >
@@ -84,6 +85,32 @@ where 1=1
 			</foreach>
 		</if> 
 	</select>
+	
+	<select useCache="false" id="getSelectPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/>, 
+		(select user_id from role_user ru where ru.role_id=r.role_id and user_id=#{object.userId}) user_id 
+		from roles r 
+		where 1=1
+		<trim  suffixOverrides="," >
+			<if test="object.roleId != null and object.roleId != ''" >
+			    and r.role_id =  #{object.roleId}
+			</if>
+			<if test="object.roleName != null and object.roleName != ''" >
+			    and role_name =  #{object.roleName}
+			</if>
+			<if test="object.remark != null and object.remark != ''" >
+			    and remark =  #{object.remark}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+	
 	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
      SELECT
      count(*)

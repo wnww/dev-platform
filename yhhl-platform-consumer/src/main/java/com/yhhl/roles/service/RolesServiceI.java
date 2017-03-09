@@ -22,6 +22,7 @@ public interface RolesServiceI {
 	Roles getById(String id);
 
 	Page<Roles> getPage(Map<String,Object> filterMap, Page<Roles> page, int pageNo, int pageSize);
+	Page<Roles> getSelectPage(Map<String,Object> filterMap, Page<Roles> page, int pageNo, int pageSize);
 	
 	int getCount(Map<String, Object> filterMap);
 	

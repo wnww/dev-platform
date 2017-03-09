@@ -22,6 +22,8 @@ public interface AuthorityMapper {
 	int getCount(Map<String, Object> filterMap) throws DataAccessException;
 	
 	List<Authority> getPage(SearchPageUtil searchPageUtil) throws DataAccessException;
+	
+	List<Authority> getSelectPage(SearchPageUtil searchPageUtil) throws DataAccessException;
 
 	List<Authority> findPageByParams(Map<String, Object> filterMap) throws DataAccessException;
 

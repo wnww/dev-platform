@@ -22,6 +22,7 @@ public interface RolesMapper {
 	int getCount(Map<String, Object> filterMap) throws DataAccessException;
 	
 	List<Roles> getPage(SearchPageUtil searchPageUtil) throws DataAccessException;
+	List<Roles> getSelectPage(SearchPageUtil searchPageUtil) throws DataAccessException;
 
 	List<Roles> findPageByParams(Map<String, Object> filterMap) throws DataAccessException;
 

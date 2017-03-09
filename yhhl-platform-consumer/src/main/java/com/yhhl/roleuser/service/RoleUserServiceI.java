@@ -23,6 +23,9 @@ public interface RoleUserServiceI {
 
 	Page<RoleUser> getPage(Map<String,Object> filterMap, Page<RoleUser> page, int pageNo, int pageSize);
 	
+	RoleUser getByUserIdAndRoleId(String userId, String roleId);
+	int deleteByUserIdAndRoleId(String userId, String roleId);
+	
 	int getCount(Map<String, Object> filterMap);
 	
 	public void saveRoleUser(RoleUser roleUser);

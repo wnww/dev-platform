@@ -9,15 +9,12 @@
     <%@ include file="/common/import.jsp" %>
 <script type="text/javascript">
 
-	function addUser(){
-		window.location.href="${ctx}/user/initAddUser.do";
-	}
 	
 		$(function(){
 			$('#dataPageList').datagrid({
 				title:'模板列表',
 				iconCls:'icon-ok',
-				url:'${ctx }/user/getAll.do?t='+new Date(),
+				url:'${ctx }/authority/getAuthorityDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -27,43 +24,29 @@
 				rownumbers:true,
 				remoteSort: false,
 				pageList:[3,5,10,50],
-				idField:'id',
+				idField:'authId',
 				columns:[[
-					{field:'name',title:'姓名',width:100,sortable:true},
-					{field:'createdatetime',title:'创建时间',width:100,sortable:true},
-					{field:'modifydatetime',title:'更新时间',width:100,
-						formatter:function(value){
-							return '<span style=\'color:blue;font-weight:bold;\'>'+value+'</span>';
-						}
-					},
-					{field:'button',title:'操作',width:50,align:'center',
-						formatter:function(value,rec){
-							var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="editRow('+rec.id+')" href="javascript:void(0)">';
-							btn += '<span class="l-btn-left">';
-							btn += '<span class="l-btn-text">编辑</span>';
-							btn += '</span>';
-							btn += '</a>';
-							return btn;
-						}
-					}
+					{field:'authName',title:'权限名称',width:100,sortable:true},
+					{field:'authType',title:'权限类型',width:100,sortable:true},
+					{field:'authMark',title:'权限路径',width:100}
 				]],
 				toolbar:[{
 					text:'增加',
 					iconCls:'icon-add',
 					handler:function(){
-						saveStorageType();
+						saveEntity();
 					}
 				},'-',{
 					text:'删除',
 					iconCls:'icon-remove',
 					handler:function(){
-						deleteCate();
+						deleteEntity();
 					}
 				},'-',{
 					text:'修改',
 					iconCls:'icon-edit',
 					handler:function(){
-						editStorage();
+						editEntity();
 					}
 				},'-',{
 					text:'刷新',
@@ -79,60 +62,43 @@
 			});		
 		});
 		
-		function refresh(){
-			var url = '${ctx}/template/refresh.action';
-			$.ajax({
-				type: "post",
-				data: "",
-				dataType: "",
-				url: url,
-				success: function(data, textStatus){
-					alert("OK");
-				},
-				error: function(messg){
-					alert("error");
-				}
-			});
-		}
-		
-		function saveStorageType(){
+		function saveEntity(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/user/initAddUser.do';				
+			var url = '${ctx}/authority/initAddAuthority.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
+			$("#saveDiv").window({title:"增加-权限资源",iconCls:"icon-add",left:"50px",top:"30px"});
 			$('#saveDiv').window('open');
 		}
 		
 		// 进入修改页面
-		function editStorage(){
+		function editEntity(){
+			$('#saveFrame').html('');	
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/user/initAddUser.do?id='+node.id;
-				$('#saveFrame').attr("title","修改"+node.name);
+				var url = '${ctx}/authority/initAddAuthority.do?id='+node.authId;
 				$('#saveFrame').attr("src",url);
+				$("#saveDiv").window({title:"修改-权限资源",iconCls:"icon-edit",left:"50px",top:"30px"});
 				$('#saveDiv').window('open');
 			}
 		}
 		
 		//删除，物理删除
-		function deleteCate(){					
+		function deleteEntity(){					
 			var node = getSelected();	
 			if(node){
-		    	$.messager.confirm('确认','您确定要删除:<font color=red>'+node.name+'</font> ？',function(r){
+		    	$.messager.confirm('确认','您确定要删除：<font color=red>'+node.authName+'</font> ？',function(r){
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/user/delUser.do?id="+node.id,
+							url: "${ctx}/authority/delAuthority.do?id="+node.authId,
 							dataType: "json",
 							success: function(data){
-								var result = jQuery.parseJSON(data);
 	    						if(data.flag=='T'){
 									$.messager.alert('结果', '操作成功', 'info');	
 								    winReload();
-	    						}else if(data.flag=='H'){
-	    							$.messager.alert('结果', result.msg, 'info');	
 	    						}else{
-	    							$.messager.alert('结果', '操作失败，请重试', 'error');	
+	    							$.messager.alert('结果', '操作失败 '+data.msg, 'error');	
 	    						}
 							},
 							error:function(messg)  { 
@@ -185,7 +151,7 @@
 <body>
 
 	<div id="" class="easyui-panel" title="查询条件" collapsible="true" style="padding:5px;">
-	    <form id="queryForm" name="queryForm">
+	    <form id="queryForm" name="queryForm" method="post">
 		    <center style="line-height:22spx;padding:5px;">
 			         姓名：
 			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
@@ -200,9 +166,10 @@
 	<table id="dataPageList"></table>
 
 	<!-- 添加窗口 -->
-	<div id="saveDiv" class="easyui-window" title="模板维护" style="padding:5px;width: 350px;height:230px;"
-    	iconCls="icon-search" closed="true" maximizable="false" minimizable="false" collapsible="false">
+	<div id="saveDiv" class="easyui-window" title="权限维护" style="padding:5px;width: 650px;height:380px;"
+    	iconCls="icon-add" closed="true" maximizable="false" minimizable="false" collapsible="false">
    		<iframe frameborder="0"  id="saveFrame" height="100%" width="100%" scrolling="No" frameborder="0" ></iframe>
     </div>
+    
 </body>
 </html>

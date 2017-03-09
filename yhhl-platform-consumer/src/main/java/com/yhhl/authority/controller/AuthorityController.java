@@ -54,7 +54,19 @@ public class AuthorityController {
 	}
 	
 	/**
-	 * 查询用户 列表
+	 * 进入列表页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/showAuthorityPage")
+	public ModelAndView showAuthorityPage(HttpServletRequest request) {
+		String roleId = request.getParameter("roleId");
+		request.setAttribute("roleId", roleId);
+		return new ModelAndView("authority/select-authority-page");
+	}
+	
+	/**
+	 * 查询权限列表
 	 * @param request
 	 * @return
 	 */
@@ -65,6 +77,24 @@ public class AuthorityController {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Authority> dataPage = new Page<Authority>();
 		dataPage = authorityService.getPage(filterMap, dataPage, page, rows);
+		Map<String, Object> mapData = new HashMap<String, Object>();
+		mapData.put("total", dataPage.getTotalCount());
+		mapData.put("rows", dataPage.getResult());
+		return mapData;
+	}
+	
+	/**
+	 * 查询权限列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getSelectAuthorityDatas")
+	@ResponseBody
+	public Map<String, Object> getSelectAuthorityDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+			@RequestParam(value = "rows") int rows) {
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		Page<Authority> dataPage = new Page<Authority>();
+		dataPage = authorityService.getSelectPage(filterMap, dataPage, page, rows);
 		Map<String, Object> mapData = new HashMap<String, Object>();
 		mapData.put("total", dataPage.getTotalCount());
 		mapData.put("rows", dataPage.getResult());
@@ -101,6 +131,9 @@ public class AuthorityController {
 		if(StringUtil.isNotEmpty(authority.getAuthId())){
 			Authority authorityTemp = authorityService.getById(authority.getAuthId());
 			// 将页面修改的信息在这里替换
+			authorityTemp.setAuthName(authority.getAuthName());
+			authorityTemp.setAuthType(authority.getAuthType());
+			authorityTemp.setAuthMark(authority.getAuthMark());
 			authorityService.updateAuthority(authorityTemp);
 			map.put("flag", "T");
 			map.put("msg", "修改成功");

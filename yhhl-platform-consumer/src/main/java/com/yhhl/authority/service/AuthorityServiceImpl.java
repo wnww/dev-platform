@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
+
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.authority.dao.AuthorityMapper;
@@ -52,11 +54,30 @@ public class AuthorityServiceImpl implements AuthorityServiceI {
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "", "" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "auth_name asc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
 		List<Authority> list = authorityMapper.getPage(searchPageUtil);
+		page.setResult(list);
+		return page;
+	}
+	
+	
+
+	@Override
+	public Page<Authority> getSelectPage(Map<String, Object> filterMap,
+			Page<Authority> page, int pageNo, int pageSize) {
+		int count = authorityMapper.getCount(filterMap);
+		page.setPageNo(pageNo);
+		page.setPageSize(pageSize);
+		page.setTotalCount(count);
+		SearchPageUtil searchPageUtil = new SearchPageUtil();
+		String order[] = { "auth_name asc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		searchPageUtil.setOrderBys(order);
+		searchPageUtil.setPage(page);
+		searchPageUtil.setObject(filterMap);
+		List<Authority> list = authorityMapper.getSelectPage(searchPageUtil);
 		page.setResult(list);
 		return page;
 	}

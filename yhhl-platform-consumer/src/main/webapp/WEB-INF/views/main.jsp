@@ -84,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 var tabslength = $('#main').tabs('tabs').length;
                 if (tabslength < maxWindow) {
                     if ($('#main').tabs('exists', title)) {
-                        $.messager.confirm('确认', '确定要刷新标签页： <font color=red>' + title + '</font> 吗?', function(flag){
+                        $.messager.confirm('<span style="color:#0000FF; ">请&nbsp;确&nbsp;认？</span>', '确定要刷新标签页： <font color=red>' + title + '</font> 吗?', function(flag){
                             if (flag) {
                                 var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
                                 var tab = $('#main').tabs('getTab', title);
@@ -141,7 +141,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
             
             function help(){
-                $.messager.alert('信息提示', "双击关闭tab页!", 'info');
+                $.messager.alert('信息提示', "右键tab页，使用更多功能!", 'info');
             }
             
             /**关闭tab标签页*/
@@ -184,12 +184,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     </head>
     <body class="easyui-layout">
-        <div id='Loading' style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#DDDDDB;text-align:center;padding-top: 20%;">
-            <h1>
-                <font color="#15428B">
-                 	页面初始化中，请等待....
-                </font>
-            </h1>
+        <div id='Loading' style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#F0F0F0;text-align:center;padding-top:10%;">
+            <div>
+            	<img alt="" src="${ctx}/images/loading.gif" width="30%" height="50%">
+            </div>
+            <div style="font-size: 18px; color: #299AE6; font-weight: bold;">
+            	页面加载中,请稍等......
+            </div>
         </div>
 
         <!-- 2013年1月10日20:23:05 修改 -->
@@ -200,32 +201,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 
         <div id="top" data-options="region:'north',border:false,bodyCls:'master-header-layout'" border="false"
-			style="height: 30px; background: #B9B9FF; color: #000000;">
-			<span style="float: left; padding-left: 15px; color: #000000; line-height:30px;"> 
-				工aaa
+			style="height: 40px; background: #B9B9FF; color: #000000;">
+			<span style="float: left; padding-left: 15px; color: #FFFF00; font-size:22px; line-height:40px;"> 
+				后台管理系统
 			</span>
-			<span style="float: right; padding: 4px;"> 
-				<font color="#000000">欢迎您：${loginUser.userCname}|</font>
+			<span style="float: right; padding-right: 5px; line-height: 40px;"> 
 				<!-- <a href="#" onclick="updatePwd();"><font color="#ddeeff">修改密码</font></a><font color="#ddeeff">|</font> -->
-				<a href="#" onclick="logout();"><font color="#000000">退出系统</font> </a> &nbsp;
+				欢迎您：${loginUser.userCname}|&nbsp;<a href="#" onclick="logout();">退出系统</a> &nbsp;
 			</span>
 		</div>
 		
-        <div data-options="region:'west',split:true,border:false" split="true" title="功能扩展菜单" style="width:210px;padding:3px;">
-            <div id="leftmenu" class="easyui-accordion" fit="true" border="false">
-            	<!-- div title="富文本编辑器" iconCls="icon-undo">
-					<h3 onclick="addTab('富文本编辑器','${ctx}/imageOpt/index.do')">富文本编辑器</h3>
-				</div-->
-				<div title="系统管理"> 
-					<ul class="easyui-tree" data-options="lines: true" style="padding-left: 20px;">
-						<li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理-Demo</a></li>
-						<li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></li>
-					</ul>
-				</div>
-				<div title="其它" >
-					
-				</div>
-            </div>
+        <div data-options="region:'west',split:true,border:false" split="true" title="功能菜单" style="width:210px;padding:3px;">
+            <ul class="easyui-tree">
+            	<li>   
+                <span>系统管理</span>
+                <ul>   
+                    <li><span><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></span></li>
+                    <li><span><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></span></li>
+                    <li><span><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></span></li>
+                </ul>  
+            </li>   
+		  </ul>            	
         </div>
         <div id="ccc" data-options="region:'center',border:false"  title="" border="false">
             <div id="main" class="easyui-panel" data-options="fit:true,border:false" style="background:#fff;">

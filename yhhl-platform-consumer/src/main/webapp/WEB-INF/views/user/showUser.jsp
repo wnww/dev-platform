@@ -38,9 +38,9 @@
 					},
 					{field:'button',title:'操作',width:50,align:'center',
 						formatter:function(value,rec){
-							var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="editRow('+rec.id+')" href="javascript:void(0)">';
+							var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="selectRoles(\''+rec.id+'\')" href="javascript:void(0)">';
 							btn += '<span class="l-btn-left">';
-							btn += '<span class="l-btn-text">编辑</span>';
+							btn += '<span class="l-btn-text">角色</span>';
 							btn += '</span>';
 							btn += '</a>';
 							return btn;
@@ -51,19 +51,19 @@
 					text:'增加',
 					iconCls:'icon-add',
 					handler:function(){
-						saveStorageType();
+						saveUser();
 					}
 				},'-',{
 					text:'删除',
 					iconCls:'icon-remove',
 					handler:function(){
-						deleteCate();
+						deleteUser();
 					}
 				},'-',{
 					text:'修改',
 					iconCls:'icon-edit',
 					handler:function(){
-						editStorage();
+						editUser();
 					}
 				},'-',{
 					text:'刷新',
@@ -95,30 +95,32 @@
 			});
 		}
 		
-		function saveStorageType(){
+		function saveUser(){
 			$('#saveFrame').html('');			
 			var url = '${ctx}/user/initAddUser.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
+			$("#saveDiv").window({title:"增加-用户",iconCls:'icon-add',height:"300px",width:"450px",left:"50px",top:"30px"});
 			$('#saveDiv').window('open');
 		}
 		
 		// 进入修改页面
-		function editStorage(){
+		function editUser(){
 			var node = getSelected();		
 			if (node){	
 				var url = '${ctx}/user/initAddUser.do?id='+node.id;
 				$('#saveFrame').attr("title","修改"+node.name);
 				$('#saveFrame').attr("src",url);
+				$("#saveDiv").window({title:"修改-用户",iconCls:'icon-edit',height:"300px",width:"450px",left:"50px",top:"30px"});
 				$('#saveDiv').window('open');
 			}
 		}
 		
 		//删除，物理删除
-		function deleteCate(){					
+		function deleteUser(){					
 			var node = getSelected();	
 			if(node){
-		    	$.messager.confirm('确认','您确定要删除:<font color=red>'+node.name+'</font> ？',function(r){
+		    	$.messager.confirm('确认','您确定要删除：<font color=red>'+node.name+'</font> ？',function(r){
 		        	if(r){
 						$.ajax({
 							type: "post",
@@ -179,6 +181,13 @@
       	$('#dataPageList'). datagrid('clearSelections');  
 	    $('#queryForm')[0].reset();  
     }
+   
+    function selectRoles(userId){
+    	var url = "${ctx }/roles/showRolesPage.do?userId="+userId;
+		$('#saveFrame').attr("src",url);
+		$("#saveDiv").window({title:"设置角色",iconCls:'icon-edit',height:"450px",width:"600px",left:"50px",top:"30px"});
+		$('#saveDiv').window('open');
+    }
 	</script>
 </script>
 </head>
@@ -200,7 +209,7 @@
 	<table id="dataPageList"></table>
 
 	<!-- 添加窗口 -->
-	<div id="saveDiv" class="easyui-window" title="模板维护" style="padding:5px;width: 350px;height:230px;"
+	<div id="saveDiv" class="easyui-window" title="用户信息" modal="false" style="padding:5px;width: 500px;height:230px;"
     	iconCls="icon-search" closed="true" maximizable="false" minimizable="false" collapsible="false">
    		<iframe frameborder="0"  id="saveFrame" height="100%" width="100%" scrolling="No" frameborder="0" ></iframe>
     </div>

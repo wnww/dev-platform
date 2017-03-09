@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
+
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.roles.dao.RolesMapper;
@@ -57,6 +59,24 @@ public class RolesServiceImpl implements RolesServiceI {
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
 		List<Roles> list = rolesMapper.getPage(searchPageUtil);
+		page.setResult(list);
+		return page;
+	}
+	
+	
+
+	@Override
+	public Page<Roles> getSelectPage(Map<String, Object> filterMap, Page<Roles> page, int pageNo, int pageSize) {
+		int count = rolesMapper.getCount(filterMap);
+		page.setPageNo(pageNo);
+		page.setPageSize(pageSize);
+		page.setTotalCount(count);
+		SearchPageUtil searchPageUtil = new SearchPageUtil();
+		String order[] = { "role_name asc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		searchPageUtil.setOrderBys(order);
+		searchPageUtil.setPage(page);
+		searchPageUtil.setObject(filterMap);
+		List<Roles> list = rolesMapper.getSelectPage(searchPageUtil);
 		page.setResult(list);
 		return page;
 	}

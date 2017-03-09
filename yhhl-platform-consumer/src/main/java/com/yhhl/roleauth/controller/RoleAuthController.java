@@ -8,7 +8,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +22,7 @@ import com.yhhl.core.Page;
 import com.yhhl.interceptor.Token;
 import com.yhhl.roleauth.model.RoleAuth;
 import com.yhhl.roleauth.service.RoleAuthServiceI;
+import com.yhhl.roleuser.model.RoleUser;
  
 /**
  * 
@@ -77,7 +77,6 @@ public class RoleAuthController {
 	 * @return
 	 */
 	@RequestMapping("/initAddRoleAuth")
-	@Token(save = true)
 	public ModelAndView initAddRoleAuth(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if(StringUtil.isNotEmpty(id)){
@@ -94,21 +93,18 @@ public class RoleAuthController {
 	 * @return
 	 */
 	@RequestMapping("/saveRoleAuth")
-	@Token(remove = true)
 	@ResponseBody
 	public Map<String, Object> saveRoleAuth(RoleAuth roleAuth, HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if(StringUtil.isNotEmpty(roleAuth.getId())){
-			RoleAuth roleAuthTemp = roleAuthService.getById(roleAuth.getId());
-			// 将页面修改的信息在这里替换
-			roleAuthService.updateRoleAuth(roleAuthTemp);
+		RoleAuth ru = roleAuthService.getByAuthIdAndRoleId(roleAuth.getAuthId(),roleAuth.getRoleId());
+		if(ru==null){
+			roleAuthService.saveRoleAuth(roleAuth);
 			map.put("flag", "T");
-			map.put("msg", "修改成功");
-			return map;
+			map.put("msg", "保存成功");
+		}else{
+			map.put("flag", "F");
+			map.put("msg", "已经拥有该角色！");
 		}
-		roleAuthService.saveRoleAuth(roleAuth);
-		map.put("flag", "T");
-		map.put("msg", "保存成功");
 		return map;
 	}
 	
@@ -120,11 +116,16 @@ public class RoleAuthController {
 	*/
 	@RequestMapping("/delRoleAuth")
 	@ResponseBody
-	public Map<String, Object> delRoleAuth(HttpServletRequest request,String id){
+	public Map<String, Object> delRoleAuth(HttpServletRequest request,String authId,String roleId){
 		Map<String, Object> map = new HashMap<String, Object>();
-		roleAuthService.deleteById(id);
-		map.put("flag", "T");
-		map.put("msg", "删除成功");
+		int row = roleAuthService.deleteByAuthIdAndRoleId(authId,roleId);
+		if(row >= 1){
+			map.put("flag", "T");
+			map.put("msg", "删除成功");
+		}else{
+			map.put("flag", "F");
+			map.put("msg", "删除失败");
+		}
 		return map;
 	}
 

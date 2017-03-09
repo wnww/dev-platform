@@ -8,14 +8,10 @@
 	<%@ include file="/common/meta.jsp" %>
     <%@ include file="/common/import.jsp" %>
 <script type="text/javascript">
-
-	function addEntity(){
-		window.location.href="${ctx}/roles/initAddRoles.do";
-	}
 	
 		$(function(){
 			$('#dataPageList').datagrid({
-				title:'角色列表',
+				title:'',
 				iconCls:'icon-ok',
 				url:'${ctx }/roles/getRolesDatas.do?t='+new Date(),
 				nowrap: false,
@@ -52,6 +48,12 @@
 						editEntity();
 					}
 				},'-',{
+					text:'设置权限',
+					iconCls:'icon-lock-go',
+					handler:function(){
+						initSetAuthority();
+					}
+				},'-',{
 					text:'刷新',
 					iconCls:'icon-reload',
 					handler:function(){
@@ -65,27 +67,12 @@
 			});		
 		});
 		
-		function refresh(){
-			var url = '${ctx}/roles/refresh.action';
-			$.ajax({
-				type: "post",
-				data: "",
-				dataType: "",
-				url: url,
-				success: function(data, textStatus){
-					alert("OK");
-				},
-				error: function(messg){
-					alert("error");
-				}
-			});
-		}
-		
 		function saveEntity(){
 			$('#saveFrame').html('');			
 			var url = '${ctx}/roles/initAddRoles.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
+			$("#saveDiv").window({title:"增加-角色",iconCls:"icon-add",width:"500px",height:"350px",left:"50px",top:"30px"});
 			$('#saveDiv').window('open');
 		}
 		
@@ -94,8 +81,8 @@
 			var node = getSelected();		
 			if (node){	
 				var url = '${ctx}/roles/initAddRoles.do?id='+node.roleId;
-				$('#saveFrame').attr("title","修改"+node.name);
 				$('#saveFrame').attr("src",url);
+				$("#saveDiv").window({title:"修改-角色",iconCls:"icon-edit",width:"500px",height:"350px",left:"50px",top:"30px"});
 				$('#saveDiv').window('open');
 			}
 		}
@@ -111,14 +98,11 @@
 							url: "${ctx}/roles/delRoles.do?id="+node.roleId,
 							dataType: "json",
 							success: function(data){
-								var result = jQuery.parseJSON(data);
 	    						if(data.flag=='T'){
 									$.messager.alert('结果', '操作成功', 'info');	
 								    winReload();
-	    						}else if(data.flag=='H'){
-	    							$.messager.alert('结果', result.msg, 'info');	
 	    						}else{
-	    							$.messager.alert('结果', '操作失败，请重试', 'error');	
+	    							$.messager.alert('结果', '操作失败 '+data.msg, 'error');	
 	    						}
 							},
 							error:function(messg)  { 
@@ -128,6 +112,17 @@
 		          	}
 		       });		             		
 		    }	
+		}
+		
+		function initSetAuthority(){
+			var node = getSelected();
+			if(node){
+				var url = '${ctx }/authority/showAuthorityPage.do?roleId='+node.roleId+'&t='+new Date();
+				$('#saveFrame').attr("title",'');
+				$('#saveFrame').attr("src",url);
+				$("#saveDiv").window({title:"设置权限",iconCls:"icon-add",width:"650px",height:"450px",left:"50px",top:"30px"});
+				$('#saveDiv').window('open');
+			}
 		}
 		
 		// 判断是否选中一条记录
@@ -186,7 +181,7 @@
 	<table id="dataPageList"></table>
 
 	<!-- 添加窗口 -->
-	<div id="saveDiv" class="easyui-window" title="模板维护" style="padding:5px;width: 500px;height:400px;"
+	<div id="saveDiv" class="easyui-window" title="模板维护" style="padding:5px;width: 500px;height:350px;"
     	iconCls="icon-search" closed="true" maximizable="false" minimizable="false" collapsible="false">
    		<iframe frameborder="0"  id="saveFrame" height="100%" width="100%" scrolling="No" frameborder="0" ></iframe>
     </div>

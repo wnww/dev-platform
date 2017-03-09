@@ -23,6 +23,8 @@ public interface AuthorityServiceI {
 
 	Page<Authority> getPage(Map<String,Object> filterMap, Page<Authority> page, int pageNo, int pageSize);
 	
+	Page<Authority> getSelectPage(Map<String,Object> filterMap, Page<Authority> page, int pageNo, int pageSize);
+	
 	int getCount(Map<String, Object> filterMap);
 	
 	public void saveAuthority(Authority authority);

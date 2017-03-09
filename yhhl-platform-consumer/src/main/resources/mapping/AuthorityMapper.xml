@@ -9,11 +9,12 @@
 	<result column="auth_name" property="authName"/>
 	<result column="auth_type" property="authType"/>
 	<result column="auth_mark" property="authMark"/>
+	<result column="role_id" property="roleId"/>
 </resultMap>
        
 <!-- authority table all fields -->
 <sql id="Base_Column_List" >
-	 auth_id,auth_name,auth_type,auth_mark
+	 at.auth_id,auth_name,auth_type,auth_mark
 </sql>
    
    
@@ -66,11 +67,11 @@ where 1=1
  
 <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
 	select <include refid="Base_Column_List" /> 
-	 from authority where auth_id = #{authId}
+	 from authority at where auth_id = #{authId}
 </select>
 
 	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
-		select <include refid="Base_Column_List"/> from authority
+		select <include refid="Base_Column_List"/> from authority at 
 		where 1=1
 		<trim  suffixOverrides="," >
 							<if test="object.authId != null and object.authId != ''" >
@@ -94,6 +95,35 @@ where 1=1
 			</foreach>
 		</if> 
 	</select>
+	
+	<select useCache="false" id="getSelectPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/>,
+		(select role_id from role_auth ra where ra.auth_id=at.auth_id and role_id=#{object.roleId}) role_id
+		from authority at
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.authId != null and object.authId != ''" >
+			    and auth_id =  #{object.authId}
+			</if>
+							<if test="object.authName != null and object.authName != ''" >
+			    and auth_name =  #{object.authName}
+			</if>
+							<if test="object.authType != null and object.authType != ''" >
+			    and auth_type =  #{object.authType}
+			</if>
+							<if test="object.authMark != null and object.authMark != ''" >
+			    and auth_mark =  #{object.authMark}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+	
 	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
      SELECT
      count(*)

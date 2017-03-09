@@ -56,10 +56,31 @@ where 1=1
 <delete id="deleteByPrimaryKey" parameterType="java.util.Map">
 	delete 	 from role_auth where id = #{id}
 </delete>
+
+<delete id="deleteByAuthIdAndRoleId" parameterType="java.util.Map">
+	delete from role_auth where 1=1 
+	<if test="authId != null and authId != '' ">
+		and auth_id=#{authId} 
+	</if>
+	<if test="roleId != null and roleId != '' ">
+		and role_id=#{roleId} 
+	</if>
+</delete>
  
-<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+<select useCache="false" id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
 	select <include refid="Base_Column_List" /> 
 	 from role_auth where id = #{id}
+</select>
+
+<select useCache="false" id="getByAuthIdAndRoleId"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from role_auth where 1=1
+	 <if test="authId != null and authId != '' ">
+		and auth_id=#{authId} 
+	</if>
+	<if test="roleId != null and roleId != '' ">
+		and role_id=#{roleId} 
+	</if>
 </select>
 
 	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">

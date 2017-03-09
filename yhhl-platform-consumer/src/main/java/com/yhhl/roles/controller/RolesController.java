@@ -53,6 +53,13 @@ public class RolesController {
 		return new ModelAndView("roles/roles-page");
 	}
 	
+	@RequestMapping("/showRolesPage")
+	public ModelAndView showRolesPage(HttpServletRequest request) {
+		String userId = request.getParameter("userId");
+		request.setAttribute("userId", userId);
+		return new ModelAndView("roles/select-roles-page");
+	}
+	
 	/**
 	 * 查询用户 列表
 	 * @param request
@@ -65,6 +72,24 @@ public class RolesController {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Roles> dataPage = new Page<Roles>();
 		dataPage = rolesService.getPage(filterMap, dataPage, page, rows);
+		Map<String, Object> mapData = new HashMap<String, Object>();
+		mapData.put("total", dataPage.getTotalCount());
+		mapData.put("rows", dataPage.getResult());
+		return mapData;
+	}
+	
+	/**
+	 * 查询用户 列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getSelectRolesDatas")
+	@ResponseBody
+	public Map<String, Object> getSelectRolesDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+			@RequestParam(value = "rows") int rows) {
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		Page<Roles> dataPage = new Page<Roles>();
+		dataPage = rolesService.getSelectPage(filterMap, dataPage, page, rows);
 		Map<String, Object> mapData = new HashMap<String, Object>();
 		mapData.put("total", dataPage.getTotalCount());
 		mapData.put("rows", dataPage.getResult());
