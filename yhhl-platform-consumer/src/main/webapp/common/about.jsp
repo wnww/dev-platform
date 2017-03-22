@@ -10,7 +10,7 @@
 <body>
 	<div class="theme-user-info-panel">
                 	<div class="left">
-                    	<img src="${ctx}/js/easyui/themes/insdep/images/portrait86x86.png" width="86" height="86">
+                    	<img src="${loginUser.userPhoto }" width="86" height="86">
                     </div>
                     <div class="right">
                     	

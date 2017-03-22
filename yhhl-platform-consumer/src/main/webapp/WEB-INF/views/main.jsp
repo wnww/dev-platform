@@ -207,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</span>
 			<span style="float: right; padding-right: 5px; line-height: 40px;"> 
 				<!-- <a href="#" onclick="updatePwd();"><font color="#ddeeff">修改密码</font></a><font color="#ddeeff">|</font> -->
-				欢迎您：${loginUser.userCname}|&nbsp;<a href="#" onclick="logout();">退出系统</a> &nbsp;
+				欢迎您：${loginUser.userName}|${loginUser.nikeName }||&nbsp;<a href="#" onclick="logout();">退出系统</a> &nbsp;
 			</span>
 		</div>
 		

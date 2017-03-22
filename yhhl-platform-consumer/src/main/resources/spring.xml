@@ -9,6 +9,8 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
 	<context:property-placeholder location="classpath:config.properties" />
 
 	<context:component-scan base-package="com.yhhl" />
+	
+	<import resource="spring-session.xml" />
 
 	<import resource="dubbo-consumer.xml"/>
 </beans>
