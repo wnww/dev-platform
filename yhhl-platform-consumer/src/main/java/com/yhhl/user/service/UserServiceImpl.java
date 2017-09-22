@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yhhl.common.MD5Utils;
+import com.yhhl.common.IdWorker;
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.user.dao.UserMapper;
@@ -18,27 +21,24 @@ import com.yhhl.user.model.User;
 @Service("userService")
 public class UserServiceImpl implements UserServiceI {
 
+	@Autowired
 	private UserMapper userMapper;
 	
-	public UserMapper getUserMapper() {
-		return userMapper;
-	}
-
 	@Autowired
-	public void setUserMapper(UserMapper userMapper) {
-		this.userMapper = userMapper;
-	}
-	
+	private IdWorker idWorker;
+
 	/**
 	 * 保存
 	 */
 	@Transactional
-	public void saveUser(User user) {user.setId(UUID.randomUUID().toString().replace("-", ""));
+	public void saveUser(User user) {
+		user.setId(String.valueOf(idWorker.nextId()));
 		// 准备远程调用参数
 		try{
+			user.setPwd(MD5Utils.MD5(user.getPwd()));
 			userMapper.insert(user);
-		}catch(RuntimeException e){
-			throw e;
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 

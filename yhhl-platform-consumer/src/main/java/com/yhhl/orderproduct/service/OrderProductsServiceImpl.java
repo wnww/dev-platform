@@ -2,10 +2,12 @@ package com.yhhl.orderproduct.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
+
+import com.yhhl.common.IdWorker;
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.orderproduct.dao.OrderProductsMapper;
@@ -22,37 +24,33 @@ import com.yhhl.orderproduct.model.OrderProducts;
 @Service("orderProductsService")
 public class OrderProductsServiceImpl implements OrderProductsServiceI {
 
+	@Autowired
 	private OrderProductsMapper orderProductsMapper;
 
-	public OrderProductsMapper getOrderProductsMapper() {
-		return orderProductsMapper;
-	}
-
 	@Autowired
-	public void setOrderProductsMapper(OrderProductsMapper orderProductsMapper) {
-		this.orderProductsMapper = orderProductsMapper;
-	}
+	private IdWorker idWorker;
 
 	/**
 	 * 保存
 	 */
 	@Override
-	public void saveOrderProducts(OrderProducts orderProducts){
-				orderProducts.setOrderProdId(UUID.randomUUID().toString().replace("-", ""));
-				orderProductsMapper.insert(orderProducts);
+	public void saveOrderProducts(OrderProducts orderProducts) {
+		orderProducts.setOrderProdId(String.valueOf(idWorker.nextId()));
+		orderProductsMapper.insert(orderProducts);
 	}
 
 	/**
 	 * 分页查询
 	 */
 	@Override
-	public Page<OrderProducts> getPage(Map<String, Object> filterMap, Page<OrderProducts> page, int pageNo, int pageSize) {
+	public Page<OrderProducts> getPage(Map<String, Object> filterMap, Page<OrderProducts> page, int pageNo,
+			int pageSize) {
 		int count = orderProductsMapper.getCount(filterMap);
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "", "" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "order_prod_id desc"};// 排序字段，可以是多个 类似：{ "name desc", "id asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -62,14 +60,14 @@ public class OrderProductsServiceImpl implements OrderProductsServiceI {
 	}
 
 	/**
-	*
-	* 分页查询的count
-	*/
+	 *
+	 * 分页查询的count
+	 */
 	@Override
 	public int getCount(Map<String, Object> filterMap) {
 		return orderProductsMapper.getCount(filterMap);
 	}
-	
+
 	/**
 	 * 更新
 	 */

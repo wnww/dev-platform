@@ -172,6 +172,7 @@
 	    $('#queryForm')[0].reset();  
     }
    
+   
 	</script>
 </script>
 </head>

@@ -53,7 +53,7 @@ where 1=1
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.orderproduct.model.OrderProducts" >
-  update order_products set order_prod_id=#{orderProdId, jdbcType=VARCHAR},order_id=#{orderId, jdbcType=VARCHAR},prod_id=#{prodId, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price=#{unitPrice, jdbcType=BIGINT},prod_num=#{prodNum, jdbcType=INTEGER} where order_prod_id=#{orderProdId}
+  update order_products set order_prod_id=#{orderProdId, jdbcType=VARCHAR},order_id=#{orderId, jdbcType=VARCHAR},prod_id=#{prodId, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price=#{unitPrice, jdbcType=BIGINT},=#{prodNum, jdbcType=INTEGER} where order_prod_id=#{orderProdId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -73,7 +73,7 @@ where 1=1
 		unit_price=#{unitPrice, jdbcType=BIGINT},
 	</if>
 	<if test="prodNum != null  ">
-		prod_num=#{prodNum, jdbcType=INTEGER}
+		=#{prodNum, jdbcType=INTEGER}
 	</if>
 	</trim> where order_prod_id=#{orderProdId}
 </update>

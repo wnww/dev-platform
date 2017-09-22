@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yhhl.common.LocaleMessage;
 import com.yhhl.common.LoginUser;
+import com.yhhl.common.MD5Utils;
 import com.yhhl.common.ResultBean;
 import com.yhhl.user.model.User;
 import com.yhhl.user.service.UserServiceI;
@@ -47,7 +48,7 @@ public class MainAction {
 
 	@RequestMapping("/login")
 	@ResponseBody
-	public ResultBean<String> login(HttpServletRequest request, HttpServletResponse response) {
+	public ResultBean<String> login(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		ResultBean<String> result = new ResultBean<String>();
 		HttpSession session = request.getSession();
 		LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
@@ -63,7 +64,7 @@ public class MainAction {
 			result.setMsg("用户名或密码不能为空！");
 			return result;
 		}
-		
+		password = MD5Utils.MD5(password);
 		User user = userService.getByUserNameAndPwd(userName, password);
 		if (user == null) {
 			result.setFlag(ResultBean.FAIL);

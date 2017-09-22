@@ -41,7 +41,7 @@
 				if (result.flag == 1) {
 					$.messager.confirm('提交结果', '操作成功', function() {
 						parent.colseAdd();// 关闭添加窗口
-						parent.winReload();// 刷新列表
+						parent.orderProductReload();// 刷新列表
 					});
 				} else if (result.flag == 2) {
 					$.messager.alert('提交结果', result.msg, 'info');
@@ -62,7 +62,7 @@
 		$searchInput.attr('autocomplete', 'off');
 		//创建自动完成的下拉列表，用于显示服务器返回的数据,插入在搜索按钮的后面，等显示的时候再调整位置 
 		var $autocomplete = $('<div class="autocomplete"></div>').hide()
-				.insertAfter('#submit');
+				.insertAfter('#searchBtn');
 		//清空下拉列表的内容并且隐藏下拉列表区 
 		var clear = function() {
 			$autocomplete.empty().hide();
@@ -233,7 +233,7 @@
 <body>
 	<div class="easyui-panel" title="添加订单商品"
 		style="width: 100%; height: 480px; max-width: 630px; padding: 20px 150px 20px 20px;">
-		<form action="${ctx}/orderproduct/saveOrderProducts.do" id="inputForm"
+		<form action="${ctx}/orderProducts/saveOrderProducts.do" id="inputForm"
 			name="inputForm" method="post">
 			<input type="hidden" name="token" id="token" value="${token}" /> <input
 				type="text" name="orderId" id="orderId" value="${orderId }" /> <input
@@ -242,7 +242,7 @@
 				<label class="label-top">商品名称</label> <input
 					class="easyui-textbox theme-textbox-radius" type="text"
 					id="prodName" name="prodName" style="width: 100%;"
-					data-options="required:true"> <span id="submit"></span>
+					data-options="required:true"> <span id="searchBtn"></span>
 			</div>
 			<div style="margin-bottom: 20px">
 				<label class="label-top">出售单价</label> <input
@@ -254,7 +254,7 @@
 			<div style="margin-bottom: 20px">
 				<label class="label-top">出售数量</label> <input
 					class="easyui-textbox theme-textbox-radius" type="text"
-					name="ownerMobile" style="width: 100%;"
+					name="prodNum" style="width: 100%;"
 					data-options="required:true">
 			</div>
 			<div>

@@ -29,7 +29,7 @@
 					{field:'orderId',title:'订单编号',width:100,sortable:true},
 					{field:'ownerRealName',title:'用户姓名',width:100,sortable:true},
 					{field:'ownerMobile',title:'联系电话',width:100,sortable:true},
-					{field:'orderAmount',title:'用户名',width:100,formatter:function(value){
+					{field:'orderAmount',title:'订单总额',width:100,formatter:function(value){
 						return moneyFormatterNoY(value/100);
 					}},
 					{field:'status',title:'订单状态',width:100,sortable:true},
@@ -37,7 +37,7 @@
 					{field:'modifyTime',title:'修改时间',width:100,sortable:true},
 					{field:'button',title:'操作',width:100,align:'center',
 						formatter:function(value,rec){
-							var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="saveOrderProduct(\''+rec.orderId+'\')" href="javascript:void(0)">';
+							var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="showProdItemData(\''+rec.orderId+'\')" href="javascript:void(0)">';
 							btn += '<span class="l-btn-left">';
 							btn += '<span class="l-btn-text">添加订单商品</span>';
 							btn += '</span>';
@@ -99,7 +99,7 @@
 			var url = '${ctx}/orders/initAddOrders.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
-			$("#saveDiv").window({title:"修改-产品",iconCls:'icon-add',height:"550px",width:"650px",left:"50px",top:"30px"});
+			$("#saveDiv").window({title:"新增-订单",iconCls:'icon-add',height:"550px",width:"650px",left:"50px",top:"30px"});
 			$('#saveDiv').window('open');
 		}
 		
@@ -107,10 +107,10 @@
 		function editEntity(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/orders/initAddorders.do?id='+node.prodId;
+				var url = '${ctx}/orders/initAddorders.do?id='+node.orderId;
 				$('#saveFrame').attr("title","修改"+node.prodName);
 				$('#saveFrame').attr("src",url);
-				$("#saveDiv").window({title:"修改产品-"+node.prodName,iconCls:'icon-edit',height:"550px",width:"650px",left:"50px",top:"30px"});
+				$("#saveDiv").window({title:"修改订单-"+node.prodName,iconCls:'icon-edit',height:"550px",width:"650px",left:"50px",top:"30px"});
 				$('#saveDiv').window('open');
 			}
 		}
@@ -181,15 +181,79 @@
 	    $('#queryForm')[0].reset();  
     }
    
-    function saveOrderProduct(id){
+///////////////////////////////////////////////////////////////////////    
+    //订单商品列表		
+	function showProdItemData(orderId){
+		$('#dataItemPageList').datagrid({
+			title:'订单商品列表-订单号【'+orderId+'】',
+			iconCls:'icon-ok',
+			url:'${ctx }/orderProducts/getOrderProductsDatas.do?filter_orderId='+orderId+'&t='+new Date(),
+			nowrap: false,
+			striped: true,
+			collapsible:false,				
+			fitColumns: true,
+			pagination:true,
+			singleSelect:true,
+			rownumbers:true,
+			remoteSort: false,
+			pageList:[3,5,10,50],
+			idField:'orderProdId',
+			columns:[[
+				{field:'prodId',title:'商品编号',width:100,sortable:true},
+				{field:'prodName',title:'商品名称',width:100,sortable:true},
+				{field:'unitPrice',title:'出售单价',width:100,formatter:function(unitPrice1,rowData,index){
+					return moneyFormatterNoY(rowData.unitPrice/100);
+				}},
+				{field:'prodNum',title:'售出数量',width:100,sortable:true},
+				{field:'chushouDanjia',title:'出售总价',width:100,formatter:function(unitPrice1,rowData,index){
+					return moneyFormatterNoY(rowData.unitPrice/100*rowData.prodNum);
+				}}
+			]],
+			toolbar:[{
+				text:'增加',
+				iconCls:'icon-add',
+				handler:function(){
+					saveOrderProduct(orderId);
+				}
+			},'-',{
+				text:'删除',
+				iconCls:'icon-remove',
+				handler:function(){
+					deleteEntity();
+				}
+			},'-',{
+				text:'修改',
+				iconCls:'icon-edit',
+				handler:function(){
+					editEntity();
+				}
+			},'-',{
+				text:'刷新',
+				iconCls:'icon-reload',
+				handler:function(){
+					$('#dataPageList').datagrid('reload');
+				}
+			}
+			],
+			onDblClickRow:function(){
+				//dataItemTree();
+			}
+		});
+	}
+	// 增加订单商品
+	function saveOrderProduct(id){
 		$('#saveFrame').html('');			
 		var url = '${ctx}/orderProducts/initAddOrderProducts.do?orderId='+id;				
 		$('#saveFrame').attr("title",'');
 		$('#saveFrame').attr("src",url);
 		$("#saveDiv").window({title:"添加-订单商品",iconCls:'icon-add',height:"550px",width:"650px",left:"50px",top:"30px"});
 		$('#saveDiv').window('open');
-	}    
-    
+	}
+	
+	// 刷新列表
+	function orderProductReload(){
+		$('#dataItemPageList').datagrid('reload');
+	}
 	</script>
 </script>
 </head>
@@ -215,5 +279,7 @@
     	iconCls="icon-search" closed="true" maximizable="false" minimizable="false" collapsible="false">
    		<iframe frameborder="0"  id="saveFrame" height="100%" width="100%" scrolling="No" frameborder="0" ></iframe>
     </div>
+    <!-- 订单商品列表 -->
+    <table id="dataItemPageList"></table>
 </body>
 </html>

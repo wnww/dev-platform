@@ -225,7 +225,7 @@
 <body>
 	<div class="easyui-panel" title="添加订单商品"
 		style="width: 100%; height: 480px; max-width: 630px; padding: 20px 150px 20px 20px;">
-		<form action="${ctx}/orderproduct/saveOrderProducts.do" id="inputForm"
+		<form action="${ctx}/orderProducts/saveOrderProducts.do" id="inputForm"
 			name="inputForm" method="post">
 			<input type="hidden" name="token" id="token" value="${token}" />
 			<input type="hidden" name="orderProdId" id="orderProdId" value="${orderProducts.orderProdId}" />

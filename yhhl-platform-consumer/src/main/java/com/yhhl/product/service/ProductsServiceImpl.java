@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
+
+import com.yhhl.common.IdWorker;
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.product.dao.ProductsMapper;
@@ -22,24 +24,19 @@ import com.yhhl.product.model.Products;
 @Service("productsService")
 public class ProductsServiceImpl implements ProductsServiceI {
 
+	@Autowired
 	private ProductsMapper productsMapper;
 
-	public ProductsMapper getProductsMapper() {
-		return productsMapper;
-	}
-
 	@Autowired
-	public void setProductsMapper(ProductsMapper productsMapper) {
-		this.productsMapper = productsMapper;
-	}
+	private IdWorker idWorker;
 
 	/**
 	 * 保存
 	 */
 	@Override
-	public void saveProducts(Products products){
-				products.setProdId(UUID.randomUUID().toString().replace("-", ""));
-				productsMapper.insert(products);
+	public void saveProducts(Products products) {
+		products.setProdId(String.valueOf(idWorker.nextId()));
+		productsMapper.insert(products);
 	}
 
 	/**
@@ -52,7 +49,12 @@ public class ProductsServiceImpl implements ProductsServiceI {
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "modify_time desc", "create_time desc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "modify_time desc", "create_time desc" };// 排序字段，可以是多个
+																	// 类似：{
+																	// "name
+																	// desc",
+																	// "id asc"
+																	// };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -62,14 +64,14 @@ public class ProductsServiceImpl implements ProductsServiceI {
 	}
 
 	/**
-	*
-	* 分页查询的count
-	*/
+	 *
+	 * 分页查询的count
+	 */
 	@Override
 	public int getCount(Map<String, Object> filterMap) {
 		return productsMapper.getCount(filterMap);
 	}
-	
+
 	/**
 	 * 更新
 	 */
