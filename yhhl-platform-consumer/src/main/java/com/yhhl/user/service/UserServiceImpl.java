@@ -1,17 +1,14 @@
 package com.yhhl.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.mengyun.tcctransaction.Compensable;
-import org.mengyun.tcctransaction.api.TransactionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yhhl.book.model.TBook;
-import com.yhhl.book.service.TBookServiceI;
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.user.dao.UserMapper;
@@ -23,8 +20,6 @@ public class UserServiceImpl implements UserServiceI {
 
 	private UserMapper userMapper;
 	
-	private TBookServiceI tBookService;
-
 	public UserMapper getUserMapper() {
 		return userMapper;
 	}
@@ -34,26 +29,13 @@ public class UserServiceImpl implements UserServiceI {
 		this.userMapper = userMapper;
 	}
 	
-	public TBookServiceI gettBookService() {
-		return tBookService;
-	}
-
-	@Autowired
-	public void setTBookService(TBookServiceI tBookService) {
-		this.tBookService = tBookService;
-	}
-
 	/**
 	 * 保存
 	 */
-	@Compensable(confirmMethod="confirmSaveUser", cancelMethod="concelSaveUser")
 	@Transactional
 	public void saveUser(User user) {user.setId(UUID.randomUUID().toString().replace("-", ""));
 		// 准备远程调用参数
-		TBook book = new TBook();
-		book.setBookName(user.getName());
 		try{
-			tBookService.saveTBook(null,book);
 			userMapper.insert(user);
 		}catch(RuntimeException e){
 			throw e;
@@ -71,6 +53,14 @@ public class UserServiceImpl implements UserServiceI {
 		user.setName(user.getName()+"-取消操作");
 		userMapper.updateByPrimaryKey(user);
 		
+	}
+	
+	@Override
+	public User getByUserNameAndPwd(String userName, String pwd) {
+		Map<String,String> map = new HashMap<String, String>();
+		map.put("name", userName);
+		map.put("pwd", pwd);
+		return userMapper.login(map);
 	}
 
 	public Page<User> getAll(Map<String, Object> filterMap, Page<User> page, int pageNo, int pageSize) {

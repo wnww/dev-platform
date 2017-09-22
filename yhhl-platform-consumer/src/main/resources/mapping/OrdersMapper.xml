@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.order.dao.OrdersMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.order.model.Orders" >
+	<result column="order_id" property="orderId"/>
+	<result column="owner_user_name" property="ownerUserName"/>
+	<result column="owner_real_name" property="ownerRealName"/>
+	<result column="owner_mobile" property="ownerMobile"/>
+	<result column="order_amount" property="orderAmount"/>
+	<result column="post_address" property="postAddress"/>
+	<result column="status" property="status"/>
+	<result column="create_user_name" property="createUserName"/>
+	<result column="create_time" property="createTime"/>
+	<result column="modify_time" property="modifyTime"/>
+	<result column="remark" property="remark"/>
+</resultMap>
+       
+<!-- orders table all fields -->
+<sql id="Base_Column_List" >
+	 order_id,owner_user_name,owner_real_name,owner_mobile,order_amount,post_address,status,create_user_name,create_time,modify_time,remark
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereOrdersClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="orderId != null and orderId != ''" >
+	    and order_id =  #{orderId}
+	</if>
+	<if test="ownerUserName != null and ownerUserName != ''" >
+	    and owner_user_name =  #{ownerUserName}
+	</if>
+	<if test="ownerRealName != null and ownerRealName != ''" >
+	    and owner_real_name =  #{ownerRealName}
+	</if>
+	<if test="ownerMobile != null and ownerMobile != ''" >
+	    and owner_mobile =  #{ownerMobile}
+	</if>
+	<if test="orderAmount != null and orderAmount != ''" >
+	    and order_amount =  #{orderAmount}
+	</if>
+	<if test="postAddress != null and postAddress != ''" >
+	    and post_address =  #{postAddress}
+	</if>
+	<if test="status != null and status != ''" >
+	    and status =  #{status}
+	</if>
+	<if test="createUserName != null and createUserName != ''" >
+	    and create_user_name =  #{createUserName}
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+	<if test="modifyTime != null and modifyTime != ''" >
+	    and modify_time =  #{modifyTime}
+	</if>
+	<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.order.model.Orders" >
+  insert into orders (order_id,owner_user_name,owner_real_name,owner_mobile,order_amount,post_address,status,create_user_name,create_time,modify_time,remark)
+ values(#{orderId, jdbcType=VARCHAR},#{ownerUserName, jdbcType=VARCHAR},#{ownerRealName, jdbcType=VARCHAR},#{ownerMobile, jdbcType=VARCHAR},#{orderAmount, jdbcType=BIGINT},#{postAddress, jdbcType=VARCHAR},#{status, jdbcType=INTEGER},#{createUserName, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT},#{remark, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.order.model.Orders" >
+  update orders set order_id=#{orderId, jdbcType=VARCHAR},owner_user_name=#{ownerUserName, jdbcType=VARCHAR},owner_real_name=#{ownerRealName, jdbcType=VARCHAR},owner_mobile=#{ownerMobile, jdbcType=VARCHAR},order_amount=#{orderAmount, jdbcType=BIGINT},post_address=#{postAddress, jdbcType=VARCHAR},status=#{status, jdbcType=INTEGER},create_user_name=#{createUserName, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT},remark=#{remark, jdbcType=VARCHAR} where order_id=#{orderId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.order.model.Orders" >
+	update orders set 
+	<trim  suffixOverrides="," >
+	<if test="ownerUserName != null  ">
+		owner_user_name=#{ownerUserName, jdbcType=VARCHAR},
+	</if>
+	<if test="ownerRealName != null  ">
+		owner_real_name=#{ownerRealName, jdbcType=VARCHAR},
+	</if>
+	<if test="ownerMobile != null  ">
+		owner_mobile=#{ownerMobile, jdbcType=VARCHAR},
+	</if>
+	<if test="orderAmount != null  ">
+		order_amount=#{orderAmount, jdbcType=BIGINT},
+	</if>
+	<if test="postAddress != null  ">
+		post_address=#{postAddress, jdbcType=VARCHAR},
+	</if>
+	<if test="status != null  ">
+		status=#{status, jdbcType=INTEGER},
+	</if>
+	<if test="createUserName != null  ">
+		create_user_name=#{createUserName, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime, jdbcType=BIGINT},
+	</if>
+	<if test="modifyTime != null  ">
+		modify_time=#{modifyTime, jdbcType=BIGINT},
+	</if>
+	<if test="remark != null  ">
+		remark=#{remark, jdbcType=VARCHAR}
+	</if>
+	</trim> where order_id=#{orderId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from orders where order_id = #{orderId}
+</delete>
+ 
+<!-- 根据id查询 orders -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from orders where order_id = #{orderId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from orders
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.orderId != null and object.orderId != ''" >
+			    and order_id =  #{object.orderId}
+			</if>
+							<if test="object.ownerUserName != null and object.ownerUserName != ''" >
+			    and owner_user_name =  #{object.ownerUserName}
+			</if>
+							<if test="object.ownerRealName != null and object.ownerRealName != ''" >
+			    and owner_real_name =  #{object.ownerRealName}
+			</if>
+							<if test="object.ownerMobile != null and object.ownerMobile != ''" >
+			    and owner_mobile =  #{object.ownerMobile}
+			</if>
+							<if test="object.orderAmount != null and object.orderAmount != ''" >
+			    and order_amount =  #{object.orderAmount}
+			</if>
+							<if test="object.postAddress != null and object.postAddress != ''" >
+			    and post_address =  #{object.postAddress}
+			</if>
+							<if test="object.status != null and object.status != ''" >
+			    and status =  #{object.status}
+			</if>
+							<if test="object.createUserName != null and object.createUserName != ''" >
+			    and create_user_name =  #{object.createUserName}
+			</if>
+							<if test="object.createTime != null and object.createTime != ''" >
+			    and create_time =  #{object.createTime}
+			</if>
+							<if test="object.modifyTime != null and object.modifyTime != ''" >
+			    and modify_time =  #{object.modifyTime}
+			</if>
+							<if test="object.remark != null and object.remark != ''" >
+			    and remark =  #{object.remark}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM orders 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="orderId != null and orderId != ''" >
+			    and order_id =  #{orderId}
+			</if>
+							<if test="ownerUserName != null and ownerUserName != ''" >
+			    and owner_user_name =  #{ownerUserName}
+			</if>
+							<if test="ownerRealName != null and ownerRealName != ''" >
+			    and owner_real_name =  #{ownerRealName}
+			</if>
+							<if test="ownerMobile != null and ownerMobile != ''" >
+			    and owner_mobile =  #{ownerMobile}
+			</if>
+							<if test="orderAmount != null and orderAmount != ''" >
+			    and order_amount =  #{orderAmount}
+			</if>
+							<if test="postAddress != null and postAddress != ''" >
+			    and post_address =  #{postAddress}
+			</if>
+							<if test="status != null and status != ''" >
+			    and status =  #{status}
+			</if>
+							<if test="createUserName != null and createUserName != ''" >
+			    and create_user_name =  #{createUserName}
+			</if>
+							<if test="createTime != null and createTime != ''" >
+			    and create_time =  #{createTime}
+			</if>
+							<if test="modifyTime != null and modifyTime != ''" >
+			    and modify_time =  #{modifyTime}
+			</if>
+							<if test="remark != null and remark != ''" >
+			    and remark =  #{remark}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

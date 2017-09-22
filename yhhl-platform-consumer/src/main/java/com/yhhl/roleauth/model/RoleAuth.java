@@ -9,7 +9,7 @@ import com.yhhl.common.CustomDateTimeSerializer;
  * <b>功能：</b>RoleAuthEntity<br>
  * <b>作者：</b>www.cbice.com<br>
  * <b>日期：</b> June 15, 2015 <br>
- * <b>版权所有：<b>版权所有(C) 2013，国版中心<br>
+ * <b>版权所有：<b>版权所有(C) 2013，瀛海科技<br>
  */
 public class RoleAuth {
 	

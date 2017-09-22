@@ -11,12 +11,13 @@
 		$(inputForm).form({
 		    success:function(data){
 		    	var result = jQuery.parseJSON(data);
-		    	if(result.flag=='T'){
+		    	if(result.flag==1){
 		    		$.messager.confirm('提交结果', '操作成功', function(){
-						parent.colseAdd();// 关闭添加窗口
-		    			parent.winReload();// 刷新列表
+						//parent.colseAdd();// 关闭添加窗口
+		    			//parent.winReload();// 刷新列表
+		    			document.location.href="${ctx}/index.do";
 					});
-		    	}else if(result.flag=='H'){
+		    	}else if(result.flag==2){
 		    		$.messager.alert('提交结果', result.msg, 'info');
 		    	}else{
 		    		$.messager.alert('提交结果', '操作失败:'+result.msg, 'error');
@@ -46,11 +47,11 @@
 	
 	<div style="margin-bottom:20px">
         <label class="label-top">用户名</label>
-        <input class="easyui-textbox theme-textbox-radius" type="text" name="name" value="${user.name }" style="width:100%;" data-options="required:true">
+        <input class="easyui-textbox theme-textbox-radius" type="text" name="userName" value="${user.name }" style="width:100%;" data-options="required:true">
     </div>
     <div style="margin-bottom:20px">
         <label class="label-top">密码</label>
-        <input class="easyui-textbox theme-textbox-radius" type="password" name="pwd" value="${user.pwd }" style="width:100%;" data-options="required:true">
+        <input class="easyui-textbox theme-textbox-radius" type="password" name="password" value="${user.pwd }" style="width:100%;" data-options="required:true">
     </div>
 	<div>
         <a href="javascript:void(0);" class="easyui-linkbutton button-default" iconCls="icon-ok" style="width:100%;height:32px" onclick="doSubmit();">提交</a>

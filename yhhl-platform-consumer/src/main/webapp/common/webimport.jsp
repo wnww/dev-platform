@@ -5,7 +5,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="${ctx}/favicon.ico" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap.min.css" />
 <!-- js import -->
-<script type="text/javascript" src="${ctx}/js/easyui/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.min.js"></script>
 <!-- 扩展easyui验证 -->
 <script type="text/javascript" src="${ctx}/js/jquery-validation/jquery.validate.min.js"></script>

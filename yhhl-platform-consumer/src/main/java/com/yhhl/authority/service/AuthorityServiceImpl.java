@@ -19,7 +19,7 @@ import com.yhhl.authority.model.Authority;
  * <b>功能：</b>AuthorityServiceImpl<br>
  * <b>作者：</b>www.cbice.com<br>
  * <b>日期：</b> June 2, 2013 <br>
- * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
+ * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */
 @Service("authorityService")
 public class AuthorityServiceImpl implements AuthorityServiceI {
@@ -38,23 +38,22 @@ public class AuthorityServiceImpl implements AuthorityServiceI {
 	/**
 	 * 保存
 	 */
-	@Override
-	public void saveAuthority(Authority authority){
-				authority.setAuthId(UUID.randomUUID().toString().replace("-", ""));
-				authorityMapper.insert(authority);
+	public void saveAuthority(Authority authority) {
+		authority.setAuthId(UUID.randomUUID().toString().replace("-", ""));
+		authorityMapper.insert(authority);
 	}
 
 	/**
 	 * 分页查询
 	 */
-	@Override
 	public Page<Authority> getPage(Map<String, Object> filterMap, Page<Authority> page, int pageNo, int pageSize) {
 		int count = authorityMapper.getCount(filterMap);
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "auth_name asc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "auth_name asc" };// 排序字段，可以是多个 类似：{ "name desc", "id
+												// asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -62,18 +61,16 @@ public class AuthorityServiceImpl implements AuthorityServiceI {
 		page.setResult(list);
 		return page;
 	}
-	
-	
 
-	@Override
-	public Page<Authority> getSelectPage(Map<String, Object> filterMap,
-			Page<Authority> page, int pageNo, int pageSize) {
+	public Page<Authority> getSelectPage(Map<String, Object> filterMap, Page<Authority> page, int pageNo,
+			int pageSize) {
 		int count = authorityMapper.getCount(filterMap);
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "auth_name asc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "auth_name asc" };// 排序字段，可以是多个 类似：{ "name desc", "id
+												// asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -83,18 +80,16 @@ public class AuthorityServiceImpl implements AuthorityServiceI {
 	}
 
 	/**
-	*
-	* 分页查询的count
-	*/
-	@Override
+	 *
+	 * 分页查询的count
+	 */
 	public int getCount(Map<String, Object> filterMap) {
 		return authorityMapper.getCount(filterMap);
 	}
-	
+
 	/**
 	 * 更新
 	 */
-	@Override
 	public void updateAuthority(Authority authority) {
 		authorityMapper.updateByPrimaryKey(authority);
 	}
@@ -102,7 +97,6 @@ public class AuthorityServiceImpl implements AuthorityServiceI {
 	/**
 	 * 根据ID获取实体对象
 	 */
-	@Override
 	public Authority getById(String id) {
 		return authorityMapper.selectByPrimaryKey(id);
 	}
@@ -110,7 +104,6 @@ public class AuthorityServiceImpl implements AuthorityServiceI {
 	/**
 	 * 删除信息
 	 */
-	@Override
 	public void deleteById(String id) {
 		authorityMapper.deleteByPrimaryKey(id);
 	}

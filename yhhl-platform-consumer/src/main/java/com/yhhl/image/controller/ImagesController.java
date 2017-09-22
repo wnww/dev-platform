@@ -4,26 +4,26 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yhhl.common.StringUtil;
-import com.yhhl.interceptor.Token;
+import com.yhhl.common.ResultBean;
+
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/imageOpt")
@@ -39,22 +39,6 @@ public class ImagesController {
 		return new ModelAndView("images/rich-text-edit");
 	}
 
-	/**
-	 * 进入到初始化新增、修改页面
-	 * 
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/initAddUser")
-	@Token(save = true)
-	public ModelAndView initAdd(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if (StringUtil.isNotEmpty(id)) {
-
-		}
-		return new ModelAndView("user/addUser");
-	}
-
 	@RequestMapping(value = "/upload-pic")
 	public synchronized void uploadPic(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=UTF-8");
@@ -62,7 +46,7 @@ public class ImagesController {
 		response.addHeader("Cache-Control", "no-store,must-revalidate");
 		response.addHeader("Cache-Control", "post-check=0,pre-check=0");
 		response.addHeader("Pragma", "no-cache");
-		JSONObject json = new JSONObject();
+		ResultBean<List<Map<String,String>>> rb = new ResultBean<List<Map<String,String>>>();
 		try {
 			String extName = ""; // 保存文件拓展名
 			String newFileName = ""; // 保存新的文件名
@@ -72,47 +56,52 @@ public class ImagesController {
 			// 转型为MultipartHttpRequest
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			// 根据前台的name名称得到上传的文件
-			MultipartFile file = multipartRequest.getFile("fileUpload");
-			// 获得文件名：
-			String realFileName = URLDecoder.decode(file.getOriginalFilename(), "UTF-8");
-			// 获取上传根路径
-
-			// 获取路径
-			// String basePath = System.getProperty("file.separator") +
-			// "userfiles" + System.getProperty("file.separator")
-			// + "file" + System.getProperty("file.separator");
+			List<MultipartFile> files = multipartRequest.getFiles("file");
 			String basePath = "/userfiles/file/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/";
-			// String ctxPath =
-			// request.getSession().getServletContext().getRealPath(basePath);
 			// 图片放在工程下
 			String ctxPath = request.getSession().getServletContext().getRealPath(basePath);
-			// 生成随机文件名：当前年月日时分秒+五位随机数（为了防止文件同名而进行的处理
-			// 获取拓展名
-			int rannum = (int) (r.nextDouble() * (99999 - 10000 + 1)) + 10000; // 获取随机数
-			sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); // 时间格式化的格式
-			nowTimeStr = sDateFormat.format(new Date()); // 当前时间
-			extName = realFileName.substring(realFileName.lastIndexOf("."));
-
-			newFileName = nowTimeStr + rannum + extName; // 文件重命名后的名字
-			ctxPath = ctxPath + "/";// + System.getProperty("file.separator");
-			String filePath = ctxPath + newFileName;
-
-			// 创建文件
-			File dirPath = new File(ctxPath);
-			if (!dirPath.exists()) {
-				dirPath.mkdirs();
+			ctxPath = ctxPath + "/";
+			// 获得文件名：
+			String realFileName = null;
+			String filePath = null;
+			
+			List<Map<String,String>> result = new ArrayList<Map<String,String>>();
+			
+			for(MultipartFile file : files){
+				Map<String,String> map = new HashMap<String,String>();
+				realFileName = URLDecoder.decode(file.getOriginalFilename(), "UTF-8");
+				
+				// 生成随机文件名：当前年月日时分秒+五位随机数（为了防止文件同名而进行的处理
+				// 获取拓展名
+				int rannum = (int) (r.nextDouble() * (99999 - 10000 + 1)) + 10000; // 获取随机数
+				sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); // 时间格式化的格式
+				nowTimeStr = sDateFormat.format(new Date()); // 当前时间
+				extName = realFileName.substring(realFileName.lastIndexOf("."));
+				newFileName = nowTimeStr + rannum + extName; // 文件重命名后的名字
+				filePath = ctxPath + newFileName;
+	
+				// 创建文件
+				File dirPath = new File(ctxPath);
+				if (!dirPath.exists()) {
+					dirPath.mkdirs();
+				}
+				File uploadFile = new File(filePath);
+				FileCopyUtils.copy(file.getBytes(), uploadFile);
+				map.put("filePath", basePath + newFileName);
+				map.put("fileName", realFileName);
+				map.put("flag", "T");
+				result.add(map);
 			}
-			File uploadFile = new File(filePath);
-			FileCopyUtils.copy(file.getBytes(), uploadFile);
-			json.put("filePath", basePath + newFileName);
-			json.put("fileName", realFileName);
-			json.put("flag", "T");
+			rb.setFlag(ResultBean.SUCCESS);
+			rb.setMsg("上传成功！");
+			rb.setData(result);
 		} catch (Exception e) {
-			// json.put("flag", "E");
-			json.put("flag", "E");
-			json.put("msg", e.getMessage());
+			rb.setFlag(ResultBean.FAIL);
+			rb.setMsg(e.getMessage());
 			e.printStackTrace();
 		}
+		JSONObject json = new JSONObject();
+		json.put("resultBean", rb);
 		response.getWriter().write(json.toString());
 	}
 

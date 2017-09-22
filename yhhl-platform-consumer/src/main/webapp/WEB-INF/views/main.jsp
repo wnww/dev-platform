@@ -176,7 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function logout(){
 			$.messager.confirm('提示', '您确定工作已经保存，并退出该系统?', function(r){
 				if (r){					
-					location.href = '${ctx}/logout?go=<%=basePath %>${ctx}';
+					location.href = '${ctx}/logout.do?go=<%=basePath %>${ctx}';
 				}
 		   });
 		}
@@ -214,14 +214,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div data-options="region:'west',split:true,border:false" split="true" title="功能菜单" style="width:210px;padding:3px;">
             <ul class="easyui-tree">
             	<li>   
-                <span>系统管理</span>
-                <ul>   
-                    <li><span><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></span></li>
-                    <li><span><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></span></li>
-                    <li><span><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></span></li>
-                </ul>  
-            </li>   
-		  </ul>            	
+	                <span>系统管理</span>
+	                <ul>   
+	                    <li><span><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></span></li>
+	                    <li><span><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></span></li>
+	                    <li><span><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></span></li>
+	                </ul>
+            	</li>
+		    </ul>
+		    <ul class="easyui-tree">
+            	<li>   
+	                <span>产品管理</span>
+	                <ul>   
+	                    <li><span><a href="javascript:void(0);" onclick="addTab('产品管理','${ctx}/products/index.do')">产品管理</a></span></li>
+	                </ul>  
+            	</li>   
+		    </ul>
+		    <ul class="easyui-tree">
+            	<li>   
+	                <span>订单管理</span>
+	                <ul>   
+	                    <li><span><a href="javascript:void(0);" onclick="addTab('订单管理','${ctx}/orders/index.do')">订单管理</a></span></li>
+	                </ul>  
+            	</li>   
+		    </ul>
+		    <ul class="easyui-tree">
+            	<li>   
+	                <span>Echarts测试</span>
+	                <ul>   
+	                    <li><span><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/charts/index.do')">Echarts测试</a></span></li>
+	                </ul>  
+            	</li>   
+		    </ul>        	
         </div>
         <div id="ccc" data-options="region:'center',border:false"  title="" border="false">
             <div id="main" class="easyui-panel" data-options="fit:true,border:false" style="background:#fff;">

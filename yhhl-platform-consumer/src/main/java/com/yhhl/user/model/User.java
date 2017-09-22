@@ -15,15 +15,11 @@ public class User implements Serializable{
 
 	private Date createdatetime;
 
-	private Date modifydatetime;
-
 	private String name;
 
 	private String pwd;
 
 	private Date createTime;
-
-	private Date updateTime;
 
 	public String getId() {
 		return id;
@@ -40,15 +36,6 @@ public class User implements Serializable{
 
 	public void setCreatedatetime(Date createdatetime) {
 		this.createdatetime = createdatetime;
-	}
-
-	@JsonSerialize(using = CustomDateTimeSerializer.class)
-	public Date getModifydatetime() {
-		return modifydatetime;
-	}
-
-	public void setModifydatetime(Date modifydatetime) {
-		this.modifydatetime = modifydatetime;
 	}
 
 	public String getName() {
@@ -75,11 +62,4 @@ public class User implements Serializable{
 		this.createTime = createTime;
 	}
 
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
 }

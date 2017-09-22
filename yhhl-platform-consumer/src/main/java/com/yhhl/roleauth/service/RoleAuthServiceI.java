@@ -14,7 +14,7 @@ import com.yhhl.roleuser.model.RoleUser;
  * <b>功能：</b>RoleAuthServiceI<br>
  * <b>作者：</b>www.cbice.com<br>
  * <b>日期：</b> June 2, 2013 <br>
- * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
+ * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */
 public interface RoleAuthServiceI {
 

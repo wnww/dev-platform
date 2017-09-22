@@ -1,33 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>com.yhhl</groupId>
-	<artifactId>yhhl-platform</artifactId>
+	<artifactId>com.yhhl.single.web</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>yhhl Maven platform</name>
-	<url>http://maven.apache.org</url>
+	<version>1.0.0</version>
 	<modules> 
-		<module>yhhl-platform-wsts</module>
 		<module>yhhl-platform-api</module>
 		<module>yhhl-platform-consumer</module>
-		<module>yhhl-platform-provider</module>
-		<module>yhhl-platform-wstsserver</module>
-	</modules>
+  </modules>
 	<properties>
 		<springframework.version>4.2.5.RELEASE</springframework.version>
-		<java.src.version>1.7</java.src.version>
-		<java.target.version>1.7</java.target.version> 
-		<maven.compiler.encoding>UTF-8</maven.compiler.encoding> 
 	</properties>
 	
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>com.yhhl</groupId>
-				<artifactId>yhhl-platform-wsts</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>com.yhhl</groupId>
 				<artifactId>yhhl-platform-api</artifactId>
@@ -41,11 +29,6 @@
 			<dependency>
 				<groupId>com.yhhl</groupId>
 				<artifactId>yhhl-platform-provider</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.yhhl</groupId>
-				<artifactId>yhhl-platform-wstsserver</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency> 
@@ -278,29 +261,6 @@
 			    <artifactId>mybatis-memcached</artifactId>
 			    <version>1.0.0</version>
 	 		 </dependency>
-	 		 <!-- dubbo 相关jar -->
-	 		 <dependency>  
-		         <groupId>com.alibaba</groupId>  
-		         <artifactId>dubbo</artifactId>   
-		         <version>2.5.3</version>
-		         <exclusions>
-				   <exclusion>
-				      <groupId>org.springframework</groupId>
-	                   <artifactId>spring</artifactId>
-	                </exclusion> 
-				</exclusions>
-		     </dependency>
-		     <!-- zookeeper 相关jar -->
-		     <dependency>  
-	         	<groupId>org.apache.zookeeper</groupId>  
-				<artifactId>zookeeper</artifactId>  
-				<version>3.4.6</version>  
-			 </dependency>
-			 <dependency>  
-			     <groupId>com.github.sgroschupf</groupId>  
-				 <artifactId>zkclient</artifactId>  
-				 <version>0.1</version>  
-			 </dependency>  
 			 
 			  <!-- Spring session 相关jar  -->
 			 <dependency>
@@ -355,4 +315,5 @@
             </testResource>
         </testResources>
 	</build>
+	
 </project>

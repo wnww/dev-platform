@@ -9,59 +9,89 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yhhl.common.LocaleMessage;
 import com.yhhl.common.LoginUser;
+import com.yhhl.common.ResultBean;
+import com.yhhl.user.model.User;
+import com.yhhl.user.service.UserServiceI;
 
 /**
- * description:  
- * @author Hou Dayu 创建时间：2014-11-17  
- * @Copyright(c)2014:国版中心
+ * description:
+ * 
+ * @author 创建时间：2014-11-17 @Copyright(c)2014:瀛海科技
  */
 @Controller
 @RequestMapping("/")
 public class MainAction {
 
+	@Autowired
+	private UserServiceI userService;
+
 	@RequestMapping("/index")
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = new ModelAndView("main");
 		HttpSession session = request.getSession();
-		LoginUser user = (LoginUser)session.getAttribute("loginUser");
-		if(user==null){
+		LoginUser user = (LoginUser) session.getAttribute("loginUser");
+		if (user == null) {
 			view = new ModelAndView("login");
 		}
 		return view;
 	}
-	
+
 	@RequestMapping("/login")
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView view = new ModelAndView("main");
+	@ResponseBody
+	public ResultBean<String> login(HttpServletRequest request, HttpServletResponse response) {
+		ResultBean<String> result = new ResultBean<String>();
 		HttpSession session = request.getSession();
-		// 模拟登录成功
-		LoginUser loginUser = new LoginUser();
-		loginUser.setUserName("testUser");
-		loginUser.setNikeName("网内网外");
-		loginUser.setUserPhoto("http://himg.bdimg.com/sys/portrait/item/ba98686a686c6f76656c65692801.jpg");
+		LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
+		String userName = request.getParameter("userName");
+		if(loginUser!=null && loginUser.getUserName().equals(userName)){
+			result.setFlag(ResultBean.SUCCESS);
+			result.setMsg("已经登录");
+			return result;
+		}
+		String password = request.getParameter("password");
+		if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("用户名或密码不能为空！");
+			return result;
+		}
+		
+		User user = userService.getByUserNameAndPwd(userName, password);
+		if (user == null) {
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("用户名或密码不正确！");
+			return result;
+		}
+		if(loginUser==null){
+			loginUser = new LoginUser();
+		}
+		loginUser.setUserName(user.getName());
+		loginUser.setNikeName(user.getName());
+		loginUser.setUserPhoto(
+				"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505368475834&di=c9816987fdeecdf67bc6c97b88e7740e&imgtype=0&src=http%3A%2F%2Fpic1a.nipic.com%2F2008-12-01%2F200812193221582_2.jpg");
 		session.setAttribute("loginUser", loginUser);
-		return view;
+		return result;
 	}
-	
+
 	@RequestMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = new ModelAndView("login");
 		HttpSession session = request.getSession();
 		// 模拟登录成功
-		LoginUser user = (LoginUser)session.getAttribute("loginUser");
-		if(user!=null){
+		LoginUser user = (LoginUser) session.getAttribute("loginUser");
+		if (user != null) {
 			session.removeAttribute("loginUser");
 		}
 		return view;
 	}
-	
-	
 
 	@RequestMapping("errorPage")
 	public ModelAndView toPage(HttpServletRequest request) {
@@ -78,7 +108,5 @@ public class MainAction {
 		view.addObject("Errorcode", error);
 		return view;
 	}
-	
-	
-	
+
 }

@@ -7,8 +7,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.mengyun.tcctransaction.CancellingException;
-import org.mengyun.tcctransaction.ConfirmingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,7 +82,6 @@ public class UserController {
 			User u = userService.getById(user.getId());
 			u.setName(user.getName());
 			u.setPwd(user.getPwd());
-			u.setModifydatetime(new Date());
 			userService.updateUser(u);
 			map.put("flag", "T");
 			map.put("msg", "修改成功");
@@ -93,21 +90,11 @@ public class UserController {
 		Date d = new Date();
 		user.setCreateTime(d);
 		user.setCreatedatetime(d);
-		user.setUpdateTime(d);
 		user.setId(UUID.randomUUID().toString().replace("-", ""));
-		user.setModifydatetime(d);
-		try{
-			userService.saveUser(user);
-			map.put("flag", "T");
-			map.put("msg", "保存成功");
-		}catch(ConfirmingException cme){
-			map.put("flag", "F");
-			map.put("msg", "confirm异常");
-		}catch(CancellingException cle){
-			map.put("flag", "F");
-			map.put("msg", "concel异常");
-		}
-		
+		userService.saveUser(user);
+		map.put("flag", "T");
+		map.put("msg", "保存成功");
+
 		return map;
 	}
 
@@ -127,9 +114,9 @@ public class UserController {
 		Map<String, Object> mapData = new HashMap<String, Object>();
 		mapData.put("total", dataPage.getTotalCount());
 		mapData.put("rows", dataPage.getResult());
-		
-//		TransactionContextMain context = new TransactionContextMain();
-		//context.
+
+		// TransactionContextMain context = new TransactionContextMain();
+		// context.
 		return mapData;
 	}
 

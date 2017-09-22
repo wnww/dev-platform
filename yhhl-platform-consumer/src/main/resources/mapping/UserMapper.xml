@@ -9,14 +9,12 @@
 	<result column="name" property="name"/>
 	<result column="pwd" property="pwd"/>
 	<result column="create_time" property="createTime"/>
-	<result column="update_time" property="updateTime"/>
 	<result column="createdatetime" property="createdatetime"/>
-	<result column="modifydatetime" property="modifydatetime"/>
 </resultMap>
        
 <!-- t_user table all fields -->
 <sql id="Base_Column_List" >
-	 id,name,pwd,create_time,update_time,createdatetime,modifydatetime
+	 id,name,pwd,create_time,createdatetime
 </sql>
    
    
@@ -35,26 +33,20 @@ where 1=1
 	<if test="createTime != null and createTime != ''" >
 	    and create_time =  #{createTime}
 	</if>
-	<if test="updateTime != null and updateTime != ''" >
-	    and update_time =  #{updateTime}
-	</if>
 	<if test="createdatetime != null and createdatetime != ''" >
 	    and createdatetime =  #{createdatetime}
-	</if>
-	<if test="modifydatetime != null and modifydatetime != ''" >
-	    and modifydatetime =  #{modifydatetime}
 	</if>
 </trim>
 </sql>
    
 
 <insert id="insert" parameterType="com.yhhl.user.model.User" >
-  insert into t_user (id,name,pwd,create_time,update_time,createdatetime,modifydatetime)
- values(#{id, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{pwd, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{createdatetime, jdbcType=TIMESTAMP},#{modifydatetime, jdbcType=TIMESTAMP})
+  insert into t_user (id,name,pwd,create_time,createdatetime)
+ values(#{id, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{pwd, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{createdatetime, jdbcType=TIMESTAMP})
 </insert>
 
  <update id="updateByPrimaryKey" parameterType="com.yhhl.user.model.User" >
-  update t_user set id=#{id, jdbcType=VARCHAR},name=#{name, jdbcType=VARCHAR},pwd=#{pwd, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=TIMESTAMP},update_time=#{updateTime, jdbcType=TIMESTAMP},createdatetime=#{createdatetime, jdbcType=TIMESTAMP},modifydatetime=#{modifydatetime, jdbcType=TIMESTAMP} where id=#{id}
+  update t_user set id=#{id, jdbcType=VARCHAR},name=#{name, jdbcType=VARCHAR},pwd=#{pwd, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=TIMESTAMP},createdatetime=#{createdatetime, jdbcType=TIMESTAMP} where id=#{id}
  </update>
  
 <update id="updateByPrimaryKeySelective" parameterType="com.yhhl.user.model.User" >
@@ -69,14 +61,8 @@ where 1=1
 	<if test="createTime != null  ">
 		create_time=#{createTime, jdbcType=TIMESTAMP},
 	</if>
-	<if test="updateTime != null  ">
-		update_time=#{updateTime, jdbcType=TIMESTAMP},
-	</if>
 	<if test="createdatetime != null  ">
 		createdatetime=#{createdatetime, jdbcType=TIMESTAMP},
-	</if>
-	<if test="modifydatetime != null  ">
-		modifydatetime=#{modifydatetime, jdbcType=TIMESTAMP}
 	</if>
 	</trim> where id=#{id}
 </update>
@@ -91,7 +77,7 @@ where 1=1
 </select>
 
 	<select useCache="false" id="getAll" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
-		select ID, CREATEDATETIME, MODIFYDATETIME, NAME, PWD from t_user
+		select ID, CREATEDATETIME, NAME, PWD from t_user
 		<where>
 			<if test="object.name !=null and object.name != ''">
 				and name like concat(concat('%', #{object.name}),'%')
@@ -122,14 +108,8 @@ where 1=1
 							<if test="object.createTime != null and object.createTime != ''" >
 			    and create_time =  #{object.createTime}
 			</if>
-							<if test="object.updateTime != null and object.updateTime != ''" >
-			    and update_time =  #{object.updateTime}
-			</if>
 							<if test="object.createdatetime != null and object.createdatetime != ''" >
 			    and createdatetime =  #{object.createdatetime}
-			</if>
-							<if test="object.modifydatetime != null and object.modifydatetime != ''" >
-			    and modifydatetime =  #{object.modifydatetime}
 			</if>
 			</trim>
 		<if test="orderBys!=null">
@@ -159,16 +139,13 @@ where 1=1
 							<if test="createTime != null and createTime != ''" >
 			    and create_time =  #{createTime}
 			</if>
-							<if test="updateTime != null and updateTime != ''" >
-			    and update_time =  #{updateTime}
-			</if>
 							<if test="createdatetime != null and createdatetime != ''" >
 			    and createdatetime =  #{createdatetime}
 			</if>
-							<if test="modifydatetime != null and modifydatetime != ''" >
-			    and modifydatetime =  #{modifydatetime}
-			</if>
 			</trim>
    	</select>
-  	
+   	
+   	<select useCache="false" id="login" parameterType="java.util.Map" resultMap="BaseResultMap">
+     	select <include refid="Base_Column_List"/> from t_user <include refid="whereTUserClause" />
+     </select>
 </mapper>   

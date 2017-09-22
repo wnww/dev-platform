@@ -43,20 +43,21 @@
 <div id="tip"> </div>
 <div class="easyui-panel" title="" style="width:100%; max-width:650px;padding:20px 150px 20px 20px;">
 	<form action="${ctx}/roles/saveRoles.do" id="inputForm" name="inputForm" method="post">
-	<input type="hidden" name="token" id="token" value="${token}"/>
-	<input type="hidden" name="roleId" id="roleId" value="${roles.roleId}"/>
-	<div style="margin-bottom:20px">
-        <label class="label-top">角色名</label>
-        <input class="easyui-textbox theme-textbox-radius" type="text" name="roleName" value="${roles.roleName }" style="width:100%;" data-options="required:true">
-    </div>
-	<div style="margin-bottom:20px">
-        <label class="label-top">备注</label>
-        <input class="easyui-textbox theme-textbox-radius" style="width:100%; height:80px;" name="remark" value="${roles.remark }" data-options="multiline:true">
-    </div>
-	<div>
-        <a href="javascript:void(0);" class="easyui-linkbutton button-default" iconCls="icon-ok" style="width:100%;height:32px" onclick="doSubmit();">提交</a>
-    </div>
+		<input type="hidden" name="token" id="token" value="${token}"/>
+		<input type="hidden" name="roleId" id="roleId" value="${roles.roleId}"/>
+		<div style="margin-bottom:20px">
+	        <label class="label-top">角色名</label>
+	        <input class="easyui-textbox theme-textbox-radius" type="text" name="roleName" value="${roles.roleName }" style="width:100%;" data-options="required:true">
+	    </div>
+		<div style="margin-bottom:20px">
+	        <label class="label-top">备注</label>
+	        <input class="easyui-textbox theme-textbox-radius" style="width:100%; height:80px;" name="remark" value="${roles.remark }" data-options="multiline:true">
+	    </div>
+		<div>
+	        <a href="javascript:void(0);" class="easyui-linkbutton button-default" iconCls="icon-ok" style="width:100%;height:32px" onclick="doSubmit();">提交</a>
+	    </div>
+    </form>
 </div>
-</form>
+
 </body>
 </html>

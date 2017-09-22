@@ -28,5 +28,6 @@ public interface UserMapper {
 
 	int updateByPrimaryKey(User record) throws DataAccessException;
 
+	User login(Map<String, String> filterMap);
 
 }

@@ -19,7 +19,7 @@ import com.yhhl.roleuser.model.RoleUser;
  * <b>功能：</b>RoleUserServiceImpl<br>
  * <b>作者：</b>www.cbice.com<br>
  * <b>日期：</b> June 2, 2013 <br>
- * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
+ * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */
 @Service("roleUserService")
 public class RoleUserServiceImpl implements RoleUserServiceI {
@@ -38,13 +38,11 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 	/**
 	 * 保存
 	 */
-	@Override
 	public void saveRoleUser(RoleUser roleUser){
 				roleUser.setId(UUID.randomUUID().toString().replace("-", ""));
 				roleUserMapper.insert(roleUser);
 	}
 	
-	@Override
 	public RoleUser getByUserIdAndRoleId(String userId,String roleId) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
@@ -52,8 +50,6 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 		return roleUserMapper.getByUserIdAndRoleId(map);
 	}
 	
-
-	@Override
 	public int deleteByUserIdAndRoleId(String userId, String roleId) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
@@ -64,7 +60,6 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 	/**
 	 * 分页查询
 	 */
-	@Override
 	public Page<RoleUser> getPage(Map<String, Object> filterMap, Page<RoleUser> page, int pageNo, int pageSize) {
 		int count = roleUserMapper.getCount(filterMap);
 		page.setPageNo(pageNo);
@@ -84,7 +79,6 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 	*
 	* 分页查询的count
 	*/
-	@Override
 	public int getCount(Map<String, Object> filterMap) {
 		return roleUserMapper.getCount(filterMap);
 	}
@@ -92,7 +86,6 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 	/**
 	 * 更新
 	 */
-	@Override
 	public void updateRoleUser(RoleUser roleUser) {
 		roleUserMapper.updateByPrimaryKey(roleUser);
 	}
@@ -100,7 +93,6 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 	/**
 	 * 根据ID获取实体对象
 	 */
-	@Override
 	public RoleUser getById(String id) {
 		return roleUserMapper.selectByPrimaryKey(id);
 	}
@@ -108,7 +100,6 @@ public class RoleUserServiceImpl implements RoleUserServiceI {
 	/**
 	 * 删除信息
 	 */
-	@Override
 	public void deleteById(String id) {
 		roleUserMapper.deleteByPrimaryKey(id);
 	}

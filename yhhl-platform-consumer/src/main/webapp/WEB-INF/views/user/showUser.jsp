@@ -31,11 +31,6 @@
 				columns:[[
 					{field:'name',title:'姓名',width:100,sortable:true},
 					{field:'createdatetime',title:'创建时间',width:100,sortable:true},
-					{field:'modifydatetime',title:'更新时间',width:100,
-						formatter:function(value){
-							return '<span style=\'color:blue;font-weight:bold;\'>'+value+'</span>';
-						}
-					},
 					{field:'button',title:'操作',width:50,align:'center',
 						formatter:function(value,rec){
 							var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="selectRoles(\''+rec.id+'\')" href="javascript:void(0)">';

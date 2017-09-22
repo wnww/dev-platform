@@ -19,7 +19,7 @@ import com.yhhl.roleauth.model.RoleAuth;
  * <b>功能：</b>RoleAuthServiceImpl<br>
  * <b>作者：</b>www.cbice.com<br>
  * <b>日期：</b> June 2, 2013 <br>
- * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
+ * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */
 @Service("roleAuthService")
 public class RoleAuthServiceImpl implements RoleAuthServiceI {
@@ -38,23 +38,20 @@ public class RoleAuthServiceImpl implements RoleAuthServiceI {
 	/**
 	 * 保存
 	 */
-	@Override
-	public void saveRoleAuth(RoleAuth roleAuth){
-				roleAuth.setId(UUID.randomUUID().toString().replace("-", ""));
-				roleAuthMapper.insert(roleAuth);
+	public void saveRoleAuth(RoleAuth roleAuth) {
+		roleAuth.setId(UUID.randomUUID().toString().replace("-", ""));
+		roleAuthMapper.insert(roleAuth);
 	}
-	
-	@Override
+
 	public RoleAuth getByAuthIdAndRoleId(String authId, String roleId) {
-		Map<String, String> map = new HashMap<String,String>();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("authId", authId);
 		map.put("roleId", roleId);
 		return roleAuthMapper.getByAuthIdAndRoleId(map);
 	}
 
-	@Override
 	public int deleteByAuthIdAndRoleId(String authId, String roleId) {
-		Map<String, String> map = new HashMap<String,String>();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("authId", authId);
 		map.put("roleId", roleId);
 		return roleAuthMapper.deleteByAuthIdAndRoleId(map);
@@ -63,14 +60,13 @@ public class RoleAuthServiceImpl implements RoleAuthServiceI {
 	/**
 	 * 分页查询
 	 */
-	@Override
 	public Page<RoleAuth> getPage(Map<String, Object> filterMap, Page<RoleAuth> page, int pageNo, int pageSize) {
 		int count = roleAuthMapper.getCount(filterMap);
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "", "" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "", "" };// 排序字段，可以是多个 类似：{ "name desc", "id asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -80,18 +76,16 @@ public class RoleAuthServiceImpl implements RoleAuthServiceI {
 	}
 
 	/**
-	*
-	* 分页查询的count
-	*/
-	@Override
+	 *
+	 * 分页查询的count
+	 */
 	public int getCount(Map<String, Object> filterMap) {
 		return roleAuthMapper.getCount(filterMap);
 	}
-	
+
 	/**
 	 * 更新
 	 */
-	@Override
 	public void updateRoleAuth(RoleAuth roleAuth) {
 		roleAuthMapper.updateByPrimaryKey(roleAuth);
 	}
@@ -99,7 +93,6 @@ public class RoleAuthServiceImpl implements RoleAuthServiceI {
 	/**
 	 * 根据ID获取实体对象
 	 */
-	@Override
 	public RoleAuth getById(String id) {
 		return roleAuthMapper.selectByPrimaryKey(id);
 	}
@@ -107,7 +100,6 @@ public class RoleAuthServiceImpl implements RoleAuthServiceI {
 	/**
 	 * 删除信息
 	 */
-	@Override
 	public void deleteById(String id) {
 		roleAuthMapper.deleteByPrimaryKey(id);
 	}

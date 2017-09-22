@@ -39,25 +39,6 @@ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
 		<property name="filters" value="mergeStat" />
 	</bean>
 	
-	<bean id="tccDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	    <property name="url" value="${tcc_jdbc_url}"/>
-	    <property name="username" value="hive"/>
-	    <property name="password" value="hive"/>
-	    <property name="initialSize" value="3" /> 
-		<property name="maxActive" value="10" />
-		<property name="maxIdle" value="10" />
-		<property name="minIdle" value="0" />
-		<property name="maxWait" value="60000" />
-	</bean>
-	
-	<bean id="transactionRepository"
-          class="org.mengyun.tcctransaction.spring.repository.SpringJdbcTransactionRepository">
-        <property name="dataSource" ref="tccDataSource"/>
-        <property name="domain" value="ORDER"/>
-    	<property name="tbSuffix" value="_ORD"/>
-    </bean>
-
 	<!-- myBatis文件 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />

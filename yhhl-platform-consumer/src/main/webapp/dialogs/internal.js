@@ -1,4 +1,3 @@
-document.domain = 'idianxiang.com';
 (function () {
     var parent = window.parent;
     //dialog对象

@@ -3,20 +3,17 @@
 
 	<parent>
 		<groupId>com.yhhl</groupId>
-		<artifactId>yhhl-platform</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+		<artifactId>com.yhhl.single.web</artifactId>
+		<version>1.0.0</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion> 
 	<artifactId>yhhl-platform-api</artifactId>
-
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+	</properties>
 	<dependencies>
-			<dependency>
-		        <groupId>org.mengyun</groupId>
-		        <artifactId>tcc-transaction-api</artifactId>
-		        <version>1.1.5</version>
-		    </dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
@@ -190,32 +187,11 @@
 			    <groupId>org.mybatis.caches</groupId>
 			    <artifactId>mybatis-memcached</artifactId>
 	 		 </dependency>
-	 		 <!-- dubbo 相关jar -->
-	 		 <dependency>  
-		         <groupId>com.alibaba</groupId>  
-		         <artifactId>dubbo</artifactId>   
-		         <exclusions>
-				   <exclusion>
-				      <groupId>org.springframework</groupId>
-	                   <artifactId>spring</artifactId>
-	                </exclusion> 
-				</exclusions>
-		     </dependency>
-		     <!-- zookeeper 相关jar -->
-		     <dependency>  
-	         	<groupId>org.apache.zookeeper</groupId>  
-				<artifactId>zookeeper</artifactId>  
-			 </dependency>
-			 <dependency>  
-			     <groupId>com.github.sgroschupf</groupId>  
-				 <artifactId>zkclient</artifactId>  
-			 </dependency>  
 			 
 			  <!-- Spring session 相关jar  -->
 			 <dependency>
 			    <groupId>org.springframework.data</groupId>
 			    <artifactId>spring-data-redis</artifactId>
-			    <version>1.5.2.RELEASE</version>
 			    <exclusions>
 				   <exclusion>
 				      <groupId>org.springframework</groupId>
@@ -241,5 +217,4 @@
 			</dependency>
 			
 	</dependencies>
-	
 </project>

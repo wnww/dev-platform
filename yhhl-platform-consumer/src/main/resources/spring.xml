@@ -9,8 +9,12 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
 	<context:property-placeholder location="classpath:config.properties" />
 
 	<context:component-scan base-package="com.yhhl" />
-	
-	<import resource="spring-session.xml" />
-
-	<import resource="dubbo-consumer.xml"/>
+	<bean id="idWorker" class="com.yhhl.common.IdWorker">
+		<constructor-arg name="workerId">
+			<value>1</value>
+		</constructor-arg>
+		<constructor-arg name="datacenterId">
+			<value>1</value>
+		</constructor-arg>
+	</bean>
 </beans>

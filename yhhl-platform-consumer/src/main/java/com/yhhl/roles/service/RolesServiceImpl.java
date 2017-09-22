@@ -19,7 +19,7 @@ import com.yhhl.roles.model.Roles;
  * <b>功能：</b>RolesServiceImpl<br>
  * <b>作者：</b>www.cbice.com<br>
  * <b>日期：</b> June 2, 2013 <br>
- * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
+ * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */
 @Service("rolesService")
 public class RolesServiceImpl implements RolesServiceI {
@@ -38,23 +38,22 @@ public class RolesServiceImpl implements RolesServiceI {
 	/**
 	 * 保存
 	 */
-	@Override
-	public void saveRoles(Roles roles){
-				roles.setRoleId(UUID.randomUUID().toString().replace("-", ""));
-				rolesMapper.insert(roles);
+	public void saveRoles(Roles roles) {
+		roles.setRoleId(UUID.randomUUID().toString().replace("-", ""));
+		rolesMapper.insert(roles);
 	}
 
 	/**
 	 * 分页查询
 	 */
-	@Override
 	public Page<Roles> getPage(Map<String, Object> filterMap, Page<Roles> page, int pageNo, int pageSize) {
 		int count = rolesMapper.getCount(filterMap);
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "role_name asc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "role_name asc" };// 排序字段，可以是多个 类似：{ "name desc", "id
+												// asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -62,17 +61,15 @@ public class RolesServiceImpl implements RolesServiceI {
 		page.setResult(list);
 		return page;
 	}
-	
-	
 
-	@Override
 	public Page<Roles> getSelectPage(Map<String, Object> filterMap, Page<Roles> page, int pageNo, int pageSize) {
 		int count = rolesMapper.getCount(filterMap);
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "role_name asc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "role_name asc" };// 排序字段，可以是多个 类似：{ "name desc", "id
+												// asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -82,18 +79,16 @@ public class RolesServiceImpl implements RolesServiceI {
 	}
 
 	/**
-	*
-	* 分页查询的count
-	*/
-	@Override
+	 *
+	 * 分页查询的count
+	 */
 	public int getCount(Map<String, Object> filterMap) {
 		return rolesMapper.getCount(filterMap);
 	}
-	
+
 	/**
 	 * 更新
 	 */
-	@Override
 	public void updateRoles(Roles roles) {
 		rolesMapper.updateByPrimaryKey(roles);
 	}
@@ -101,7 +96,6 @@ public class RolesServiceImpl implements RolesServiceI {
 	/**
 	 * 根据ID获取实体对象
 	 */
-	@Override
 	public Roles getById(String id) {
 		return rolesMapper.selectByPrimaryKey(id);
 	}
@@ -109,7 +103,6 @@ public class RolesServiceImpl implements RolesServiceI {
 	/**
 	 * 删除信息
 	 */
-	@Override
 	public void deleteById(String id) {
 		rolesMapper.deleteByPrimaryKey(id);
 	}
