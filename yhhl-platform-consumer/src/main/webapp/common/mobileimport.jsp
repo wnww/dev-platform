@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <link rel="shortcut icon" type="image/x-icon" href="${ctx}/favicon.ico" />
-<link href="${ctx}/front-mobile-static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="${frontMobileStaticCtx}/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
-<link href="${ctx}/front-mobile-static/css/style.css" rel="stylesheet" type="text/css" media="all" />	
+<link href="${frontMobileStaticCtx}/css/style.css" rel="stylesheet" type="text/css" media="all" />	
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="" />
@@ -16,9 +16,8 @@
 		window.scrollTo(0,1); 
 	} 
 </script>
-<link href='http://fonts.useso.com/css?family=Exo:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="${ctx}/front-mobile-static/js/move-top.js"></script>
-<script src="${ctx}/front-mobile-static/js/responsiveslides.min.js"></script>
+<script type="text/javascript" src="${frontMobileStaticCtx}/js/move-top.js"></script>
+<script src="${frontMobileStaticCtx}/js/responsiveslides.min.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
 		$(".scroll").click(function(event){		

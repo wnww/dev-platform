@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <head>
 <meta charset="utf-8">
-<title>国版中心平台</title>
+<title>瀛海Soft</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <%@ include file="/common/meta.jsp"%>
 <%@ include file="/common/import.jsp"%>

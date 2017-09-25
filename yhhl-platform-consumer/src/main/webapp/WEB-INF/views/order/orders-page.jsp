@@ -219,24 +219,24 @@
 				text:'删除',
 				iconCls:'icon-remove',
 				handler:function(){
-					deleteEntity();
+					deleteOrderProductEntity();
 				}
 			},'-',{
 				text:'修改',
 				iconCls:'icon-edit',
 				handler:function(){
-					editEntity();
+					editOrderProductEntity();
 				}
 			},'-',{
 				text:'刷新',
 				iconCls:'icon-reload',
 				handler:function(){
-					$('#dataPageList').datagrid('reload');
+					$('#dataItemPageList').datagrid('reload');
 				}
 			}
 			],
 			onDblClickRow:function(){
-				//dataItemTree();
+				
 			}
 		});
 	}
