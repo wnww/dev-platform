@@ -53,8 +53,8 @@ img{ max-width:100%; height:auto;}
 	border:#fff 1px solid;	
 	}
 .head-top dd{
-	float:right;
-	width:80%;
+	float:left;
+	width:95%;
 	padding-left:10px;
 	}
 .username{
@@ -190,7 +190,7 @@ ul.es-pager li {
     padding: 0;
     height: 16px;
     width: 16px;
-    /*background-image: url("../Images/pagericon.png");*/
+    /*background-image: url("../images/pagericon.png");*/
     background-repeat: no-repeat;
     background-position: 0 -16px;
     cursor: pointer;
@@ -203,7 +203,7 @@ ul.es-pager li.act {
 }
 
 /*pronav*/
-.pronav{padding:5px;}
+.pronav{padding:0px 5px 0px 5px;}
 .pronav li{
 	float:left;
 	width:50%;

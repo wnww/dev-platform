@@ -63,6 +63,12 @@ public class ProductsController {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Products> dataPage = new Page<Products>();
 		dataPage = productsService.getPage(filterMap, dataPage, page, rows);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Map<String, Object> mapData = new HashMap<String, Object>();
 		mapData.put("total", dataPage.getTotalCount());
 		mapData.put("rows", dataPage.getResult());

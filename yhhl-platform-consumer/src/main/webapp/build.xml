@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project default="compressJS" basedir="." name="core">
+	<!-- 源文件 路径 -->
+	<property name="code.src" value="${basedir}/front-mobile-static/" />
+	<!-- JS打包压缩后 路径 -->
+	<property name="targetDirJS" value="${basedir}/front-mobile-static/js/dist" />
+	<!-- CSS打包压缩后 路径 -->
+	<property name="targetDirCSS" value="${basedir}/front-mobile-static/css" />
+
+	<!-- !!! compiler.jar 路径 !!! -->
+	<property name="compiler.jar" location="D:\Java\Tools\compilter\compiler.jar" />
+	<!-- !!! YUI Compressor 路径 !!! -->
+	<property name="yuicompressorLibPath" location="D:\Java\Tools\yuicompressor-2.4.8" />
+	<property name="yuicompressor" value="${yuicompressorLibPath}\yuicompressor-2.4.8.jar" />
+	
+	<!--合并CSS文件开始-->
+	<path id="path.build.classpath.yuicompress">  
+	    <fileset dir="${yuicompressorLibPath}">  
+	        <include name="yuicompressor-2.4.8.jar"/>  
+	        <include name="YUIAnt.jar"/>  
+	    </fileset>  
+	</path> 
+
+	<!-- ====   target: mergeJS 拼接（合并）文件        ==== -->
+	<target name="mergeJS" depends="" description="concat code">
+		<echo message="开始合并文件" />
+		<concat destfile="${targetDirJS}/all.js" encoding="utf-8" fixlastline="on">
+			<path path="${code.src}/js/src/jquery.min.js" />
+			<path path="${code.src}/js/src/jquery.excoloSlider.js" />
+			<path path="${code.src}/js/src/jquery.spinner.js" />
+			<path path="${code.src}/js/src/bootstrap.min.js" />
+			<path path="${code.src}/js/src/style.js" />
+			<path path="${code.src}/js/src/util.js" />
+		</concat>
+		<echo message="Concat Code Files Finished!!!" />
+	</target>
+
+	<!-- ====   target: mergeCSS 拼接（合并）文件        ==== -->
+	<target name="mergeCSS" depends="" description="concat code">
+		<echo message="开始合并文件" />
+		<!-- CSS -->
+		<concat destfile="${targetDirCSS}/all.css" encoding="utf-8">
+			<path path="${code.src}/css/bootstrap.min.css" />
+			<path path="${code.src}/css/style.css" />
+			<path path="${code.src}/css/response.css" />
+		</concat>
+		<echo message="Concat Code Files Finished!!!" />
+	</target>
+
+
+
+	<!-- ==  target: compressJS 压缩 js  == -->
+	<target name="compressJS" depends="mergeJS" description="compress code">
+		<echo message="开始压缩JS" />
+		<java jar="${compiler.jar}" fork="true">
+			<arg line="--js=${targetDirJS}/all.js"/>
+			<arg line="--js_output_file=${targetDirJS}/all.min.js"/>
+		</java>
+		<!-- 删除中间文件，减少每次提交后冲突情况 -->
+		<delete file="${targetDirJS}/all.js" />
+		<echo message="编译core文件完成"/>
+	</target>
+
+	<target name="compressCSS" depends="mergeCSS" description="css压缩">	
+		<echo message="开始压缩CSS文件" />
+		<taskdef name="compress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">  
+	        <classpath refid="path.build.classpath.yuicompress"/>  
+	    </taskdef>
+		<compress linebreak="150" warn="false" munge="yes" charset="UTF-8"  
+	            preserveallsemicolons="true" outputfolder="${targetDirCSS}">  
+	        <fileset dir="${targetDirCSS}/">  
+	            <include name="all.css"/>
+	        </fileset>  
+	    </compress>  
+		<echo message="压缩CSS文件完成" /> 
+	</target>
+</project>

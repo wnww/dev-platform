@@ -17,4 +17,6 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
 			<value>1</value>
 		</constructor-arg>
 	</bean>
+	
+	<bean id="imageUtil" class="com.yhhl.common.ImageUtil" />
 </beans>

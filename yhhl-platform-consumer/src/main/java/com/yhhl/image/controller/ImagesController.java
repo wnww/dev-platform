@@ -14,6 +14,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yhhl.common.ImageUtil;
 import com.yhhl.common.ResultBean;
 
 import net.sf.json.JSONObject;
@@ -28,6 +30,9 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/imageOpt")
 public class ImagesController {
+	
+	@Autowired
+	private ImageUtil imageUtil;
 
 	/**
 	 * 进入列表页面
@@ -87,6 +92,7 @@ public class ImagesController {
 				}
 				File uploadFile = new File(filePath);
 				FileCopyUtils.copy(file.getBytes(), uploadFile);
+				imageUtil.thumbnailImage(uploadFile.getAbsolutePath(), 100, 100, "s_", false);
 				map.put("filePath", basePath + newFileName);
 				map.put("fileName", realFileName);
 				map.put("flag", "T");

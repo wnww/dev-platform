@@ -30,7 +30,7 @@ import com.yhhl.user.service.UserServiceI;
  */
 @Controller
 @RequestMapping("/front")
-public class indexController {
+public class IndexController {
 
 	@Autowired
 	private UserServiceI userService;

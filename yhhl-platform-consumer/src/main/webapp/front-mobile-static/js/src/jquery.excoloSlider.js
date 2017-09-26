@@ -108,8 +108,8 @@
                 $wrapper.after("<div class='" + base.config.prevButtonClass + "'>");
                 $next = $("." + base.config.nextButtonClass, base.$elem);
                 $prev = $("." + base.config.prevButtonClass, base.$elem);
-                $next.append("<img src='" + base.config.nextButtonImage + "'>");
-                $prev.append("<img src='" + base.config.prevButtonImage + "'>");
+                //$next.append("<img src='" + base.config.nextButtonImage + "'>");
+                //$prev.append("<img src='" + base.config.prevButtonImage + "'>");
                 $buttons = $next.add($prev);
 
                 // Toogle on hover
