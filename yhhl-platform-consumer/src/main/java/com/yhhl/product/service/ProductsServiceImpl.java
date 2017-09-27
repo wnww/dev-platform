@@ -49,12 +49,7 @@ public class ProductsServiceImpl implements ProductsServiceI {
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "modify_time desc", "create_time desc" };// 排序字段，可以是多个
-																	// 类似：{
-																	// "name
-																	// desc",
-																	// "id asc"
-																	// };
+		String order[] = { "modify_time desc", "create_time desc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -70,6 +65,11 @@ public class ProductsServiceImpl implements ProductsServiceI {
 	@Override
 	public int getCount(Map<String, Object> filterMap) {
 		return productsMapper.getCount(filterMap);
+	}
+
+	@Override
+	public List<Products> getList(Map<String, Object> filterMap) {
+		return productsMapper.getList(filterMap);
 	}
 
 	/**

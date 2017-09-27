@@ -6,7 +6,9 @@
 <link rel="shortcut icon" type="image/x-icon" href="${ctx}/favicon.ico" />
 <link href="https://cdn.insdep.com/themes/1.0.0/easyui.css" rel="stylesheet" type="text/css">
 <link href="https://cdn.insdep.com/themes/1.0.0/default_theme.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/css/insdep_theme_default.css" rel="stylesheet" type="text/css">
 <link href="https://cdn.insdep.com/themes/1.0.0/icon.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/js/jquery-validation/milk.css" type="text/css" rel="stylesheet" />
 <!-- js import -->
 <script type="text/javascript" src="https://cdn.insdep.com/jquery/jquery-1.11.3.min.js"></script>

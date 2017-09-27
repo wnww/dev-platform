@@ -19,4 +19,19 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
 	</bean>
 	
 	<bean id="imageUtil" class="com.yhhl.common.ImageUtil" />
+	<bean id="freemarkerConfiguration" class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+        <property name="location" value="classpath:freemarker.properties" />  
+    </bean>
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
+         <property name="templateLoaderPath" value="/WEB-INF/views/templates" />  
+         <property name="defaultEncoding" value="utf-8" />  
+         <property name="freemarkerSettings" ref="freemarkerConfiguration"/>  
+         <!--设置一些常用的全局变量-->  
+         <property name="freemarkerVariables">  
+             <map>  
+                 <entry key="webRoot" value="/webapp"/>    
+                 <entry key="jsRoot" value="/front-mobile-static"/>     
+             </map>  
+         </property>
+     </bean>   
 </beans>

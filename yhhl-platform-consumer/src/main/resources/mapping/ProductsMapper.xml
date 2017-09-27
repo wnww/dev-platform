@@ -18,14 +18,15 @@
 	<result column="properties" property="properties"/>
 	<result column="mark" property="mark"/>
 	<result column="type" property="type"/>
-	<result column="stock_num" property="stockNum"/>
+	<result column="stock_situation" property="stockSituation"/>
+	<result column="colors" property="colors"/>
 	<result column="create_time" property="createTime"/>
 	<result column="modify_time" property="modifyTime"/>
 </resultMap>
        
 <!-- products table all fields -->
 <sql id="Base_Column_List" >
-	 prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_num,create_time,modify_time
+	 prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,colors,create_time,modify_time
 </sql>
    
    
@@ -72,8 +73,8 @@ where 1=1
 	<if test="type != null and type != ''" >
 	    and type =  #{type}
 	</if>
-	<if test="stockNum != null and stockNum != ''" >
-	    and stock_num =  #{stockNum}
+	<if test="colors != null and colors != ''" >
+	    and colors =  #{colors}
 	</if>
 	<if test="createTime != null and createTime != ''" >
 	    and create_time =  #{createTime}
@@ -87,13 +88,13 @@ where 1=1
 
 <!-- 插入记录 -->
 <insert id="insert" parameterType="com.yhhl.product.model.Products" >
-  insert into products (prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_num,create_time,modify_time)
- values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=VARCHAR},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockNum, jdbcType=INTEGER},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT})
+  insert into products (prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,colors,create_time,modify_time)
+ values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=VARCHAR},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockSituation, jdbcType=VARCHAR},#{colors, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT})
 </insert>
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.product.model.Products" >
-  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=VARCHAR},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_num=#{stockNum, jdbcType=INTEGER},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT} where prod_id=#{prodId}
+  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=VARCHAR},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_situation=#{stockSituation, jdbcType=VARCHAR},colors=#{colors, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT} where prod_id=#{prodId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -136,8 +137,11 @@ where 1=1
 	<if test="type != null  ">
 		type=#{type, jdbcType=VARCHAR},
 	</if>
-	<if test="stockNum != null  ">
-		stock_num=#{stockNum, jdbcType=INTEGER},
+	<if test="stockSituation != null  ">
+		stock_situation=#{stockSituation, jdbcType=VARCHAR},
+	</if>
+	<if test="stockSituation != null  ">
+		colors=#{colors, jdbcType=VARCHAR},
 	</if>
 	<if test="createTime != null  ">
 		create_time=#{createTime, jdbcType=BIGINT},
@@ -164,52 +168,55 @@ where 1=1
 		select <include refid="Base_Column_List"/> from products
 		where 1=1
 		<trim  suffixOverrides="," >
-							<if test="object.prodId != null and object.prodId != ''" >
+			<if test="object.prodId != null and object.prodId != ''" >
 			    and prod_id =  #{object.prodId}
 			</if>
-							<if test="object.prodCode != null and object.prodCode != ''" >
+			<if test="object.prodCode != null and object.prodCode != ''" >
 			    and prod_code =  #{object.prodCode}
 			</if>
-							<if test="object.prodName != null and object.prodName != ''" >
+			<if test="object.prodName != null and object.prodName != ''" >
 			    and prod_name like concat(concat('%', #{object.prodName}),'%') 
 			</if>
-							<if test="object.unitPriceCost != null and object.unitPriceCost != ''" >
+			<if test="object.unitPriceCost != null and object.unitPriceCost != ''" >
 			    and unit_price_cost =  #{object.unitPriceCost}
 			</if>
-							<if test="object.unitPriceSell != null and object.unitPriceSell != ''" >
+			<if test="object.unitPriceSell != null and object.unitPriceSell != ''" >
 			    and unit_price_sell =  #{object.unitPriceSell}
 			</if>
-							<if test="object.imgUrl != null and object.imgUrl != ''" >
+			<if test="object.imgUrl != null and object.imgUrl != ''" >
 			    and img_url =  #{object.imgUrl}
 			</if>
-							<if test="object.remark != null and object.remark != ''" >
+			<if test="object.remark != null and object.remark != ''" >
 			    and remark =  #{object.remark}
 			</if>
-							<if test="object.brands != null and object.brands != ''" >
+			<if test="object.brands != null and object.brands != ''" >
 			    and brands =  #{object.brands}
 			</if>
-							<if test="object.unit != null and object.unit != ''" >
+			<if test="object.unit != null and object.unit != ''" >
 			    and unit =  #{object.unit}
 			</if>
-							<if test="object.specification != null and object.specification != ''" >
+			<if test="object.specification != null and object.specification != ''" >
 			    and specification =  #{object.specification}
 			</if>
-							<if test="object.properties != null and object.properties != ''" >
+			<if test="object.properties != null and object.properties != ''" >
 			    and properties =  #{object.properties}
 			</if>
-							<if test="object.mark != null and object.mark != ''" >
+			<if test="object.mark != null and object.mark != ''" >
 			    and mark =  #{object.mark}
 			</if>
-							<if test="object.type != null and object.type != ''" >
+			<if test="object.type != null and object.type != ''" >
 			    and type =  #{object.type}
 			</if>
-							<if test="object.stockNum != null and object.stockNum != ''" >
-			    and stock_num =  #{object.stockNum}
+			<if test="object.stockSituation != null and object.stockSituation != ''" >
+			    and stock_situation =  #{object.stockSituation}
 			</if>
-							<if test="object.createTime != null and object.createTime != ''" >
+			<if test="object.colors != null and object.colors != ''" >
+			    and colors =  #{object.colors}
+			</if>
+			<if test="object.createTime != null and object.createTime != ''" >
 			    and create_time =  #{object.createTime}
 			</if>
-							<if test="object.modifyTime != null and object.modifyTime != ''" >
+			<if test="object.modifyTime != null and object.modifyTime != ''" >
 			    and modify_time =  #{object.modifyTime}
 			</if>
 			</trim>
@@ -267,8 +274,11 @@ where 1=1
 							<if test="type != null and type != ''" >
 			    and type =  #{type}
 			</if>
-							<if test="stockNum != null and stockNum != ''" >
-			    and stock_num =  #{stockNum}
+			<if test="stockSituation != null and stockSituation != ''" >
+			    and stock_situation =  #{stockSituation}
+			</if>
+			<if test="colors != null and colors != ''" >
+			    and colors =  #{colors}
 			</if>
 							<if test="createTime != null and createTime != ''" >
 			    and create_time =  #{createTime}
@@ -278,5 +288,14 @@ where 1=1
 			</if>
 			</trim>
    	</select>
-  	
+  	<select useCache="false" id="getList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select <include refid="Base_Column_List"/> from products
+		where 1=1
+		<if test="startDate !=null and startDate !=''">
+			<![CDATA[ and modify_time >= #{startDate}  ]]>
+		</if>
+		<if test="endDate !=null and endDate !=''">
+			<![CDATA[ and modify_time <= #{endDate}  ]]>
+		</if>
+	</select>
 </mapper>   

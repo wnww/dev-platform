@@ -12,11 +12,7 @@
 		    success:function(data){
 		    	var result = jQuery.parseJSON(data);
 		    	if(result.flag==1){
-		    		$.messager.confirm('提交结果', '操作成功', function(){
-						//parent.colseAdd();// 关闭添加窗口
-		    			//parent.winReload();// 刷新列表
-		    			document.location.href="${ctx}/index.do";
-					});
+		    		document.location.href="${ctx}/index.do";
 		    	}else if(result.flag==2){
 		    		$.messager.alert('提交结果', result.msg, 'info');
 		    	}else{
@@ -27,7 +23,38 @@
 	       	    $.messager.alert('错误提示', messg.responseText, 'error');
 	       }  
 		});
-		$('#prodName').focus();
+		
+		
+		$(".QRcode").on("click",function(){
+			$(".QRcode-layout").removeClass("hide");
+
+		});
+		$(".QRcode-layout-close").on("click",function(){
+			$(".QRcode-layout").addClass("hide");
+		});
+
+		$.extend($.fn.validatebox.defaults.tipOptions, {
+			onShow: function() {
+				$(this).tooltip("tip").css({backgroundColor:"#ff7e00", border: "none",color: "#fff"});
+			}
+		})
+
+		/*布局部分*/
+		$('#theme-login-layout').layout({
+			fit:true/*布局框架全屏*/
+		});
+		
+		$('#userName').textbox({    
+			prompt:'用户名',
+			required:true,
+			missingMessage:"请输入用户名"
+		});
+		$('#password').textbox({    
+			type:"Password",
+			prompt:'密码',
+			required:true,
+			missingMessage:"请输入密码"
+		});
 	});
 	
 	function doSubmit(){
@@ -37,25 +64,30 @@
 		}
 	}
 </script>
-  </head>
+</head>
 
-  <body>
-  <div class="easyui-panel" title="" style="max-width:650px; margin-left: 200px;margin-top: 200px; padding-right:260px;">
-	<form action="${ctx}/login.do" id="inputForm" name="inputForm" method="post">
-	<input type="hidden" name="token" id="token" value="${token}"/>
-	<input type="hidden" name="id" id="id" value="${user.id}"/>
-	
-	<div style="margin-bottom:20px">
-        <label class="label-top">用户名</label>
-        <input class="easyui-textbox theme-textbox-radius" type="text" name="userName" value="${user.name }" style="width:100%;" data-options="required:true">
-    </div>
-    <div style="margin-bottom:20px">
-        <label class="label-top">密码</label>
-        <input class="easyui-textbox theme-textbox-radius" type="password" name="password" value="${user.pwd }" style="width:100%;" data-options="required:true">
-    </div>
-	<div>
-        <a href="javascript:void(0);" class="easyui-linkbutton button-default" iconCls="icon-ok" style="width:100%;height:32px" onclick="doSubmit();">提交</a>
-    </div>
-</div>
+<body class="theme-login-layout">
+	  	<div class="theme-login-header"></div>
+		<div id="theme-login-form">
+			<!--  div class="QRcode"></div>
+			<div class="QRcode-layout hide">
+				<div class="QRcode-layout-close"></div>
+				<div class="QRcode-header">
+					<span>请使用微信进行扫码登录</span>
+				</div>
+				<div class="QRcode-content"><img src="${ctx}/images/QRcode-demo.png" width="215"></div>
+			</div-->
+
+            <form id="inputForm" name="inputForm" class="theme-login-form" action="${ctx}/login.do" method="post">  
+            <dl>
+	            <dt><img src="${ctx}/images/logo.png"></dt>
+			 	<dd><input id="userName" name="userName" class="theme-login-text" style="width:100%;"/></dd>
+	            <dd><input id="password" name="password" class="theme-login-text" style="width:100%;"/></dd>
+	            <dd><a href="javascript:void(0);" class="easyui-linkbutton button-default" iconCls="icon-ok" style="width:100%;height:32px" onclick="doSubmit();">提交</a></dd>
+            </dl>
+            </form>
+        </div>
+  
+  
   </body>
 </html>

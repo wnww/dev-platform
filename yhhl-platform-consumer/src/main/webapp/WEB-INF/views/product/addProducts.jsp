@@ -123,10 +123,6 @@
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="unit" value="${products.unit }" style="width:100%;" data-options="required:true">
 	    </div>
 	    <div style="margin-bottom:20px">
-	        <label class="label-top">规格</label>
-	        <input class="easyui-textbox theme-textbox-radius" type="text" name="specification" value="${products.specification }" style="width:100%;" data-options="required:true">
-	    </div>
-	    <div style="margin-bottom:20px">
 	        <label class="label-top">参数</label>
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="properties" value="${products.properties }" style="width:100%;" data-options="required:true">
 	    </div>
@@ -137,14 +133,6 @@
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">类型</label>
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="type" value="${products.type }" style="width:100%;" data-options="required:true">
-	    </div>
-	    <div style="margin-bottom:20px">
-	        <label class="label-top">库存数量</label>
-	        <input class="easyui-textbox theme-textbox-radius" type="text" name="stockNum" value="${products.stockNum }" style="width:100%;" data-options="required:true">
-	    </div>
-	    <div style="margin-bottom:20px">
-	        <label class="label-top">备注/描述</label>
-	        <textarea class="easyui-textarea theme-textbox-radius" type="text" name="remark" style="width:100%;" rows="5" data-options="required:true">${products.remark }</textarea>
 	    </div>
 	    <div id="showImg">
 	    </div>

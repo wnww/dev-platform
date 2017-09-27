@@ -80,8 +80,9 @@ public class ImageUtil {
 				g.dispose();
 				String p = imgFile.getPath();
 				// 将图片保存在原目录并加上前缀
-				ImageIO.write(bi, suffix, new File(
-						p.substring(0, p.lastIndexOf(File.separator)) + File.separator + prevfix + imgFile.getName()));
+				File smallImg = new File(
+						p.substring(0, p.lastIndexOf(File.separator)) + File.separator + prevfix + imgFile.getName().substring(2));
+				ImageIO.write(bi, suffix, smallImg);
 				log.debug("缩略图在原路径下生成成功");
 			} catch (IOException e) {
 				log.error("generate thumbnail image failed.", e);

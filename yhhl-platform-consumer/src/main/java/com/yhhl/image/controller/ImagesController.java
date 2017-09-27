@@ -62,7 +62,7 @@ public class ImagesController {
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			// 根据前台的name名称得到上传的文件
 			List<MultipartFile> files = multipartRequest.getFiles("file");
-			String basePath = "/userfiles/file/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/";
+			String basePath = "/userfiles/imgFiles/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/";
 			// 图片放在工程下
 			String ctxPath = request.getSession().getServletContext().getRealPath(basePath);
 			ctxPath = ctxPath + "/";
@@ -82,7 +82,8 @@ public class ImagesController {
 				sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); // 时间格式化的格式
 				nowTimeStr = sDateFormat.format(new Date()); // 当前时间
 				extName = realFileName.substring(realFileName.lastIndexOf("."));
-				newFileName = nowTimeStr + rannum + extName; // 文件重命名后的名字
+				newFileName = "b_"+nowTimeStr + rannum + extName; // 文件重命名后的名字
+				String returnFileName = nowTimeStr + rannum + extName; // 文件重命名后的名字
 				filePath = ctxPath + newFileName;
 	
 				// 创建文件
@@ -92,8 +93,12 @@ public class ImagesController {
 				}
 				File uploadFile = new File(filePath);
 				FileCopyUtils.copy(file.getBytes(), uploadFile);
-				imageUtil.thumbnailImage(uploadFile.getAbsolutePath(), 100, 100, "s_", false);
-				map.put("filePath", basePath + newFileName);
+				imageUtil.thumbnailImage(uploadFile.getAbsolutePath(), 415, 415, "", false);
+				File upf = new File(filePath);
+				if(upf.exists()){
+					upf.delete();
+				}
+				map.put("filePath", basePath + returnFileName);
 				map.put("fileName", realFileName);
 				map.put("flag", "T");
 				result.add(map);

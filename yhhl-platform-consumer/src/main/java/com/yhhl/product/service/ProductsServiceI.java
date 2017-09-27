@@ -1,8 +1,9 @@
 package com.yhhl.product.service;
 
-import org.apache.log4j.Logger;
-
+import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.yhhl.core.Page;
 import com.yhhl.product.model.Products;
@@ -30,5 +31,7 @@ public interface ProductsServiceI {
 	public void updateProducts(Products products);
 	
 	public void deleteById(String id);
+	
+	List<Products> getList(Map<String,Object> filterMap);
 
 }

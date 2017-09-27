@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.dict.dao.DictsMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.dict.model.Dicts" >
+	<result column="dict_id" property="dictId"/>
+	<result column="dict_wbs_code" property="dictWbsCode"/>
+	<result column="dict_type_name" property="dictTypeName"/>
+	<result column="dict_value" property="dictValue"/>
+	<result column="remark" property="remark"/>
+</resultMap>
+       
+<!-- dicts table all fields -->
+<sql id="Base_Column_List" >
+	 dict_id,dict_wbs_code,dict_type_name,dict_value,remark
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereDictsClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="dictId != null and dictId != ''" >
+	    and dict_id =  #{dictId}
+	</if>
+	<if test="dictWbsCode != null and dictWbsCode != ''" >
+	    and dict_wbs_code =  #{dictWbsCode}
+	</if>
+	<if test="dictTypeName != null and dictTypeName != ''" >
+	    and dict_type_name =  #{dictTypeName}
+	</if>
+	<if test="dictValue != null and dictValue != ''" >
+	    and dict_value =  #{dictValue}
+	</if>
+	<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.dict.model.Dicts" >
+  insert into dicts (dict_id,dict_wbs_code,dict_type_name,dict_value,remark)
+ values(#{dictId, jdbcType=VARCHAR},#{dictWbsCode, jdbcType=VARCHAR},#{dictTypeName, jdbcType=VARCHAR},#{dictValue, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.dict.model.Dicts" >
+  update dicts set dict_id=#{dictId, jdbcType=VARCHAR},dict_wbs_code=#{dictWbsCode, jdbcType=VARCHAR},dict_type_name=#{dictTypeName, jdbcType=VARCHAR},dict_value=#{dictValue, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR} where dict_id=#{dictId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.dict.model.Dicts" >
+	update dicts set 
+	<trim  suffixOverrides="," >
+	<if test="dictWbsCode != null  ">
+		dict_wbs_code=#{dictWbsCode, jdbcType=VARCHAR},
+	</if>
+	<if test="dictTypeName != null  ">
+		dict_type_name=#{dictTypeName, jdbcType=VARCHAR},
+	</if>
+	<if test="dictValue != null  ">
+		dict_value=#{dictValue, jdbcType=VARCHAR},
+	</if>
+	<if test="remark != null  ">
+		remark=#{remark, jdbcType=VARCHAR}
+	</if>
+	</trim> where dict_id=#{dictId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from dicts where dict_id = #{dictId}
+</delete>
+ 
+<!-- 根据id查询 d -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from dicts where dict_id = #{dictId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from dicts
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.dictId != null and object.dictId != ''" >
+			    and dict_id =  #{object.dictId}
+			</if>
+							<if test="object.dictWbsCode != null and object.dictWbsCode != ''" >
+			    and dict_wbs_code =  #{object.dictWbsCode}
+			</if>
+							<if test="object.dictTypeName != null and object.dictTypeName != ''" >
+			    and dict_type_name =  #{object.dictTypeName}
+			</if>
+							<if test="object.dictValue != null and object.dictValue != ''" >
+			    and dict_value =  #{object.dictValue}
+			</if>
+							<if test="object.remark != null and object.remark != ''" >
+			    and remark =  #{object.remark}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM dicts 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="dictId != null and dictId != ''" >
+			    and dict_id =  #{dictId}
+			</if>
+							<if test="dictWbsCode != null and dictWbsCode != ''" >
+			    and dict_wbs_code =  #{dictWbsCode}
+			</if>
+							<if test="dictTypeName != null and dictTypeName != ''" >
+			    and dict_type_name =  #{dictTypeName}
+			</if>
+							<if test="dictValue != null and dictValue != ''" >
+			    and dict_value =  #{dictValue}
+			</if>
+							<if test="remark != null and remark != ''" >
+			    and remark =  #{remark}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

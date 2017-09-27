@@ -107,7 +107,7 @@
 		function editEntity(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/orders/initAddorders.do?id='+node.orderId;
+				var url = '${ctx}/orders/initAddOrders.do?id='+node.orderId;
 				$('#saveFrame').attr("title","修改"+node.prodName);
 				$('#saveFrame').attr("src",url);
 				$("#saveDiv").window({title:"修改订单-"+node.prodName,iconCls:'icon-edit',height:"550px",width:"650px",left:"50px",top:"30px"});

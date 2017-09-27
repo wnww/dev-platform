@@ -77,7 +77,7 @@ public class Page<T> implements java.io.Serializable{
 	public void setPageSize(final int pageSize) {
 		this.pageSize = pageSize;
 
-		if (pageSize < 1) {
+		if (pageSize < 0) {
 			this.pageSize = 1;
 		}
 	}

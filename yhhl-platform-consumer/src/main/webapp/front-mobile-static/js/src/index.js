@@ -18,6 +18,7 @@ function getIndexList(page,rows){
 		success: function(data){
 			var rows = data.rows;
 			//$("#prodList").empty();
+			$("#clearDiv").remove();
 			console.log("=============="+rows.length);
 			if(rows.length==0){
 				getDataFlag = false;
@@ -28,8 +29,8 @@ function getIndexList(page,rows){
 				//console.log(item.prodName);
 				var div = $('<div class="index-pro1-list">');
 				var dl = $('<dl>');
-				var dt = $('<dt><a href="proinfo.html"><img src='+changeImgUrlToSmall(ctx+item.imgUrl)+' /></a></dt>');
-				var dd1 = $('<dd class="ip-text"><a href="proinfo.html">'+item.prodName+'</a></dd>');
+				var dt = $('<dt><a href="'+ctx+'/front/prodDetail.do?prodId='+item.prodId+'"><img src='+getFirstImg(ctx+item.imgUrl)+' /></a></dt>');
+				var dd1 = $('<dd class="ip-text"><a href="'+ctx+'/front/prodDetail.do?prodId='+item.prodId+'">'+item.prodName+'</a></dd>');
 				var dd2 = $('<dd class="ip-text"><span>已售：488</span></dd>');
 				var dd3 = $('<dd class="ip-price"><strong>¥'+item.unitPriceSell+'</strong> <span>¥599</span></dd>');
 				dl.append(dt);
@@ -39,7 +40,7 @@ function getIndexList(page,rows){
 				div.append(dl);
 				$("#prodList").append(div);
 			});
-			var divClear = $('<div class="clearfix"></div>');
+			var divClear = $('<div class="clearfix" id="clearDiv"></div>');
 			$("#prodList").append(divClear);
 			$('#ajax_loading').css("display","none"); 
 		},

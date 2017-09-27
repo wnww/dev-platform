@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.stock.dao.StocksMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.stock.model.Stocks" >
+	<result column="stock_id" property="stockId"/>
+	<result column="prod_id" property="prodId"/>
+	<result column="colors_id" property="colorsId"/>
+	<result column="specification_id" property="specificationId"/>
+	<result column="remain_num" property="remainNum"/>
+	<result column="selled_num" property="selledNum"/>
+	<result column="space1" property="space1"/>
+	<result column="space2" property="space2"/>
+</resultMap>
+       
+<!-- stocks table all fields -->
+<sql id="Base_Column_List" >
+	 stock_id,prod_id,colors_id,specification_id,remain_num,selled_num,space1,space2
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereStocksClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="stockId != null and stockId != ''" >
+	    and stock_id =  #{stockId}
+	</if>
+	<if test="prodId != null and prodId != ''" >
+	    and prod_id =  #{prodId}
+	</if>
+	<if test="colorsId != null and colorsId != ''" >
+	    and colors_id =  #{colorsId}
+	</if>
+	<if test="specificationId != null and specificationId != ''" >
+	    and specification_id =  #{specificationId}
+	</if>
+	<if test="remainNum != null and remainNum != ''" >
+	    and remain_num =  #{remainNum}
+	</if>
+	<if test="selledNum != null and selledNum != ''" >
+	    and selled_num =  #{selledNum}
+	</if>
+	<if test="space1 != null and space1 != ''" >
+	    and space1 =  #{space1}
+	</if>
+	<if test="space2 != null and space2 != ''" >
+	    and space2 =  #{space2}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.stock.model.Stocks" >
+  insert into stocks (stock_id,prod_id,colors_id,specification_id,remain_num,selled_num,space1,space2)
+ values(#{stockId, jdbcType=VARCHAR},#{prodId, jdbcType=VARCHAR},#{colorsId, jdbcType=VARCHAR},#{specificationId, jdbcType=VARCHAR},#{remainNum, jdbcType=INTEGER},#{selledNum, jdbcType=INTEGER},#{space1, jdbcType=INTEGER},#{space2, jdbcType=INTEGER})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.stock.model.Stocks" >
+  update stocks set stock_id=#{stockId, jdbcType=VARCHAR},prod_id=#{prodId, jdbcType=VARCHAR},colors_id=#{colorsId, jdbcType=VARCHAR},specification_id=#{specificationId, jdbcType=VARCHAR},remain_num=#{remainNum, jdbcType=INTEGER},selled_num=#{selledNum, jdbcType=INTEGER},space1=#{space1, jdbcType=INTEGER},space2=#{space2, jdbcType=INTEGER} where stock_id=#{stockId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.stock.model.Stocks" >
+	update stocks set 
+	<trim  suffixOverrides="," >
+	<if test="prodId != null  ">
+		prod_id=#{prodId, jdbcType=VARCHAR},
+	</if>
+	<if test="colorsId != null  ">
+		colors_id=#{colorsId, jdbcType=VARCHAR},
+	</if>
+	<if test="specificationId != null  ">
+		specification_id=#{specificationId, jdbcType=VARCHAR},
+	</if>
+	<if test="remainNum != null  ">
+		remain_num=#{remainNum, jdbcType=INTEGER},
+	</if>
+	<if test="selledNum != null  ">
+		selled_num=#{selledNum, jdbcType=INTEGER},
+	</if>
+	<if test="space1 != null  ">
+		space1=#{space1, jdbcType=INTEGER},
+	</if>
+	<if test="space2 != null  ">
+		space2=#{space2, jdbcType=INTEGER}
+	</if>
+	</trim> where stock_id=#{stockId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from stocks where stock_id = #{stockId}
+</delete>
+ 
+<!-- 根据id查询 库存 -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from stocks where stock_id = #{stockId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select sk.stock_id,sk.prod_id,dcolor.dict_value as colors_id,dspeci.dict_value specification_id,sk.remain_num,sk.selled_num,sk.space1,sk.space2 
+		from stocks AS sk left join dicts AS dcolor on sk.colors_id=dcolor.dict_id 
+		left join dicts AS dspeci on sk.specification_id=dspeci.dict_id 
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.stockId != null and object.stockId != ''" >
+			    and sk.stock_id =  #{object.stockId}
+			</if>
+							<if test="object.prodId != null and object.prodId != ''" >
+			    and sk.prod_id =  #{object.prodId}
+			</if>
+							<if test="object.colorsId != null and object.colorsId != ''" >
+			    and sk.colors_id =  #{object.colorsId}
+			</if>
+							<if test="object.specificationId != null and object.specificationId != ''" >
+			    and sk.specification_id =  #{object.specificationId}
+			</if>
+							<if test="object.remainNum != null and object.remainNum != ''" >
+			    and sk.remain_num =  #{object.remainNum}
+			</if>
+							<if test="object.selledNum != null and object.selledNum != ''" >
+			    and sk.selled_num =  #{object.selledNum}
+			</if>
+							<if test="object.space1 != null and object.space1 != ''" >
+			    and sk.space1 =  #{object.space1}
+			</if>
+							<if test="object.space2 != null and object.space2 != ''" >
+			    and sk.space2 =  #{object.space2}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM stocks 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="stockId != null and stockId != ''" >
+			    and stock_id =  #{stockId}
+			</if>
+							<if test="prodId != null and prodId != ''" >
+			    and prod_id =  #{prodId}
+			</if>
+							<if test="colorsId != null and colorsId != ''" >
+			    and colors_id =  #{colorsId}
+			</if>
+							<if test="specificationId != null and specificationId != ''" >
+			    and specification_id =  #{specificationId}
+			</if>
+							<if test="remainNum != null and remainNum != ''" >
+			    and remain_num =  #{remainNum}
+			</if>
+							<if test="selledNum != null and selledNum != ''" >
+			    and selled_num =  #{selledNum}
+			</if>
+							<if test="space1 != null and space1 != ''" >
+			    and space1 =  #{space1}
+			</if>
+							<if test="space2 != null and space2 != ''" >
+			    and space2 =  #{space2}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

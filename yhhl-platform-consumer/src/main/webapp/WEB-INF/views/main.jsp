@@ -10,34 +10,60 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <%@ include file="/common/import.jsp" %>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-        <style type="text/css">
-            h3 {
-                width: 95%;
-                border: 1px solid #eee;
-                margin: 2px;
-                margin-left: 2px;
-                height: 20px;
-                font-size: 12px;
-                font-weight: normal;
-                line-height: 20px;
-                vertical-align: center;
-                text-indent: 5px;
-                cursor: pointer;
-            }
-			.icon-theme{
-				background:url('${ctx}/widgets/jquery-easyui/extend/images/theme2.png') no-repeat;
-			}
-			
-			.tree-node-selected {
-				    background: none repeat scroll 0 0 #FFFFFF;
-			}
-			.easyui-accordion .easyui-tree li{
-				line-height:30px; 
-				margin-top: 5px;
-			}
-
-        </style>
         <script type="text/javascript">
+		$(document).ready(function(){
+			/*布局部分*/
+			$('#master-layout').layout({
+				fit:true/*布局框架全屏*/
+			});
+			
+			 /*右侧菜单控制部分*/
+            var left_control_status=true;
+            var left_control_panel=$("#master-layout").layout("panel",'west');
+            $(".left-control-switch").on("click",function(){
+                if(left_control_status){
+                    left_control_panel.panel('resize',{width:70});
+                    left_control_status=false;
+                    $(".theme-left-normal").hide();
+                    $(".theme-left-minimal").show();
+                }else{
+                    left_control_panel.panel('resize',{width:200});
+                    left_control_status=true;
+                    $(".theme-left-normal").show();
+                    $(".theme-left-minimal").hide();
+                }
+                $("#master-layout").layout('resize', {width:'100%'})
+            });
+            /*右侧菜单控制结束*/
+            
+            var p = $('body').layout('panel', 'west').panel({
+                onCollapse: function(){
+                    //alert('collapse');
+                }
+            });
+            //主tab面板
+            $('#control').tabs({
+                onSelect: function(){
+                    var tab = $('#control').tabs('getSelected');
+                    //alert(tab.iframe);						
+                },
+                tools: [{
+                    iconCls: 'icon-help',
+                    handler: function(){
+                        help();
+                    }
+                }]
+            });
+            var content = '<iframe scrolling="auto" frameborder="0"  src="${ctx}/common/about.jsp" style="width:100%;height:100%;"></iframe>';
+            
+            $('#control').tabs('add', {
+                title: "用户中心",
+                content: content,
+                closable: false
+            });
+            tabCloseEven();
+			
+		});
         	//关闭进度条
 			function closes(){
 				$("#Loading").fadeOut("normal",function(){
@@ -51,44 +77,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			};
 
             var maxWindow = 10;
-            $(function(){
-                var p = $('body').layout('panel', 'west').panel({
-                    onCollapse: function(){
-                        //alert('collapse');
-                    }
-                });
-
-                //主tab面板
-                $('#main').tabs({
-                    onSelect: function(){
-                        var tab = $('#main').tabs('getSelected');
-                        //alert(tab.iframe);						
-                    },
-                    tools: [{
-                        iconCls: 'icon-help',
-                        handler: function(){
-                            help();
-                        }
-                    }]
-                });
-                var content = '<iframe scrolling="auto" frameborder="0"  src="${ctx}/common/about.jsp" style="width:100%;height:100%;"></iframe>';
-                $('#main').tabs('add', {
-                    title: "用户中心",
-                    content: content,
-                    closable: false
-                });
-                tabCloseEven();
-            });
             
             function addTab(title, url){
-                var tabslength = $('#main').tabs('tabs').length;
+                var tabslength = $('#control').tabs('tabs').length;
                 if (tabslength < maxWindow) {
-                    if ($('#main').tabs('exists', title)) {
+                    if ($('#control').tabs('exists', title)) {
                         $.messager.confirm('<span style="color:#0000FF; ">请&nbsp;确&nbsp;认？</span>', '确定要刷新标签页： <font color=red>' + title + '</font> 吗?', function(flag){
                             if (flag) {
                                 var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
-                                var tab = $('#main').tabs('getTab', title);
-                                $('#main').tabs('update', {
+                                var tab = $('#control').tabs('getTab', title);
+                                $('#control').tabs('update', {
                                     tab: tab,
                                     options: {
                                         title: title,
@@ -96,14 +94,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         closable: true
                                     }
                                 });
-                                $('#main').tabs('select', title);
+                                $('#control').tabs('select', title);
                             }
                         });
-                        //$('#main').tabs('close',title);
+                        //$('#control').tabs('close',title);
                     }
                     else {
                         var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
-                        $('#main').tabs('add', {
+                        $('#control').tabs('add', {
                             title: title,
                             content: content,
                             closable: true
@@ -119,9 +117,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 $(".tabs-inner").dblclick(function(){
                     var ti = $(this).children("tabs-title").text();
                     if (ti != '用户中心') {
-                        $('#main').tabs('close', ti);
+                        $('#control').tabs('close', ti);
                     }else{
-                    	$('#main').tabs('', ti);
+                    	$('#control').tabs('', ti);
                     }
                 });
                 
@@ -131,7 +129,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         top: e.pageY
                     });
                     var subtitle = $(this).children("span").text();
-                    $('#main').data("currtab", subtitle);
+                    $('#control').data("currtab", subtitle);
                     return false;
                 });
             }
@@ -146,15 +144,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             
             /**关闭tab标签页*/
             function closeTab(){
-                var tab = parent.$('#main').tabs('getSelected');
+                var tab = parent.$('#control').tabs('getSelected');
                 var tname = tab.panel('options').title;
-                parent.$('#main').tabs('close', tname)
+                parent.$('#control').tabs('close', tname)
             }
-        </script>
-        
-	
-	<!-- 2013年1月10日20:23:37修改 -->
-	<script type="text/javascript">
+       
 		/**有父窗口则在父窗口打开*/
 		if (self != top) {
 			top.location = self.location;
@@ -182,119 +176,239 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</script>
 
-    </head>
-    <body class="easyui-layout">
-        <div id='Loading' style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#F0F0F0;text-align:center;padding-top:10%;">
-            <div>
-            	<img alt="" src="${ctx}/images/loading.gif" width="30%" height="50%">
-            </div>
-            <div style="font-size: 18px; color: #299AE6; font-weight: bold;">
-            	页面加载中,请稍等......
-            </div>
-        </div>
-
-        <!-- 2013年1月10日20:23:05 修改 -->
-        	<!-- 添加窗口 -->
-	<div id="saveDiv" class="easyui-window" title="修改密码" style="padding:5px;width: 500px;height:250px;"
-    	iconCls="icon-search" closed="true" maximizable="false" minimizable="false" collapsible="false">
-   		<iframe frameborder="0"  id="saveFrame" height="100%" width="100%" scrolling="No" frameborder="0" ></iframe>
+</head>
+<body id="master-layout">
+   	<div id='Loading' style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#F0F0F0;text-align:center;padding-top:10%;">
+           <div>
+           	<img alt="" src="${ctx}/images/loading.gif" width="30%" height="50%">
+           </div>
+           <div style="font-size: 18px; color: #299AE6; font-weight: bold;">
+           	页面加载中,请稍等......
+           </div>
     </div>
+	    
+	<div id="master-layout">
+        <div data-options="region:'north',border:false,bodyCls:'theme-header-layout'">
+        	<div class="theme-navigate">
+                <div class="left">
+                    <a href="javascript:void(0);" class="easyui-linkbutton left-control-switch"><i class="fa fa-bars fa-lg"></i></a>
+                    <a href="javascript:void(0);" class="easyui-menubutton theme-navigate-user-button" data-options="menu:'.theme-navigate-user-panel'">${loginUser.userName }</a>
+                    <!--a href="javascript:void(0);" class="easyui-linkbutton">新建</a>
+                    <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#mm1',hasDownArrow:false">文件</a>
+                    <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#mm2',hasDownArrow:false">编辑</a>
+                    <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#mm3',hasDownArrow:false">消息<span class="badge color-default">15</span></a-->
 
-        <div id="top" data-options="region:'north',border:false,bodyCls:'master-header-layout'" border="false"
-			style="height: 40px; background: #B9B9FF; color: #000000;">
-			<span style="float: left; padding-left: 15px; color: #FFFF00; font-size:22px; line-height:40px;"> 
-				后台管理系统
-			</span>
-			<span style="float: right; padding-right: 5px; line-height: 40px;"> 
-				<!-- <a href="#" onclick="updatePwd();"><font color="#ddeeff">修改密码</font></a><font color="#ddeeff">|</font> -->
-				欢迎您：${loginUser.userName}|${loginUser.nikeName }||&nbsp;<a href="#" onclick="logout();">退出系统</a> &nbsp;
-			</span>
-		</div>
-		
-        <div data-options="region:'west',split:true,border:false" split="true" title="功能菜单" style="width:210px;padding:3px;">
-            <ul class="easyui-tree">
-            	<li>   
-	                <span>系统管理</span>
-	                <ul>   
-	                    <li><span><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></span></li>
-	                    <li><span><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></span></li>
-	                    <li><span><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></span></li>
-	                </ul>
-            	</li>
-		    </ul>
-		    <ul class="easyui-tree">
-            	<li>   
-	                <span>产品管理</span>
-	                <ul>   
-	                    <li><span><a href="javascript:void(0);" onclick="addTab('产品管理','${ctx}/products/index.do')">产品管理</a></span></li>
-	                </ul>  
-            	</li>   
-		    </ul>
-		    <ul class="easyui-tree">
-            	<li>   
-	                <span>订单管理</span>
-	                <ul>   
-	                    <li><span><a href="javascript:void(0);" onclick="addTab('订单管理','${ctx}/orders/index.do')">订单管理</a></span></li>
-	                </ul>  
-            	</li>   
-		    </ul>
-		    <ul class="easyui-tree">
-            	<li>   
-	                <span>Echarts测试</span>
-	                <ul>   
-	                    <li><span><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/charts/index.do')">Echarts测试</a></span></li>
-	                </ul>  
-            	</li>   
-		    </ul>        	
-        </div>
-        <div id="ccc" data-options="region:'center',border:false"  title="" border="false">
-            <div id="main" class="easyui-panel" data-options="fit:true,border:false" style="background:#fff;">
-            	
+                    <!--div id="mm1" class="theme-navigate-menu-panel">
+                    	<div>新建</div>
+                        <div>打开</div>
+                        <div>
+                        	<span>打开最近文件</span>
+                            <div>
+                                <div>1 index.html</div>
+                                <div>2 calendar-custom.html</div>
+                                <div>3 combo-animation.html</div>
+                                <div>4 datebox-restrict.html</div>
+                                <div>5 datetimespinner-icon.html</div>
+                                <div>6 filebox-button-align.html</div>
+                                <div>7 menubutton-alignment.html</div>
+                                <div>8 messager-interactive.html</div>
+                                <div>9 propertygrid-group-format.html</div>
+                                <div class="menu-sep"></div>
+                                <div>启动时重新打开文件</div>
+                            </div>
+                        </div>
+                        <div>关闭</div>
+                        <div>全部关闭</div>
+                        <div class="menu-sep"></div>
+                        <div data-options="disabled:true,iconCls:'icon-save'">保存</div>
+                        <div>另存为</div>
+                        <div data-options="disabled:true">保存为全部</div>
+                        <div class="menu-sep"></div>
+                        <div>
+                            <span>导入</span>
+                            <div>
+                                <div>XML 到模板</div>
+                                <div>表格式数据</div>
+                                <div data-options="disabled:true">Word 文档</div>
+                                <div data-options="disabled:true">Excel 文档</div>
+                            </div>
+                        </div>
+                        <div>
+                            <span>导出</span>
+                            <div>
+                                <div>表格</div>
+                            </div>
+                        </div>
+                        <div class="menu-sep"></div>
+                        <div>退出</div>
+                    </div-->
+                    
+                    <!-- div id="mm2" class="theme-navigate-menu-panel">
+                        <div>撤销</div>
+                        <div data-options="disabled:true">重做</div>
+                        <div class="menu-sep"></div>
+                        <div>剪切</div>
+                        <div>复制</div>
+                        <div data-options="disabled:true">粘贴</div>
+                        <div data-options="disabled:true">选择性粘贴</div>
+                        <div data-options="disabled:true">清除</div>
+                        <div class="menu-sep"></div>
+                        <div>全选</div>
+                        <div>选择父标签</div>
+                        <div>选择子标签</div>
+                        <div class="menu-sep"></div>
+                        <div>查找和替换</div>
+                        <div>查找所选</div>
+                        <div>查找下一个</div>
+                        <div class="menu-sep"></div>
+                        <div>快捷键</div>
+                        <div>首选项</div>
+                    </div-->
+                    
+                    <!--div id="mm3" class="theme-navigate-menu-panel" style="width:180px;">
+                        <div>产品消息<span class="badge color-success">5</span></div>
+                        <div>安全消息<span class="badge color-important">10</span></div>
+                        <div>服务消息</div>
+                        <div class="menu-sep"></div>
+                        <div>查看历史消息</div>
+                        <div class="menu-sep"></div>
+                        <div>清除消息提示</div>
+                    </div-->
+                    
+                    
+                    <div class="theme-navigate-user-panel">
+                       <dl>
+                       		<dd>
+                            	<img src="${loginUser.userPhoto }" width="86" height="86">
+                                <b class="badge-prompt">${loginUser.userName }<!-- i class="badge color-important">10</i--></b>
+                                <span>${loginUser.nikeName }</span>
+                            </dd>
+                            <dt>
+                            	<a class="theme-navigate-user-modify">修改资料</a>
+                                <a class="theme-navigate-user-logout" href="javascript:void(0);" onclick="logout();">注销</a>
+                            </dt>
+                       </dl>
+                    </div>
+                </div>
+                <div class="right">
+                    <a href="javascript:void(0);" class="easyui-menubutton theme-navigate-more-button" data-options="menu:'#more',hasDownArrow:false"></a>
+                    <div id="more" class="theme-navigate-more-panel">
+                    	<div>联系我们</div>
+                        <div>参与改进计划</div>
+                        <div>检测更新</div>
+                        <div>关于</div>
+                    </div>
+                </div>
             </div>
+        
         </div>
+
+        <!--开始左侧菜单-->
+        <div data-options="region:'west',border:false,bodyCls:'theme-left-layout'" style="width:200px;">
+
+
+            <!--正常菜单--> 
+            <div class="theme-left-normal">
+
+                <!--start class="easyui-layout"-->
+                <div class="easyui-layout" data-options="border:false,fit:true"> 
+
+                    <!--start region:'center'-->
+                    <div data-options="region:'center',border:false">
+
+                        <!--start easyui-accordion--> 
+                        <div class="easyui-accordion" data-options="border:false,fit:true">   
+                            <div title="系统管理">   
+                                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0);" onclick="addTab('字典管理','${ctx}/dicts/index.do')">字典管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></li>
+                                </ul>  
+                            </div>   
+                            <div title="产品管理">   
+                                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0);" onclick="addTab('产品管理','${ctx}/products/index.do')">产品管理</a></li>
+                                </ul>      
+                            </div>   
+                            <div title="订单管理">   
+                                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0);" onclick="addTab('订单管理','${ctx}/orders/index.do')">订单管理</a></li>
+                                </ul>      
+                            </div>
+                            <div title="图表测试">   
+                                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/charts/index.do')">Echarts测试</a></li>
+                                </ul>      
+                            </div>
+
+                        </div>
+                        <!--end easyui-accordion--> 
+
+                    </div>
+                    <!--end region:'center'-->
+                </div>  
+                <!--end class="easyui-layout"-->
+
+            </div>
+            <!--最小化菜单--> 
+            <div class="theme-left-minimal">
+                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                    <li><i class="fa fa-home fa-2x"></i><p>系统管理</p></li>
+                    <li><i class="fa fa-book fa-2x"></i><p>产品管理</p></li>
+                    <li><i class="fa fa-pencil fa-2x"></i><p>订单管理</p></li>
+                    <li><i class="fa fa-cog fa-2x"></i><p>图表测试</p></li>
+                    <li><a class="left-control-switch"><i class="fa fa-chevron-right fa-2x"></i><p>打开</p></a></li>
+                </ul>
+            </div>
+
+        </div>
+        <!--结束左侧菜单--> 
+
+        <div data-options="region:'center',border:false" id="control" style="padding:5px; background:#fff;">
+             
+        </div>
+    </div>
+    	
         <script type="text/javascript">
-            var bodyh = $(window).height();
-            var toph = $('#top').height();
-            var mainh = bodyh - toph;
-            $('#main').height(mainh);
             
             function tabCloseEven(){
                 //关闭当前
                 $('#mm-tabclose').click(function(){
-                    var tt = $('#main').data("currtab");
-                    $('#main').tabs('select', tt);
+                    var tt = $('#control').data("currtab");
+                    $('#control').tabs('select', tt);
                     if (tt != '用户中心') {
-                        $('#main').tabs('close', tt);
+                        $('#control').tabs('close', tt);
                     }
                 });
                 //全部关闭
                 $('#mm-tabcloseall').click(function(){
-                    var tt = $('#main').data("currtab");
-                    $('#main').tabs('select', tt);
+                    var tt = $('#control').data("currtab");
+                    $('#control').tabs('select', tt);
                     
                     $('.tabs-inner span').each(function(i, n){
                         var t = $(n).text();
                         if (t != '用户中心') {
-                            $('#main').tabs('close', t);
+                            $('#control').tabs('close', t);
                         }
                     });
                 });
                 //关闭除当前之外的TAB
                 $('#mm-tabcloseother').click(function(){
-                    var tt = $('#main').data("currtab");
-                    $('#main').tabs('select', tt);
+                    var tt = $('#control').data("currtab");
+                    $('#control').tabs('select', tt);
                     
                     $('.tabs-inner span').each(function(i, n){
                         var t = $(n).text();
                         if (t != tt && t != '用户中心') {
-                            $('#main').tabs('close', t);
+                            $('#control').tabs('close', t);
                         }
                     });
                 });
                 //关闭当前右侧的TAB
                 $('#mm-tabcloseright').click(function(){
-                    var tt = $('#main').data("currtab");
-                    $('#main').tabs('select', tt);
+                    var tt = $('#control').data("currtab");
+                    $('#control').tabs('select', tt);
                     
                     var nextall = $('.tabs-selected').nextAll();
                     if (nextall.length == 0) {
@@ -305,15 +419,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     nextall.each(function(i, n){
                         var t = $('a:eq(0) span', $(n)).text();
                         if (t != '用户中心') {
-                            $('#main').tabs('close', t);
+                            $('#control').tabs('close', t);
                         }
                     });
                     return false;
                 });
                 //关闭当前左侧的TAB
                 $('#mm-tabcloseleft').click(function(){
-                    var tt = $('#main').data("currtab");
-                    $('#main').tabs('select', tt);
+                    var tt = $('#control').data("currtab");
+                    $('#control').tabs('select', tt);
                     
                     var prevall = $('.tabs-selected').prevAll();
                     if (prevall.length <= 1) {
@@ -324,12 +438,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     prevall.each(function(i, n){
                         var t = $('a:eq(0) span', $(n)).text();
                         if (t != '用户中心') {
-                            $('#main').tabs('close', t);
+                            $('#control').tabs('close', t);
                         }
                     });
                     return false;
                 });
             }
+            
         </script>
         <div id="mm" class="easyui-menu" style="width:150px;">
             <div id="mm-tabclose">  关闭  </div>
@@ -339,6 +454,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div id="mm-tabcloseright"> 当前页右侧全部关闭  </div>
             <div id="mm-tabcloseleft"> 当前页左侧全部关闭  </div>
         </div>
-	</div>
     </body>
 </html>

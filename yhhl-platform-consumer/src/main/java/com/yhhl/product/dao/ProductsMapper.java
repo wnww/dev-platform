@@ -23,7 +23,7 @@ public interface ProductsMapper {
 	
 	List<Products> getPage(SearchPageUtil searchPageUtil) throws DataAccessException;
 
-	List<Products> findPageByParams(Map<String, Object> filterMap) throws DataAccessException;
+	List<Products> getList(Map<String, Object> filterMap) throws DataAccessException;
 
 	int deleteByPrimaryKey(String id) throws DataAccessException;
 

@@ -1,6 +1,7 @@
 package com.yhhl.product.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +16,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.yhhl.common.DateUtils;
+import com.yhhl.common.FreemarkerUtil;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
 import com.yhhl.interceptor.Token;
 import com.yhhl.product.model.Products;
 import com.yhhl.product.service.ProductsServiceI;
+
+import freemarker.template.Configuration;
  
 /**
  * 
@@ -63,12 +67,7 @@ public class ProductsController {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Products> dataPage = new Page<Products>();
 		dataPage = productsService.getPage(filterMap, dataPage, page, rows);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		Map<String, Object> mapData = new HashMap<String, Object>();
 		mapData.put("total", dataPage.getTotalCount());
 		mapData.put("rows", dataPage.getResult());
@@ -119,7 +118,59 @@ public class ProductsController {
 		products.setModifyTime(time);
 		productsService.saveProducts(products);
 		result.setFlag(ResultBean.SUCCESS);
-		result.setMsg("保存成功");;
+		result.setMsg("保存成功");
+		return result;
+	}
+	
+	/**
+	 * 进入到初始化新增、修改 详情页面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/initAddProductsDetail")
+	@Token(save = true)
+	public ModelAndView initAddProductsDetail(HttpServletRequest request) {
+		String prodId =  request.getParameter("prodId");
+		Products product = productsService.getById(prodId);
+		request.setAttribute("item", product);
+		request.setAttribute("prodId", prodId);
+		return new ModelAndView("product/addProductsDetail");
+	}
+	
+	/**
+	 * 进入到初始化新增、修改 详情页面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/initAddProductsExtend")
+	@Token(save = true)
+	public ModelAndView initAddProductsExtend(HttpServletRequest request) {
+		String prodId =  request.getParameter("prodId");
+		Products product = productsService.getById(prodId);
+		request.setAttribute("products", product);
+		return new ModelAndView("product/addProductsExtend");
+	}
+	
+	/**
+	 * 新增、修改详情
+	 * @param user
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/saveProductsDetail")
+	@Token(remove = true)
+	@ResponseBody
+	public ResultBean<String> saveProductsDetail(HttpServletRequest request) {
+		ResultBean<String> result = new ResultBean<String>();
+		String prodId = request.getParameter("prodId");
+		String remark = request.getParameter("remark");
+		long time = DateUtils.getNowDateTime();
+		Products products = productsService.getById(prodId);
+		products.setRemark(remark);
+		products.setModifyTime(time);
+		productsService.updateProducts(products);
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("保存成功");
 		return result;
 	}
 	
@@ -136,6 +187,33 @@ public class ProductsController {
 		productsService.deleteById(id);
 		result.setFlag(ResultBean.SUCCESS);
 		result.setMsg("修改成功");
+		return result;
+	}
+	
+	/**
+	 * 生成静态页面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/publishProdDetails")
+	@ResponseBody
+	public ResultBean<String> publisProductsDetail(HttpServletRequest request){
+		ResultBean<String> result = new ResultBean<String>();
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		Map<String,Object> map = new HashMap<String,Object>();
+		startDate = startDate.replaceAll("-", "")+"000000";
+		endDate = endDate.replaceAll("-", "")+"235959";
+		map.put("startDate", Long.parseLong(startDate));
+		map.put("endDate", Long.parseLong(endDate));
+		List<Products> list = productsService.getList(map);
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+		for(Products prod : list){
+			Map<String,Object> data = new HashMap<String,Object>();
+			data.put("remark", prod.getRemark());
+			FreemarkerUtil.createStaticPage(cfg, request, prod.getProdId(), data, "WEB-INF/views/templates", "prodDetail.ftl");
+			data = null;
+		}
 		return result;
 	}
 

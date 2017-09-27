@@ -24,3 +24,13 @@ function changeImgUrlToSmall(url){
 	fileName = "s_"+fileName;
 	return tempUrl+"/"+fileName;
 }
+
+function getFirstImg(imgUrl){
+	var imgUrls = "";
+	if(imgUrl.indexOf(",")>0){
+		imgUrls = imgUrl.split(",");
+		return imgUrls[0];
+	}else{
+		return imgUrl;
+	}
+}
