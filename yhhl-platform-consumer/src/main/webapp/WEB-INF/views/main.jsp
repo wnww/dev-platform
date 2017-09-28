@@ -317,16 +317,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div data-options="region:'center',border:false">
 
                         <!--start easyui-accordion--> 
-                        <div class="easyui-accordion" data-options="border:false,fit:true">   
-                            <div title="系统管理">   
-                                <ul class="easyui-datalist" data-options="border:false,fit:true">
-                                    <li><a href="javascript:void(0);" onclick="addTab('字典管理','${ctx}/dicts/index.do')">字典管理</a></li>
-                                    <li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></li>
-                                    <li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></li>
-                                    <li><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></li>
-                                </ul>  
-                            </div>   
-                            <div title="产品管理">   
+                        <div class="easyui-accordion" data-options="border:false,fit:true">
+                        	<div title="产品管理">   
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
                                     <li><a href="javascript:void(0);" onclick="addTab('产品管理','${ctx}/products/index.do')">产品管理</a></li>
                                 </ul>      
@@ -335,7 +327,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
                                     <li><a href="javascript:void(0);" onclick="addTab('订单管理','${ctx}/orders/index.do')">订单管理</a></li>
                                 </ul>      
-                            </div>
+                            </div>   
+                            <div title="系统管理"> 
+                                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0);" onclick="addTab('字典管理','${ctx}/dicts/index.do')">字典管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></li>
+                                </ul>  
+                            </div>   
                             <div title="图表测试">   
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
                                     <li><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/charts/index.do')">Echarts测试</a></li>

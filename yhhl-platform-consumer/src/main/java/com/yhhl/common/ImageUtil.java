@@ -2,18 +2,19 @@ package com.yhhl.common;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import com.yhhl.product.controller.ProductsController;
+
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.Thumbnails.Builder;
+import net.coobird.thumbnailator.geometry.Positions;
 
 public class ImageUtil {
 	private Logger log = Logger.getLogger(ProductsController.class);
@@ -44,45 +45,29 @@ public class ImageUtil {
 		File imgFile = new File(imagePath);
 		if (imgFile.exists()) {
 			try {
-				// ImageIO 支持的图片类型 : [BMP, bmp, jpg, JPG, wbmp, jpeg, png, PNG,
-				// JPEG, WBMP, GIF, gif]
-				String types = Arrays.toString(ImageIO.getReaderFormatNames());
-				String suffix = null;
-				// 获取图片后缀
-				if (imgFile.getName().indexOf(".") > -1) {
-					suffix = imgFile.getName().substring(imgFile.getName().lastIndexOf(".") + 1);
-				} // 类型和图片后缀全部小写，然后判断后缀是否合法
-				if (suffix == null || types.toLowerCase().indexOf(suffix.toLowerCase()) < 0) {
-					log.error("Sorry, the image suffix is illegal. the standard image suffix is {}." + types);
-					return;
-				}
-				log.debug("target image's size, width:{" + w + "}, height:{" + h + "}.");
-				Image img = ImageIO.read(imgFile);
+				BufferedImage image = ImageIO.read(new File(imagePath));
+				Builder<BufferedImage> builder = null;
 				if (!force) {
 					// 根据原图与要求的缩略图比例，找到最合适的缩略图比例
-					int width = img.getWidth(null);
-					int height = img.getHeight(null);
-					if ((width * 1.0) / w < (height * 1.0) / h) {
-						if (width > w) {
-							h = Integer.parseInt(new java.text.DecimalFormat("0").format(height * w / (width * 1.0)));
-							log.debug("change image's height, width:{" + w + "}, height:{" + h + "}.");
-						}
-					} else {
-						if (height > h) {
-							w = Integer.parseInt(new java.text.DecimalFormat("0").format(width * h / (height * 1.0)));
-							log.debug("change image's width, width:{" + w + "}, height:{" + h + "}.");
-						}
-					}
+					int imageWidth = image.getWidth();  
+					int imageHeitht = image.getHeight();
+					if ((float)h / w != (float)imageWidth / imageHeitht) {  
+					    if (imageWidth > imageHeitht) {  
+					        image = Thumbnails.of(imagePath).outputQuality(0.8f).height(h).asBufferedImage();  
+					    } else {  
+					        image = Thumbnails.of(imagePath).outputQuality(0.8f).width(w).asBufferedImage();  
+					    }  
+					    builder = Thumbnails.of(image).outputQuality(0.8f).sourceRegion(Positions.CENTER, w, h).size(w, h);  
+					} else {  
+					    builder = Thumbnails.of(image).outputQuality(0.8f).size(w, h);  
+					}  
 				}
-				BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-				Graphics g = bi.getGraphics();
-				g.drawImage(img, 0, 0, w, h, Color.LIGHT_GRAY, null);
-				g.dispose();
+				
 				String p = imgFile.getPath();
 				// 将图片保存在原目录并加上前缀
 				File smallImg = new File(
 						p.substring(0, p.lastIndexOf(File.separator)) + File.separator + prevfix + imgFile.getName().substring(2));
-				ImageIO.write(bi, suffix, smallImg);
+				builder.outputFormat("jpg").toFile(smallImg);
 				log.debug("缩略图在原路径下生成成功");
 			} catch (IOException e) {
 				log.error("generate thumbnail image failed.", e);

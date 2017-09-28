@@ -57,6 +57,22 @@ public class ProductsServiceImpl implements ProductsServiceI {
 		page.setResult(list);
 		return page;
 	}
+	
+	@Override
+	public Page<Products> getFrontPage(Map<String, Object> filterMap, Page<Products> page, int pageNo, int pageSize) {
+		int count = productsMapper.getCount(filterMap);
+		page.setPageNo(pageNo);
+		page.setPageSize(pageSize);
+		page.setTotalCount(count);
+		SearchPageUtil searchPageUtil = new SearchPageUtil();
+		String order[] = { "p.modify_time desc", "p.create_time desc" };
+		searchPageUtil.setOrderBys(order);
+		searchPageUtil.setPage(page);
+		searchPageUtil.setObject(filterMap);
+		List<Products> list = productsMapper.getFrontPage(searchPageUtil);
+		page.setResult(list);
+		return page;
+	}
 
 	/**
 	 *

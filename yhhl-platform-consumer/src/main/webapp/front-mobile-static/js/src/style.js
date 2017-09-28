@@ -17,7 +17,5 @@ $(function(){
 		var zhaiindex=$(this).index();
 		$(".proinfoList").eq(zhaiindex).fadeIn().siblings(".proinfoList").hide();
 		})
-		$(".guige li").click(function(){
-		 $(this).addClass("guigeCur").siblings("li").removeClass("guigeCur")
-		})
-	})
+		
+	});

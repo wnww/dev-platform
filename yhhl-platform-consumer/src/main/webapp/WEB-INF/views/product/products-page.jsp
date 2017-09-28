@@ -35,7 +35,7 @@
 			url : '${ctx }/products/getProductsDatas.do?t=' + new Date(),
 			nowrap : false,
 			striped : true,
-			collapsible : false,
+			collapsible : true, // 可折叠
 			fitColumns : true,
 			pagination : true,
 			singleSelect : true,
@@ -322,16 +322,16 @@
 					saveEntityExtend();
 				}
 			},'-',{
-				text:'删除',
-				iconCls:'icon-remove',
-				handler:function(){
-					deleteProductExtend();
-				}
-			},'-',{
 				text:'修改',
 				iconCls:'icon-edit',
 				handler:function(){
 					editProductExtend();
+				}
+			},'-',{
+				text:'删除',
+				iconCls:'icon-remove',
+				handler:function(){
+					deleteProductExtend();
 				}
 			},'-',{
 				text:'刷新',
@@ -358,13 +358,28 @@
 	}
 	
 	function saveEntityExtend() {
-		var node = getSelected();
+		var node = getSelected(); // 获取商品ID
 		if(node){
 			$('#saveFrame').html('');
-			var url = '${ctx}/products/initAddProductsExtend.do?prodId='+node.prodId;
+			var url = '${ctx}/stocks/initAddStocks.do?prodId='+node.prodId;
 			$('#saveFrame').attr("title", '');
 			$('#saveFrame').attr("src", url);
-			$("#saveDiv").window({ title : "添加产品",iconCls : 'icon-add',height : "550px",width : "650px",
+			$("#saveDiv").window({ title : "添加库存",iconCls : 'icon-add',height : "550px",width : "650px",
+				left : "50px",
+				top : "30px"
+			});
+			$('#saveDiv').window('open');
+		}
+	}
+	
+	function editProductExtend() {
+		var node = getSelectedProductsExtend(); // 获取库存ID
+		if(node){
+			$('#saveFrame').html('');
+			var url = '${ctx}/stocks/initAddStocks.do?stockId='+node.stockId;
+			$('#saveFrame').attr("title", '');
+			$('#saveFrame').attr("src", url);
+			$("#saveDiv").window({ title : "修改库存",iconCls : 'icon-add',height : "550px",width : "650px",
 				left : "50px",
 				top : "30px"
 			});
@@ -373,7 +388,7 @@
 	}
 	
 	// 刷新列表
-	function orderProductReload(){
+	function productExtendReload(){
 		$('#dataItemPageList').datagrid('reload');
 	}
 </script>

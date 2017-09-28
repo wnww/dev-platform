@@ -24,6 +24,8 @@ public interface ProductsServiceI {
 
 	Page<Products> getPage(Map<String,Object> filterMap, Page<Products> page, int pageNo, int pageSize);
 	
+	Page<Products> getFrontPage(Map<String,Object> filterMap, Page<Products> page, int pageNo, int pageSize);
+	
 	int getCount(Map<String, Object> filterMap);
 	
 	public void saveProducts(Products products);

@@ -75,6 +75,25 @@ public class ProductsController {
 	}
 	
 	/**
+	 * 前台查询产品列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getFrontProductsDatas")
+	@ResponseBody
+	public Map<String, Object> getFrontProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+			@RequestParam(value = "rows") int rows) {
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		Page<Products> dataPage = new Page<Products>();
+		dataPage = productsService.getFrontPage(filterMap, dataPage, page, rows);
+		
+		Map<String, Object> mapData = new HashMap<String, Object>();
+		mapData.put("total", dataPage.getTotalCount());
+		mapData.put("rows", dataPage.getResult());
+		return mapData;
+	}
+	
+	/**
 	 * 进入到初始化新增、修改页面
 	 * @param request
 	 * @return
@@ -214,6 +233,8 @@ public class ProductsController {
 			FreemarkerUtil.createStaticPage(cfg, request, prod.getProdId(), data, "WEB-INF/views/templates", "prodDetail.ftl");
 			data = null;
 		}
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("生成成功！");
 		return result;
 	}
 

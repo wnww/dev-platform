@@ -226,5 +226,9 @@
 			    <groupId>org.freemarker</groupId>
 			    <artifactId>freemarker</artifactId>
 			</dependency>
+			<dependency>
+			    <groupId>net.coobird</groupId>
+			    <artifactId>thumbnailator</artifactId>
+			</dependency>
 	</dependencies> 
 </project>

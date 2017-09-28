@@ -22,6 +22,8 @@ public interface ProductsMapper {
 	int getCount(Map<String, Object> filterMap) throws DataAccessException;
 	
 	List<Products> getPage(SearchPageUtil searchPageUtil) throws DataAccessException;
+	
+	List<Products> getFrontPage(SearchPageUtil searchPageUtil) throws DataAccessException;
 
 	List<Products> getList(Map<String, Object> filterMap) throws DataAccessException;
 

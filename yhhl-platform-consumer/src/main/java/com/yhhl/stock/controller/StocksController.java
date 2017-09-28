@@ -1,17 +1,14 @@
 package com.yhhl.stock.controller;
 
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,7 +52,7 @@ public class StocksController {
 	}
 	
 	/**
-	 * 查询用户 列表
+	 * 查询库存 列表
 	 * @param request
 	 * @return
 	 */
@@ -73,6 +70,21 @@ public class StocksController {
 	}
 	
 	/**
+	 * 查询库存 列表--不分页
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getStocksList")
+	@ResponseBody
+	public List<Stocks> getStocksList(HttpServletRequest request, @RequestParam(value = "page") int page,
+			@RequestParam(value = "rows") int rows) {
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		Page<Stocks> dataPage = new Page<Stocks>();
+		dataPage = stocksService.getPage(filterMap, dataPage, page, rows);
+		return dataPage.getResult();
+	}
+	
+	/**
 	 * 进入到初始化新增、修改页面
 	 * @param request
 	 * @return
@@ -80,12 +92,16 @@ public class StocksController {
 	@RequestMapping("/initAddStocks")
 	@Token(save = true)
 	public ModelAndView initAddStocks(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if(StringUtil.isNotEmpty(id)){
-			Stocks stocks = stocksService.getById(id);
+		String stockId = request.getParameter("stockId");
+		String prodId = request.getParameter("prodId");
+		if(StringUtil.isNotEmpty(stockId)){
+			Stocks stocks = stocksService.getById(stockId);
 			request.setAttribute("stocks", stocks);
+			request.setAttribute("prodId", stocks.getProdId());
+		}else{
+			request.setAttribute("prodId", prodId);
 		}
-		return new ModelAndView("stock/addStocks");
+		return new ModelAndView("product/addProductsExtend");
 	}
 	
 	/**
@@ -102,6 +118,10 @@ public class StocksController {
 		if(StringUtil.isNotEmpty(stocks.getStockId())){
 			Stocks stocksTemp = stocksService.getById(stocks.getStockId());
 			// 将页面修改的信息在这里替换
+			stocksTemp.setColorsId(stocks.getColorsId());
+			stocksTemp.setSpecificationId(stocks.getSpecificationId());
+			stocksTemp.setRemainNum(stocks.getRemainNum());
+			stocksTemp.setSelledNum(stocks.getSelledNum());
 			stocksService.updateStocks(stocksTemp);
 			result.setFlag(ResultBean.SUCCESS);
 			result.setMsg("修改成功");;

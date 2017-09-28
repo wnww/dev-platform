@@ -25,12 +25,15 @@ function changeImgUrlToSmall(url){
 	return tempUrl+"/"+fileName;
 }
 
-function getFirstImg(imgUrl){
+function getFirstImg(ctx,imgUrl){
+	if(imgUrl.length==0 || imgUrl==""){
+		return ctx+"/images/default.jpg";
+	}
 	var imgUrls = "";
 	if(imgUrl.indexOf(",")>0){
 		imgUrls = imgUrl.split(",");
-		return imgUrls[0];
+		return ctx+imgUrls[0];
 	}else{
-		return imgUrl;
+		return ctx+imgUrl;
 	}
 }
