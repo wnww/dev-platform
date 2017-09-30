@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.DateUtils;
 import com.yhhl.common.FreemarkerUtil;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.product.model.Products;
 import com.yhhl.product.service.ProductsServiceI;
@@ -35,7 +37,7 @@ import freemarker.template.Configuration;
  * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */ 
 @Controller
-@RequestMapping("/products") 
+@RequestMapping("/sysManage/products") 
 public class ProductsController {
 	
 	private final static Logger log= Logger.getLogger(ProductsController.class);
@@ -50,6 +52,7 @@ public class ProductsController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("product/products-page");
@@ -60,18 +63,19 @@ public class ProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getProductsDatas")
 	@ResponseBody
-	public Map<String, Object> getProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<Products> getProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Products> dataPage = new Page<Products>();
 		dataPage = productsService.getPage(filterMap, dataPage, page, rows);
 		
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<Products> result = new ResultBean<Products>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**
@@ -81,16 +85,16 @@ public class ProductsController {
 	 */
 	@RequestMapping("/getFrontProductsDatas")
 	@ResponseBody
-	public Map<String, Object> getFrontProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<Products> getFrontProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Products> dataPage = new Page<Products>();
 		dataPage = productsService.getFrontPage(filterMap, dataPage, page, rows);
 		
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<Products> result = new ResultBean<Products>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**

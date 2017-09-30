@@ -90,12 +90,12 @@ where 1=1
 <!-- 插入记录 -->
 <insert id="insert" parameterType="com.yhhl.product.model.Products" >
   insert into products (prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time)
- values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=VARCHAR},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockSituation, jdbcType=VARCHAR},#{sellNum, jdbcType=VARCHAR},#{colors, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT})
+ values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=BIGINT},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockSituation, jdbcType=VARCHAR},#{sellNum, jdbcType=VARCHAR},#{colors, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT})
 </insert>
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.product.model.Products" >
-  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=VARCHAR},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_situation=#{stockSituation, jdbcType=VARCHAR},sell_num=#{sellNum, jdbcType=VARCHAR},colors=#{colors, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT} where prod_id=#{prodId}
+  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=BIGINT},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_situation=#{stockSituation, jdbcType=VARCHAR},sell_num=#{sellNum, jdbcType=VARCHAR},colors=#{colors, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT} where prod_id=#{prodId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -111,8 +111,8 @@ where 1=1
 	<if test="unitPriceCost != null  ">
 		unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},
 	</if>
-	<if test="unitPriceSell != null  ">
-		unit_price_sell=#{unitPriceSell, jdbcType=VARCHAR},
+	<if test=" != null  ">
+		unit_price_sell=#{unitPriceSell, jdbcType=BIGINT},
 	</if>
 	<if test="imgUrl != null  ">
 		img_url=#{imgUrl, jdbcType=VARCHAR},

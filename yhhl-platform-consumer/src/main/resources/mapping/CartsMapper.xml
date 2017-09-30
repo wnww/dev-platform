@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.cart.dao.CartsMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.cart.model.Carts" >
+	<result column="cart_id" property="cartId"/>
+	<result column="prod_id" property="prodId"/>
+	<result column="stock_id" property="stockId"/>
+	<result column="prod_name" property="prodName"/>
+	<result column="buy_num" property="buyNum"/>
+	<result column="unit_price" property="unitPrice"/>
+	<result column="create_user_id" property="createUserId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="modify_time" property="modifyTime"/>
+	<result column="space1" property="space1"/>
+	<result column="space2" property="space2"/>
+	<result column="space3" property="space3"/>
+</resultMap>
+       
+<!-- carts table all fields -->
+<sql id="Base_Column_List" >
+	 cart_id,prod_id,stock_id,prod_name,buy_num,unit_price,create_user_id,create_time,modify_time,space1,space2,space3
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereCartsClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="cartId != null and cartId != ''" >
+	    and cart_id =  #{cartId}
+	</if>
+	<if test="prodId != null and prodId != ''" >
+	    and prod_id =  #{prodId}
+	</if>
+	<if test="stockId != null and stockId != ''" >
+	    and stock_id =  #{stockId}
+	</if>
+	<if test="prodName != null and prodName != ''" >
+	    and prod_name =  #{prodName}
+	</if>
+	<if test="buyNum != null and buyNum != ''" >
+	    and buy_num =  #{buyNum}
+	</if>
+	<if test="unitPrice != null and unitPrice != ''" >
+	    and unit_price =  #{unitPrice}
+	</if>
+	<if test="createUserId != null and createUserId != ''" >
+	    and create_user_id =  #{createUserId}
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+	<if test="modifyTime != null and modifyTime != ''" >
+	    and modify_time =  #{modifyTime}
+	</if>
+	<if test="space1 != null and space1 != ''" >
+	    and space1 =  #{space1}
+	</if>
+	<if test="space2 != null and space2 != ''" >
+	    and space2 =  #{space2}
+	</if>
+	<if test="space3 != null and space3 != ''" >
+	    and space3 =  #{space3}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.cart.model.Carts" >
+  insert into carts (cart_id,prod_id,stock_id,prod_name,buy_num,unit_price,create_user_id,create_time,modify_time,space1,space2,space3)
+ values(#{cartId, jdbcType=VARCHAR},#{prodId, jdbcType=VARCHAR},#{stockId, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{buyNum, jdbcType=INTEGER},#{unitPrice, jdbcType=INTEGER},#{createUserId, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT},#{space1, jdbcType=VARCHAR},#{space2, jdbcType=VARCHAR},#{space3, jdbcType=BIGINT})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.cart.model.Carts" >
+  update carts set cart_id=#{cartId, jdbcType=VARCHAR},prod_id=#{prodId, jdbcType=VARCHAR},stock_id=#{stockId, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},buy_num=#{buyNum, jdbcType=INTEGER},unit_price=#{unitPrice, jdbcType=INTEGER},create_user_id=#{createUserId, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT},space1=#{space1, jdbcType=VARCHAR},space2=#{space2, jdbcType=VARCHAR},space3=#{space3, jdbcType=BIGINT} where cart_id=#{cartId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.cart.model.Carts" >
+	update carts set 
+	<trim  suffixOverrides="," >
+	<if test="prodId != null  ">
+		prod_id=#{prodId, jdbcType=VARCHAR},
+	</if>
+	<if test="stockId != null  ">
+		stock_id=#{stockId, jdbcType=VARCHAR},
+	</if>
+	<if test="prodName != null  ">
+		prod_name=#{prodName, jdbcType=VARCHAR},
+	</if>
+	<if test="buyNum != null  ">
+		buy_num=#{buyNum, jdbcType=INTEGER},
+	</if>
+	<if test="unitPrice != null  ">
+		unit_price=#{unitPrice, jdbcType=INTEGER},
+	</if>
+	<if test="createUserId != null  ">
+		create_user_id=#{createUserId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime, jdbcType=BIGINT},
+	</if>
+	<if test="modifyTime != null  ">
+		modify_time=#{modifyTime, jdbcType=BIGINT},
+	</if>
+	<if test="space1 != null  ">
+		space1=#{space1, jdbcType=VARCHAR},
+	</if>
+	<if test="space2 != null  ">
+		space2=#{space2, jdbcType=VARCHAR},
+	</if>
+	<if test="space3 != null  ">
+		space3=#{space3, jdbcType=BIGINT}
+	</if>
+	</trim> where cart_id=#{cartId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from carts where cart_id = #{cartId}
+</delete>
+ 
+<!-- 根据id查询 购物车 -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from carts where cart_id = #{cartId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from carts
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.cartId != null and object.cartId != ''" >
+			    and cart_id =  #{object.cartId}
+			</if>
+							<if test="object.prodId != null and object.prodId != ''" >
+			    and prod_id =  #{object.prodId}
+			</if>
+							<if test="object.stockId != null and object.stockId != ''" >
+			    and stock_id =  #{object.stockId}
+			</if>
+							<if test="object.prodName != null and object.prodName != ''" >
+			    and prod_name =  #{object.prodName}
+			</if>
+							<if test="object.buyNum != null and object.buyNum != ''" >
+			    and buy_num =  #{object.buyNum}
+			</if>
+							<if test="object.unitPrice != null and object.unitPrice != ''" >
+			    and unit_price =  #{object.unitPrice}
+			</if>
+							<if test="object.createUserId != null and object.createUserId != ''" >
+			    and create_user_id =  #{object.createUserId}
+			</if>
+							<if test="object.createTime != null and object.createTime != ''" >
+			    and create_time =  #{object.createTime}
+			</if>
+							<if test="object.modifyTime != null and object.modifyTime != ''" >
+			    and modify_time =  #{object.modifyTime}
+			</if>
+							<if test="object.space1 != null and object.space1 != ''" >
+			    and space1 =  #{object.space1}
+			</if>
+							<if test="object.space2 != null and object.space2 != ''" >
+			    and space2 =  #{object.space2}
+			</if>
+							<if test="object.space3 != null and object.space3 != ''" >
+			    and space3 =  #{object.space3}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM carts 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="cartId != null and cartId != ''" >
+			    and cart_id =  #{cartId}
+			</if>
+							<if test="prodId != null and prodId != ''" >
+			    and prod_id =  #{prodId}
+			</if>
+							<if test="stockId != null and stockId != ''" >
+			    and stock_id =  #{stockId}
+			</if>
+							<if test="prodName != null and prodName != ''" >
+			    and prod_name =  #{prodName}
+			</if>
+							<if test="buyNum != null and buyNum != ''" >
+			    and buy_num =  #{buyNum}
+			</if>
+							<if test="unitPrice != null and unitPrice != ''" >
+			    and unit_price =  #{unitPrice}
+			</if>
+							<if test="createUserId != null and createUserId != ''" >
+			    and create_user_id =  #{createUserId}
+			</if>
+							<if test="createTime != null and createTime != ''" >
+			    and create_time =  #{createTime}
+			</if>
+							<if test="modifyTime != null and modifyTime != ''" >
+			    and modify_time =  #{modifyTime}
+			</if>
+							<if test="space1 != null and space1 != ''" >
+			    and space1 =  #{space1}
+			</if>
+							<if test="space2 != null and space2 != ''" >
+			    and space2 =  #{space2}
+			</if>
+							<if test="space3 != null and space3 != ''" >
+			    and space3 =  #{space3}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

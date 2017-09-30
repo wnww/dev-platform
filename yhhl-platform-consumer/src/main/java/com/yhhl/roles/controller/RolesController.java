@@ -1,23 +1,20 @@
 package com.yhhl.roles.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
 import com.yhhl.interceptor.Token;
@@ -33,7 +30,7 @@ import com.yhhl.roles.service.RolesServiceI;
  * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */ 
 @Controller
-@RequestMapping("/roles") 
+@RequestMapping("/sysManage/roles") 
 public class RolesController {
 	
 	private final static Logger log= Logger.getLogger(RolesController.class);
@@ -61,39 +58,39 @@ public class RolesController {
 	}
 	
 	/**
-	 * 查询用户 列表
+	 * 查询角色 列表
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping("/getRolesDatas")
 	@ResponseBody
-	public Map<String, Object> getRolesDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<Roles> getRolesDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Roles> dataPage = new Page<Roles>();
 		dataPage = rolesService.getPage(filterMap, dataPage, page, rows);
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<Roles> result = new ResultBean<Roles>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**
-	 * 查询用户 列表
+	 * 查询已经选择的角色 列表
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping("/getSelectRolesDatas")
 	@ResponseBody
-	public Map<String, Object> getSelectRolesDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<Roles> getSelectRolesDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Roles> dataPage = new Page<Roles>();
 		dataPage = rolesService.getSelectPage(filterMap, dataPage, page, rows);
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<Roles> result = new ResultBean<Roles>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**
@@ -121,22 +118,22 @@ public class RolesController {
 	@RequestMapping("/saveRoles")
 	@Token(remove = true)
 	@ResponseBody
-	public Map<String, Object> saveRoles(Roles roles, HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> saveRoles(Roles roles, HttpServletRequest request) {
+		ResultBean<String> result = new ResultBean<String>();
 		if(StringUtil.isNotEmpty(roles.getRoleId())){
 			Roles rolesTemp = rolesService.getById(roles.getRoleId());
 			// 将页面修改的信息在这里替换
 			rolesTemp.setRoleName(roles.getRoleName());
 			rolesTemp.setRemark(roles.getRemark());
 			rolesService.updateRoles(rolesTemp);
-			map.put("flag", "T");
-			map.put("msg", "修改成功");
-			return map;
+			result.setFlag(ResultBean.SUCCESS);
+			result.setMsg("修改成功");
+			return result;
 		}
 		rolesService.saveRoles(roles);
-		map.put("flag", "T");
-		map.put("msg", "保存成功");
-		return map;
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("保存成功");
+		return result;
 	}
 	
 	/**
@@ -147,12 +144,12 @@ public class RolesController {
 	*/
 	@RequestMapping("/delRoles")
 	@ResponseBody
-	public Map<String, Object> delRoles(HttpServletRequest request,String id){
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> delRoles(HttpServletRequest request,String id){
+		ResultBean<String> result = new ResultBean<String>();
 		rolesService.deleteById(id);
-		map.put("flag", "T");
-		map.put("msg", "删除成功");
-		return map;
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("修改成功");
+		return result;
 	}
 
 }

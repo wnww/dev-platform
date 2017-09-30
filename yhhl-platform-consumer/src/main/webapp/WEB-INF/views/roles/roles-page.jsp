@@ -13,7 +13,7 @@
 			$('#dataPageList').datagrid({
 				title:'',
 				iconCls:'icon-ok',
-				url:'${ctx }/roles/getRolesDatas.do?t='+new Date(),
+				url:'${ctx}/sysManage/roles/getRolesDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -63,13 +63,24 @@
 				],
 				onDblClickRow:function(){
 					//dataItemTree();
+				},
+				onLoadSuccess : function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+					}
 				}
 			});		
 		});
 		
 		function saveEntity(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/roles/initAddRoles.do';				
+			var url = '${ctx}/sysManage/roles/initAddRoles.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$("#saveDiv").window({title:"增加-角色",iconCls:"icon-add",width:"500px",height:"350px",left:"50px",top:"30px"});
@@ -80,7 +91,7 @@
 		function editEntity(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/roles/initAddRoles.do?id='+node.roleId;
+				var url = '${ctx}/sysManage/roles/initAddRoles.do?id='+node.roleId;
 				$('#saveFrame').attr("src",url);
 				$("#saveDiv").window({title:"修改-角色",iconCls:"icon-edit",width:"500px",height:"350px",left:"50px",top:"30px"});
 				$('#saveDiv').window('open');
@@ -95,14 +106,21 @@
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/roles/delRoles.do?id="+node.roleId,
+							url: "${ctx}/sysManage/roles/delRoles.do?id="+node.roleId,
 							dataType: "json",
 							success: function(data){
-	    						if(data.flag=='T'){
-									$.messager.alert('结果', '操作成功', 'info');	
-								    winReload();
-	    						}else{
-	    							$.messager.alert('结果', '操作失败 '+data.msg, 'error');	
+								if(data.flag==1){
+	    							$.messager.confirm('提交结果', '操作成功', function(){
+	    				    			winReload();// 刷新列表
+	    							});
+	    						}else if(data.flag==2){
+	    							$.messager.alert('结果', data.msg, 'info');	
+	    						}else if (data.flag == 3) {
+									$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+										document.location.href="${ctx}/sysManage/index.do";
+									});
+								}else{
+	    							$.messager.alert('结果', '操作失败，请重试', 'error');	
 	    						}
 							},
 							error:function(messg)  { 
@@ -117,7 +135,7 @@
 		function initSetAuthority(){
 			var node = getSelected();
 			if(node){
-				var url = '${ctx }/authority/showAuthorityPage.do?roleId='+node.roleId+'&t='+new Date();
+				var url = '${ctx}/sysManage/authority/showAuthorityPage.do?roleId='+node.roleId+'&t='+new Date();
 				$('#saveFrame').attr("title",'');
 				$('#saveFrame').attr("src",url);
 				$("#saveDiv").window({title:"设置权限",iconCls:"icon-add",width:"650px",height:"450px",left:"50px",top:"30px"});

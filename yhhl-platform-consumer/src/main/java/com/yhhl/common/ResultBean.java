@@ -1,5 +1,7 @@
 package com.yhhl.common;
 
+import java.util.List;
+
 /**
  * 结果返回类
  * @author goldocean
@@ -15,12 +17,20 @@ public class ResultBean<T> implements java.io.Serializable {
 	public static final int FAIL = 0;
 
 	public static final int NO_PERMISSION = 2;
+	
+	public static final int NO_LOGIN = 3;
+	
+	public static final int EXCEPTION = 4;
 
 	private String msg = "success";
 
 	private int flag = SUCCESS;
 
 	private T data;
+	
+	private List<T> rows;
+	
+	private long total;
 
 	public ResultBean() {
 		super();
@@ -59,6 +69,22 @@ public class ResultBean<T> implements java.io.Serializable {
 
 	public void setData(T data) {
 		this.data = data;
+	}
+
+	public List<T> getRows() {
+		return rows;
+	}
+
+	public void setRows(List<T> rows) {
+		this.rows = rows;
+	}
+
+	public long getTotal() {
+		return total;
+	}
+
+	public void setTotal(long total) {
+		this.total = total;
 	}
 
 	

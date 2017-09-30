@@ -21,6 +21,7 @@ import com.yhhl.core.Page;
 import com.yhhl.dict.model.Dicts;
 import com.yhhl.dict.service.DictsServiceI;
 import com.yhhl.interceptor.Token;
+import com.yhhl.product.model.Products;
  
 /**
  * 
@@ -31,7 +32,7 @@ import com.yhhl.interceptor.Token;
  * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
  */ 
 @Controller
-@RequestMapping("/dicts") 
+@RequestMapping("/sysManage/dicts") 
 public class DictsController {
 	
 	private final static Logger log= Logger.getLogger(DictsController.class);
@@ -58,15 +59,15 @@ public class DictsController {
 	 */
 	@RequestMapping("/getDictsDatas")
 	@ResponseBody
-	public Map<String, Object> getDictsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<Dicts> getDictsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Dicts> dataPage = new Page<Dicts>();
 		dataPage = dictsService.getPage(filterMap, dataPage, page, rows);
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<Dicts> result = new ResultBean<Dicts>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**

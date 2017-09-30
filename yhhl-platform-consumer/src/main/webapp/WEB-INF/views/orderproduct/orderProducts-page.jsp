@@ -14,7 +14,7 @@
 			$('#dataPageList').datagrid({
 				title:'订单列表',
 				iconCls:'icon-ok',
-				url:'${ctx }/orderproduct/getOrderProductsDatas.do?t='+new Date(),
+				url:'${ctx}/sysManage/orderproduct/getOrderProductsDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -65,12 +65,23 @@
 				],
 				onDblClickRow:function(){
 					//dataItemTree();
+				},
+				onLoadSuccess : function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+					}
 				}
 			});		
 		});
 		
 		function refresh(){
-			var url = '${ctx}/orderproduct/getOrderProductsDatas.action';
+			var url = '${ctx}/sysManage/orderproduct/getOrderProductsDatas.action';
 			$.ajax({
 				type: "post",
 				data: "",
@@ -87,7 +98,7 @@
 		
 		function saveEntity(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/orderproduct/initAddOrderProducts.do';				
+			var url = '${ctx}/sysManage/orderproduct/initAddOrderProducts.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$("#saveDiv").window({title:"修改-产品",iconCls:'icon-add',height:"550px",width:"650px",left:"50px",top:"30px"});
@@ -98,7 +109,7 @@
 		function editEntity(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/orderproduct/initAddOrderProducts.do?id='+node.prodId;
+				var url = '${ctx}/sysManage/orderproduct/initAddOrderProducts.do?id='+node.prodId;
 				$('#saveFrame').attr("title","修改"+node.prodName);
 				$('#saveFrame').attr("src",url);
 				$("#saveDiv").window({title:"修改产品-"+node.prodName,iconCls:'icon-edit',height:"550px",width:"650px",left:"50px",top:"30px"});
@@ -114,7 +125,7 @@
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/orderproduct/delOrderProducts.do?id="+node.orderId,
+							url: "${ctx}/sysManage/orderproduct/delOrderProducts.do?id="+node.orderId,
 							dataType: "json",
 							success: function(data){
 	    						if(data.flag==1){
@@ -123,7 +134,11 @@
 	    							});
 	    						}else if(data.flag==2){
 	    							$.messager.alert('结果', data.msg, 'info');	
-	    						}else{
+	    						}else if (data.flag == 3) {
+									$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+										document.location.href="${ctx}/sysManage/index.do";
+									});
+								}else{
 	    							$.messager.alert('结果', '操作失败，请重试', 'error');	
 	    						}
 							},

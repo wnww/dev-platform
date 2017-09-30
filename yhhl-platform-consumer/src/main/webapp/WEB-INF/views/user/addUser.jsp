@@ -13,16 +13,20 @@
 		$(inputForm).form({
 		    success:function(data){
 		    	var result = jQuery.parseJSON(data);
-		    	if(result.flag=='T'){
+		    	if(result.flag==1){
 		    		$.messager.confirm('提交结果', '操作成功', function(){
 						parent.colseAdd();// 关闭添加窗口
 		    			parent.winReload();// 刷新列表
 					});
-		    	}else if(result.flag=='H'){
+		    	}else if(result.flag==2){
 		    		$.messager.alert('提交结果', result.msg, 'info');
-		    	}else{
+		    	}else if (result.flag == 3) {
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				}else{
 		    		$.messager.alert('提交结果', '操作失败:'+result.msg, 'error');
-		    	}        
+		    	}          
 		    },
 		    error:function(messg)  { 
 	       	    $.messager.alert('错误提示', messg.responseText, 'error');
@@ -42,7 +46,7 @@
 <body>
 <div id="tip"> </div>
 <div class="easyui-panel" title="" style="width:100%; max-width:450px;padding:20px 150px 20px 20px;">
-	<form action="${ctx}/user/addUser.do" id="inputForm" name="inputForm" method="post">
+	<form action="${ctx}/sysManage/user/addUser.do" id="inputForm" name="inputForm" method="post">
 	<input type="hidden" name="token" id="token" value="${token}"/>
 	<input type="hidden" name="id" id="id" value="${user.id}"/>
 	

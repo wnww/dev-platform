@@ -14,7 +14,7 @@
 			$('#dataPageList').datagrid({
 				title:'模板列表',
 				iconCls:'icon-ok',
-				url:'${ctx }/authority/getAuthorityDatas.do?t='+new Date(),
+				url:'${ctx}/sysManage/authority/getAuthorityDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -58,13 +58,24 @@
 				],
 				onDblClickRow:function(){
 					//dataItemTree();
+				},
+				onLoadSuccess : function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+					}
 				}
 			});		
 		});
 		
 		function saveEntity(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/authority/initAddAuthority.do';				
+			var url = '${ctx}/sysManage/authority/initAddAuthority.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$("#saveDiv").window({title:"增加-权限资源",iconCls:"icon-add",left:"50px",top:"30px"});
@@ -76,7 +87,7 @@
 			$('#saveFrame').html('');	
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/authority/initAddAuthority.do?id='+node.authId;
+				var url = '${ctx}/sysManage/authority/initAddAuthority.do?id='+node.authId;
 				$('#saveFrame').attr("src",url);
 				$("#saveDiv").window({title:"修改-权限资源",iconCls:"icon-edit",left:"50px",top:"30px"});
 				$('#saveDiv').window('open');
@@ -91,13 +102,17 @@
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/authority/delAuthority.do?id="+node.authId,
+							url: "${ctx}/sysManage/authority/delAuthority.do?id="+node.authId,
 							dataType: "json",
 							success: function(data){
-	    						if(data.flag=='T'){
+	    						if(data.flag==1){
 									$.messager.alert('结果', '操作成功', 'info');	
 								    winReload();
-	    						}else{
+	    						}else if (data.flag == 3) {
+									$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+										document.location.href="${ctx}/sysManage/index.do";
+									});
+								}else{
 	    							$.messager.alert('结果', '操作失败 '+data.msg, 'error');	
 	    						}
 							},

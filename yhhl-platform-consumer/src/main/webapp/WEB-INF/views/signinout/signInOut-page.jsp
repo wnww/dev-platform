@@ -10,14 +10,14 @@
 <script type="text/javascript">
 
 	function addUser(){
-		window.location.href="${ctx}/signInOut/initAddSignInOut.do";
+		window.location.href="${ctx}/sysManage/signInOut/initAddSignInOut.do";
 	}
 	
 		$(function(){
 			$('#dataPageList').datagrid({
 				title:'模板列表',
 				iconCls:'icon-ok',
-				url:'${ctx }/signInOut/getSignInOutDatas.do?t='+new Date(),
+				url:'${ctx}/sysManage/signInOut/getSignInOutDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -66,7 +66,7 @@
 		
 		function saveStorageType(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/signInOut/initAddSignInOut.do';				
+			var url = '${ctx}/sysManage/signInOut/initAddSignInOut.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$('#saveDiv').window('open');
@@ -76,7 +76,7 @@
 		function editStorage(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/signInOut/initAddSignInOut.do?id='+node.signId;
+				var url = '${ctx}/sysManage/signInOut/initAddSignInOut.do?id='+node.signId;
 				$('#saveFrame').attr("title","修改"+node.signType);
 				$('#saveFrame').attr("src",url);
 				$('#saveDiv').window('open');
@@ -91,7 +91,7 @@
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/signInOut/delSignInOut.do?id="+node.signId,
+							url: "${ctx}/sysManage/signInOut/delSignInOut.do?id="+node.signId,
 							dataType: "json",
 							success: function(data){
 								var result = jQuery.parseJSON(data);

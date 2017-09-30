@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.address.dao.AddressMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.address.model.Address" >
+	<result column="addr_id" property="addrId"/>
+	<result column="create_user_id" property="createUserId"/>
+	<result column="real_name" property="realName"/>
+	<result column="province" property="province"/>
+	<result column="city" property="city"/>
+	<result column="address" property="address"/>
+	<result column="status" property="status"/>
+	<result column="default_add" property="defaultAdd"/>
+	<result column="space1" property="space1"/>
+	<result column="space2" property="space2"/>
+	<result column="space3" property="space3"/>
+</resultMap>
+       
+<!-- address table all fields -->
+<sql id="Base_Column_List" >
+	 addr_id,create_user_id,real_name,province,city,address,status,default_add,space1,space2,space3
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereAddressClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="addrId != null and addrId != ''" >
+	    and addr_id =  #{addrId}
+	</if>
+	<if test="createUserId != null and createUserId != ''" >
+	    and create_user_id =  #{createUserId}
+	</if>
+	<if test="realName != null and realName != ''" >
+	    and real_name =  #{realName}
+	</if>
+	<if test="province != null and province != ''" >
+	    and province =  #{province}
+	</if>
+	<if test="city != null and city != ''" >
+	    and city =  #{city}
+	</if>
+	<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+	<if test="status != null and status != ''" >
+	    and status =  #{status}
+	</if>
+	<if test="defaultAdd != null and defaultAdd != ''" >
+	    and default_add =  #{defaultAdd}
+	</if>
+	<if test="space1 != null and space1 != ''" >
+	    and space1 =  #{space1}
+	</if>
+	<if test="space2 != null and space2 != ''" >
+	    and space2 =  #{space2}
+	</if>
+	<if test="space3 != null and space3 != ''" >
+	    and space3 =  #{space3}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.address.model.Address" >
+  insert into address (addr_id,create_user_id,real_name,province,city,address,status,default_add,space1,space2,space3)
+ values(#{addrId, jdbcType=VARCHAR},#{createUserId, jdbcType=VARCHAR},#{realName, jdbcType=VARCHAR},#{province, jdbcType=VARCHAR},#{city, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{status, jdbcType=INTEGER},#{defaultAdd, jdbcType=INTEGER},#{space1, jdbcType=VARCHAR},#{space2, jdbcType=VARCHAR},#{space3, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.address.model.Address" >
+  update address set addr_id=#{addrId, jdbcType=VARCHAR},create_user_id=#{createUserId, jdbcType=VARCHAR},real_name=#{realName, jdbcType=VARCHAR},province=#{province, jdbcType=VARCHAR},city=#{city, jdbcType=VARCHAR},address=#{address, jdbcType=VARCHAR},status=#{status, jdbcType=INTEGER},default_add=#{defaultAdd, jdbcType=INTEGER},space1=#{space1, jdbcType=VARCHAR},space2=#{space2, jdbcType=VARCHAR},space3=#{space3, jdbcType=VARCHAR} where addr_id=#{addrId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.address.model.Address" >
+	update address set 
+	<trim  suffixOverrides="," >
+	<if test="createUserId != null  ">
+		create_user_id=#{createUserId, jdbcType=VARCHAR},
+	</if>
+	<if test="realName != null  ">
+		real_name=#{realName, jdbcType=VARCHAR},
+	</if>
+	<if test="province != null  ">
+		province=#{province, jdbcType=VARCHAR},
+	</if>
+	<if test="city != null  ">
+		city=#{city, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null  ">
+		address=#{address, jdbcType=VARCHAR},
+	</if>
+	<if test="status != null  ">
+		status=#{status, jdbcType=INTEGER},
+	</if>
+	<if test="defaultAdd != null  ">
+		default_add=#{defaultAdd, jdbcType=INTEGER},
+	</if>
+	<if test="space1 != null  ">
+		space1=#{space1, jdbcType=VARCHAR},
+	</if>
+	<if test="space2 != null  ">
+		space2=#{space2, jdbcType=VARCHAR},
+	</if>
+	<if test="space3 != null  ">
+		space3=#{space3, jdbcType=VARCHAR}
+	</if>
+	</trim> where addr_id=#{addrId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from address where addr_id = #{addrId}
+</delete>
+ 
+<!-- 根据id查询 地址 -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from address where addr_id = #{addrId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from address
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.addrId != null and object.addrId != ''" >
+			    and addr_id =  #{object.addrId}
+			</if>
+							<if test="object.createUserId != null and object.createUserId != ''" >
+			    and create_user_id =  #{object.createUserId}
+			</if>
+							<if test="object.realName != null and object.realName != ''" >
+			    and real_name =  #{object.realName}
+			</if>
+							<if test="object.province != null and object.province != ''" >
+			    and province =  #{object.province}
+			</if>
+							<if test="object.city != null and object.city != ''" >
+			    and city =  #{object.city}
+			</if>
+							<if test="object.address != null and object.address != ''" >
+			    and address =  #{object.address}
+			</if>
+							<if test="object.status != null and object.status != ''" >
+			    and status =  #{object.status}
+			</if>
+							<if test="object.defaultAdd != null and object.defaultAdd != ''" >
+			    and default_add =  #{object.defaultAdd}
+			</if>
+							<if test="object.space1 != null and object.space1 != ''" >
+			    and space1 =  #{object.space1}
+			</if>
+							<if test="object.space2 != null and object.space2 != ''" >
+			    and space2 =  #{object.space2}
+			</if>
+							<if test="object.space3 != null and object.space3 != ''" >
+			    and space3 =  #{object.space3}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM address 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="addrId != null and addrId != ''" >
+			    and addr_id =  #{addrId}
+			</if>
+							<if test="createUserId != null and createUserId != ''" >
+			    and create_user_id =  #{createUserId}
+			</if>
+							<if test="realName != null and realName != ''" >
+			    and real_name =  #{realName}
+			</if>
+							<if test="province != null and province != ''" >
+			    and province =  #{province}
+			</if>
+							<if test="city != null and city != ''" >
+			    and city =  #{city}
+			</if>
+							<if test="address != null and address != ''" >
+			    and address =  #{address}
+			</if>
+							<if test="status != null and status != ''" >
+			    and status =  #{status}
+			</if>
+							<if test="defaultAdd != null and defaultAdd != ''" >
+			    and default_add =  #{defaultAdd}
+			</if>
+							<if test="space1 != null and space1 != ''" >
+			    and space1 =  #{space1}
+			</if>
+							<if test="space2 != null and space2 != ''" >
+			    and space2 =  #{space2}
+			</if>
+							<if test="space3 != null and space3 != ''" >
+			    and space3 =  #{space3}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

@@ -14,7 +14,7 @@
 			$('#dataPageList').datagrid({
 				title:'订单列表',
 				iconCls:'icon-ok',
-				url:'${ctx }/orders/getOrdersDatas.do?t='+new Date(),
+				url:'${ctx}/sysManage/orders/getOrdersDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -74,12 +74,23 @@
 				],
 				onDblClickRow:function(){
 					//dataItemTree();
+				},
+				onLoadSuccess : function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+					}
 				}
 			});		
 		});
 		
 		function refresh(){
-			var url = '${ctx}/orders/getOrdersDatas.action';
+			var url = '${ctx}/sysManage/orders/getOrdersDatas.action';
 			$.ajax({
 				type: "post",
 				data: "",
@@ -96,7 +107,7 @@
 		
 		function saveEntity(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/orders/initAddOrders.do';				
+			var url = '${ctx}/sysManage/orders/initAddOrders.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$("#saveDiv").window({title:"新增-订单",iconCls:'icon-add',height:"550px",width:"650px",left:"50px",top:"30px"});
@@ -107,7 +118,7 @@
 		function editEntity(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/orders/initAddOrders.do?id='+node.orderId;
+				var url = '${ctx}/sysManage/orders/initAddOrders.do?id='+node.orderId;
 				$('#saveFrame').attr("title","修改"+node.prodName);
 				$('#saveFrame').attr("src",url);
 				$("#saveDiv").window({title:"修改订单-"+node.prodName,iconCls:'icon-edit',height:"550px",width:"650px",left:"50px",top:"30px"});
@@ -123,7 +134,7 @@
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/orders/delOrders.do?id="+node.orderId,
+							url: "${ctx}/sysManage/orders/delOrders.do?id="+node.orderId,
 							dataType: "json",
 							success: function(data){
 	    						if(data.flag==1){
@@ -132,7 +143,11 @@
 	    							});
 	    						}else if(data.flag==2){
 	    							$.messager.alert('结果', data.msg, 'info');	
-	    						}else{
+	    						}else if (data.flag == 3) {
+									$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+										document.location.href="${ctx}/sysManage/index.do";
+									});
+								}else{
 	    							$.messager.alert('结果', '操作失败，请重试', 'error');	
 	    						}
 							},
@@ -187,7 +202,7 @@
 		$('#dataItemPageList').datagrid({
 			title:'订单商品列表-订单号【'+orderId+'】',
 			iconCls:'icon-ok',
-			url:'${ctx }/orderProducts/getOrderProductsDatas.do?filter_orderId='+orderId+'&t='+new Date(),
+			url:'${ctx}/sysManage/orderProducts/getOrderProductsDatas.do?filter_orderId='+orderId+'&t='+new Date(),
 			nowrap: false,
 			striped: true,
 			collapsible:false,				
@@ -237,13 +252,24 @@
 			],
 			onDblClickRow:function(){
 				
+			},
+			onLoadSuccess : function(data){
+				if (data.flag == 2) {
+					$.messager.alert('结果', data.msg, 'error');
+				} else if (data.flag == 3){
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				} else if(data.flag!= 1){
+					$.messager.alert('结果', '操作失败，请重试', 'error');
+				}
 			}
 		});
 	}
 	// 增加订单商品
 	function saveOrderProduct(id){
 		$('#saveFrame').html('');			
-		var url = '${ctx}/orderProducts/initAddOrderProducts.do?orderId='+id;				
+		var url = '${ctx}/sysManage/orderProducts/initAddOrderProducts.do?orderId='+id;				
 		$('#saveFrame').attr("title",'');
 		$('#saveFrame').attr("src",url);
 		$("#saveDiv").window({title:"添加-订单商品",iconCls:'icon-add',height:"550px",width:"650px",left:"50px",top:"30px"});

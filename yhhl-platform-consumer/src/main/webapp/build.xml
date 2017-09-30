@@ -26,10 +26,8 @@
 	<target name="mergeJS" depends="" description="concat code">
 		<echo message="开始合并文件" />
 		<concat destfile="${targetDirJS}/all.js" encoding="utf-8" fixlastline="on">
-			<path path="${code.src}/js/src/jquery.min.js" />
 			<path path="${code.src}/js/src/jquery.excoloSlider.js" />
 			<path path="${code.src}/js/src/jquery.spinner.js" />
-			<path path="${code.src}/js/src/bootstrap.min.js" />
 			<path path="${code.src}/js/src/style.js" />
 			<path path="${code.src}/js/src/util.js" />
 		</concat>

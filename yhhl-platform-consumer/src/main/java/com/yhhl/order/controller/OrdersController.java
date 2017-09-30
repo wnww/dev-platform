@@ -1,17 +1,12 @@
 package com.yhhl.order.controller;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,7 +31,7 @@ import com.yhhl.order.service.OrdersServiceI;
  * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
  */ 
 @Controller
-@RequestMapping("/orders") 
+@RequestMapping("/sysManage/orders") 
 public class OrdersController {
 	
 	private final static Logger log= Logger.getLogger(OrdersController.class);
@@ -63,15 +58,15 @@ public class OrdersController {
 	 */
 	@RequestMapping("/getOrdersDatas")
 	@ResponseBody
-	public Map<String, Object> getOrdersDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<Orders> getOrdersDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Orders> dataPage = new Page<Orders>();
 		dataPage = ordersService.getPage(filterMap, dataPage, page, rows);
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<Orders> result = new ResultBean<Orders>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**
@@ -132,7 +127,7 @@ public class OrdersController {
 		ResultBean<String> result = new ResultBean<String>();
 		ordersService.deleteById(id);
 		result.setFlag(ResultBean.SUCCESS);
-		result.setMsg("修改成功");
+		result.setMsg("删除成功");
 		return result;
 	}
 

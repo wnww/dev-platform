@@ -42,7 +42,7 @@
 <body>
 <div id="tip"> </div>
 
-<form action="${ctx}/test/saveTest.do" id="inputForm" name="inputForm">
+<form action="${ctx}/sysManage/test/saveTest.do" id="inputForm" name="inputForm">
 <input type="hidden" name="token" id="token" value="${token}"/>
 <input type="hidden" name="id" id="id" value="${test.id}"/>
 <table class="datagrid-body" >

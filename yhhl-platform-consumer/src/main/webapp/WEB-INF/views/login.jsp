@@ -12,7 +12,7 @@
 		    success:function(data){
 		    	var result = jQuery.parseJSON(data);
 		    	if(result.flag==1){
-		    		document.location.href="${ctx}/index.do";
+		    		document.location.href="${ctx}/sysManage/index.do";
 		    	}else if(result.flag==2){
 		    		$.messager.alert('提交结果', result.msg, 'info');
 		    	}else{
@@ -78,7 +78,7 @@
 				<div class="QRcode-content"><img src="${ctx}/images/QRcode-demo.png" width="215"></div>
 			</div-->
 
-            <form id="inputForm" name="inputForm" class="theme-login-form" action="${ctx}/login.do" method="post">  
+            <form id="inputForm" name="inputForm" class="theme-login-form" action="${ctx}/sysManage/login.do" method="post">  
             <dl>
 	            <dt><img src="${ctx}/images/logo.png"></dt>
 			 	<dd><input id="userName" name="userName" class="theme-login-text" style="width:100%;"/></dd>

@@ -16,7 +16,7 @@
 			$('#dataPageList').datagrid({
 				title:'',
 				iconCls:'icon-ok',
-				url:'${ctx }/authority/getSelectAuthorityDatas.do?filter_roleId='+roleId+'&t='+new Date(),
+				url:'${ctx}/sysManage/authority/getSelectAuthorityDatas.do?filter_roleId='+roleId+'&t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -58,6 +58,17 @@
 				},
 				onDblClickRow:function(){
 					//dataItemTree();
+				},
+				onLoadSuccess : function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+					}
 				}
 			});		
 		});
@@ -69,16 +80,21 @@
 			}
 			$.ajax({
 				type: "post",
-				url: "${ctx}/roleAuth/saveRoleAuth.do?roleId="+roleId+"&authId="+authId,
+				url: "${ctx}/sysManage/roleAuth/saveRoleAuth.do?roleId="+roleId+"&authId="+authId,
 				dataType: "json",
 				success: function(data){
 					//var result = jQuery.parseJSON(data);
-  						if(data.flag=='T'){
-						$.messager.alert('结果', '操作成功', 'info');	
+  						if(data.flag==1){
+							$.messager.alert('结果', '操作成功', 'info');	
+  						}else if(result.flag==2){
+  				    		$.messager.alert('提交结果', result.msg, 'info');
+  				    	}else if (result.flag == 3) {
+  							$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+  								document.location.href="${ctx}/sysManage/index.do";
+  							});
   						}else{
-  							$.messager.alert('结果', '操作失败，'+data.msg, 'error');
-  							return false;
-  						}
+  				    		$.messager.alert('提交结果', '操作失败:'+result.msg, 'error');
+  				    	} 
 				},
 				error:function(messg)  { 
 		       	    $.messager.alert('错误提示', '操作失败:'+messg.responseText, 'error');
@@ -90,16 +106,21 @@
 		function deleteEntity(authId){					
 			$.ajax({
 				type: "post",
-				url: "${ctx}/roleAuth/delRoleAuth.do?authId="+authId+"&roleId="+roleId,
+				url: "${ctx}/sysManage/roleAuth/delRoleAuth.do?authId="+authId+"&roleId="+roleId,
 				dataType: "json",
 				success: function(data){
 					//var result = jQuery.parseJSON(data);
-  						if(data.flag=='T'){
+  						if(data.flag==1){
 							$.messager.alert('结果', '操作成功', 'info');	
-  						}else{
-  							$.messager.alert('结果', '操作失败,'+data.msg, 'error');	
-  							return false;
-  						}
+  						}else if(data.flag==2){
+							$.messager.alert('结果', data.msg, 'info');	
+						}else if (data.flag == 3) {
+							$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+								document.location.href="${ctx}/sysManage/index.do";
+							});
+						}else{
+							$.messager.alert('结果', '操作失败，请重试', 'error');	
+						}
 				},
 				error:function(messg)  { 
 		       	    $.messager.alert('错误提示', '操作失败:'+messg.responseText, 'error');

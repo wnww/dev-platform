@@ -1,26 +1,22 @@
 package com.yhhl.roleuser.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
-import com.yhhl.interceptor.Token;
 import com.yhhl.roleuser.model.RoleUser;
 import com.yhhl.roleuser.service.RoleUserServiceI;
  
@@ -33,7 +29,7 @@ import com.yhhl.roleuser.service.RoleUserServiceI;
  * <b>版权所有：<b>版权所有(C) 2015 瀛海科技<br>
  */ 
 @Controller
-@RequestMapping("/roleUser") 
+@RequestMapping("/sysManage/roleUser") 
 public class RoleUserController {
 	
 	private final static Logger log= Logger.getLogger(RoleUserController.class);
@@ -60,15 +56,15 @@ public class RoleUserController {
 	 */
 	@RequestMapping("/getRoleUserDatas")
 	@ResponseBody
-	public Map<String, Object> getRoleUserDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<RoleUser> getRoleUserDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<RoleUser> dataPage = new Page<RoleUser>();
 		dataPage = roleUserService.getPage(filterMap, dataPage, page, rows);
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<RoleUser> result = new ResultBean<RoleUser>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**
@@ -94,18 +90,18 @@ public class RoleUserController {
 	 */
 	@RequestMapping("/saveRoleUser")
 	@ResponseBody
-	public Map<String, Object> saveRoleUser(RoleUser roleUser, HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> saveRoleUser(RoleUser roleUser, HttpServletRequest request) {
+		ResultBean<String> result = new ResultBean<String>();
 		RoleUser ru = roleUserService.getByUserIdAndRoleId(roleUser.getUserId(),roleUser.getRoleId());
 		if(ru==null){
 			roleUserService.saveRoleUser(roleUser);
-			map.put("flag", "T");
-			map.put("msg", "保存成功");
+			result.setFlag(ResultBean.SUCCESS);
+			result.setMsg("保存成功");
 		}else{
-			map.put("flag", "F");
-			map.put("msg", "已经拥有该角色！");
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("已经拥有该角色！");
 		}
-		return map;
+		return result;
 	}
 	
 	/**

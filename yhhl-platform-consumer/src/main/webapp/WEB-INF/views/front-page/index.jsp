@@ -32,53 +32,30 @@
       <input type="text" class="seaText fl" />
       <input type="submit" value="搜索" class="seaSub fr" />
      </form><!--search/-->
-     <ul class="reg-login-click">
-      <li><a href="login.html">登录</a></li>
-      <li><a href="reg.html" class="rlbg">注册</a></li>
-      <div class="clearfix"></div>
-     </ul><!--reg-login-click/-->
-     <ul class="pronav">
+     <c:if test="${empty loginUser}">
+	     <ul class="reg-login-click">
+	      <li><a href="${ctx}/login.do">登录</a></li>
+	      <li><a href="reg.html" class="rlbg">注册</a></li>
+	      <div class="clearfix"></div>
+	     </ul><!--reg-login-click/-->
+	 </c:if>
+     <!-- ul class="pronav">
       <li><a href="prolist.html">晋恩干红</a></li>
       <li><a href="prolist.html">万能手链</a></li>
       <li><a href="prolist.html">高级手镯</a></li>
       <li><a href="prolist.html">特异戒指</a></li>
       <div class="clearfix"></div>
-     </ul><!--pronav/-->
+     </ul-->
+     <!--pronav/-->
      <div class="index-pro1" id="prodList">
 		
       	
      </div>
      <div id='ajax_loading' style='height:30px;width:100%;text-align:center;line-height:30px;font-size:12px;display:none;padding-bottom: 20px;'><img src="${frontMobileStaticCtx}/images/loading.gif" style="width:25px;"/> 数据加载中...</div>
      <!--index-pro1/-->
-     <div class="copyright" style="padding-top: 5px;">Copyright &copy; <span class="blue">瀛海Soft</span></div>
-     <div class="height1"></div>
-     <div class="footNav">
-      <dl>
-       <a href="index.html">
-        <dt><span class="glyphicon glyphicon-home"></span></dt>
-        <dd>首页</dd>
-       </a>
-      </dl>
-      <dl>
-       <a href="prolist.html">
-        <dt><span class="glyphicon glyphicon-th"></span></dt>
-        <dd>商品列表</dd>
-       </a>
-      </dl>
-      <dl>
-       <a href="car.html">
-        <dt><span class="glyphicon glyphicon-shopping-cart"></span></dt>
-        <dd>购物车 </dd>
-       </a>
-      </dl>
-      <dl>
-       <a href="user.html">
-        <dt><span class="glyphicon glyphicon-user"></span></dt>
-        <dd>我的</dd>
-       </a>
-      </dl>
-      <div class="clearfix"></div>
-     </div><!--footNav/-->
+     <!-- footNav -->
+     <%@ include file="/common/mobilefooter.jsp" %>
+     <!--footNav/-->
     </div><!--maincont-->
     <script>
 		$(function () {

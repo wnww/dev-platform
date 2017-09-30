@@ -61,4 +61,10 @@ public class Constants {
 			return this.status+" : "+this.value;
 		}
 	}
+	
+	public final static String TRUE = "1";
+	public final static String FALSE = "0";
+	
+	public final static String FRONT = "front";
+	public final static String BACK = "back";
 }

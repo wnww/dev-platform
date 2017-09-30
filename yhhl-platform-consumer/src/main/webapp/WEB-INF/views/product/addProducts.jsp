@@ -22,7 +22,11 @@
 					});
 		    	}else if(result.flag==2){
 		    		$.messager.alert('提交结果', result.msg, 'info');
-		    	}else{
+		    	}else if (result.flag == 3) {
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				}else{
 		    		$.messager.alert('提交结果', '操作失败:'+result.msg, 'error');
 		    	}        
 		    },
@@ -59,8 +63,12 @@
 	        		}
 	        		//$("#imgUrl1").val(picUrl);
 	        		document.getElementById("imgUrl1").value=picUrl;
+	        	}else if(resultData.flag==3){
+	        		$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
 	        	}else{
-	        		alert(resultData.code);
+	        		$.messager.alert('结果', '操作失败，请重试', 'error');
 	        	}
 	            //uploadTools.uploadError(opt);//显示上传错误
 	        },
@@ -88,7 +96,10 @@
 			var inputValue = (Number($("#unitPriceCostTemp").val())*100).toFixed(0);
     		inputValue = parseInt(inputValue);
     		$("#unitPriceCost").val(inputValue);
-			$(inputForm).submit();
+			var unitPriceSellTemp = (Number($("#unitPriceSellTemp").val())*100).toFixed(0);
+			unitPriceSellTemp = parseInt(unitPriceSellTemp);
+			$("#unitPriceSell").val(unitPriceSellTemp);
+    		$(inputForm).submit();
 		}
 	}
 	
@@ -97,7 +108,7 @@
 </head>
 <body>
 <div class="easyui-panel" title="产品信息维护" style="width:100%; height:480px; max-width:630px;padding:20px 150px 20px 20px;">
-	<form action="${ctx}/products/saveProducts.do" id="inputForm" name="inputForm" method="post">
+	<form action="${ctx}/sysManage/products/saveProducts.do" id="inputForm" name="inputForm" method="post">
 		<input type="hidden" name="token" id="token" value="${token}"/>
 		<input type="hidden" name="prodId" id="prodId" value="${products.prodId}"/>
 		
@@ -112,7 +123,8 @@
 	    </div>
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">销售单价</label>
-	        <input class="easyui-textbox theme-textbox-radius" type="text" name="unitPriceSell" value="${products.unitPriceSell }" style="width:100%;" data-options="required:true">
+	        <input class="easyui-textbox theme-textbox-radius" type="text" id="unitPriceSellTemp" name="unitPriceSellTemp" value="<fmt:formatNumber value="${products.unitPriceSell/100}" type="currency" pattern="0.00"/>" style="width:100%;" data-options="required:true">
+	        <input type="hidden" name="unitPriceSell" id="unitPriceSell"/>
 	    </div>
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">品牌</label>

@@ -18,7 +18,11 @@
 					});
 		    	}else if(result.flag==2){
 		    		$.messager.alert('提交结果', result.msg, 'info');
-		    	}else{
+		    	}else if (result.flag == 3) {
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				}else{
 		    		$.messager.alert('提交结果', '操作失败:'+result.msg, 'error');
 		    	}        
 		    },
@@ -29,14 +33,14 @@
 		
 		// 获取规格选项列表并回显
 		$('#specificationId').combobox({
-		    url:'${ctx}/dicts/getDictsList.do?page=1&rows=0&filter_dictTypeName=规格',
+		    url:'${ctx}/sysManage/dicts/getDictsList.do?page=1&rows=0&filter_dictTypeName=规格',
 		    valueField:'dictId',
 		    textField:'dictValue'
 		});
 		
 		// 获取规格选项列表并回显
 		$('#colorsId').combobox({
-		    url:'${ctx}/dicts/getDictsList.do?page=1&rows=0&filter_dictTypeName=颜色',
+		    url:'${ctx}/sysManage/dicts/getDictsList.do?page=1&rows=0&filter_dictTypeName=颜色',
 		    valueField:'dictId',
 		    textField:'dictValue'
 		});
@@ -54,7 +58,7 @@
 </head>
 <body>	
 <div id="tip" style="height:100%"> 
-		<form id="inputForm" name="inputForm" method="post" action="${ctx}/stocks/saveStocks.do">
+		<form id="inputForm" name="inputForm" method="post" action="${ctx}/sysManage/stocks/saveStocks.do">
 			<input type="hidden" name="token" id="token" value="${token}"/>
 			<input type="hidden" name="stockId" id="stockId" value="${stocks.stockId}"/>
 			<div style="margin-bottom:20px">

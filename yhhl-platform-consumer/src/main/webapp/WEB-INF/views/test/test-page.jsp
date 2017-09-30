@@ -13,7 +13,7 @@
 			$('#dataPageList').datagrid({
 				title:'模板列表',
 				iconCls:'icon-ok',
-				url:'${ctx }/test/getTestDatas.do?t='+new Date(),
+				url:'${ctx}/sysManage/test/getTestDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -61,7 +61,7 @@
 		});
 		
 		function refresh(){
-			var url = '${ctx}/test/refresh.action';
+			var url = '${ctx}/sysManage/test/refresh.action';
 			$.ajax({
 				type: "post",
 				data: "",
@@ -78,7 +78,7 @@
 		
 		function saveStorageType(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/test/initAddTest.do';				
+			var url = '${ctx}/sysManage/test/initAddTest.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$('#saveDiv').window('open');
@@ -88,7 +88,7 @@
 		function editStorage(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/test/initAddTest.do?id='+node.id;
+				var url = '${ctx}/sysManage/test/initAddTest.do?id='+node.id;
 				$('#saveFrame').attr("title","修改"+node.name);
 				$('#saveFrame').attr("src",url);
 				$('#saveDiv').window('open');
@@ -103,7 +103,7 @@
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/test/delTest.do?id="+node.id,
+							url: "${ctx}/sysManage/test/delTest.do?id="+node.id,
 							dataType: "json",
 							success: function(data){
 								var result = jQuery.parseJSON(data);

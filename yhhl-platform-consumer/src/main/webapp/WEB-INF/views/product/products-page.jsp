@@ -13,7 +13,7 @@
 	src="${ctx}/js/WdatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	function addEntity() {
-		var url = "${ctx}/products/initAddProducts.do" + '?t=' + new Date();
+		var url = "${ctx}/sysManage/products/initAddProducts.do" + '?t=' + new Date();
 		$('#saveFrame').attr("title", '');
 		$('#saveFrame').attr("src", url);
 		$("#saveDiv").window({
@@ -32,7 +32,7 @@
 		$('#dataPageList').datagrid({
 			title : '产品列表',
 			iconCls : 'icon-ok',
-			url : '${ctx }/products/getProductsDatas.do?t=' + new Date(),
+			url : '${ctx}/sysManage/products/getProductsDatas.do?t=' + new Date(),
 			nowrap : false,
 			striped : true,
 			collapsible : true, // 可折叠
@@ -43,54 +43,25 @@
 			remoteSort : false,
 			pageList : [ 3, 5, 10, 50 ],
 			idField : 'prodId',
-			columns : [ [ {
-				field : 'prodName',
-				title : '商品名称',
-				width : 100,
-				sortable : true
-			}, {
-				field : 'unitPriceCost',
-				title : '进货单价',
-				width : 65,
-				formatter : function(value) {
-					return moneyFormatterNoY(value / 100);
-				}
-			},{
-				field : 'unitPriceSell',
-				title : '销售单价',
-				width : 65
-			}, {
-				field : 'brands',
-				title : '品牌',
-				width : 100
-			}, {
-				field : 'unit',
-				title : '单位',
-				width : 50
-			}, {
-				field : 'properties',
-				title : '参数',
-				width : 100
-			}, {
-				field : 'mark',
-				title : '标签',
-				width : 100
-			}, {
-				field : 'type',
-				title : '类型',
-				width : 65
-			}, {
-				field : 'createTime',
-				title : '添加时间',
-				width : 100,
-				sortable : true
-			}, {
-				field : 'modifyTime',
-				title : '修改时间',
-				width : 100,
-				sortable : true
-			}, {
-				field:'button',title:'操作',width:100,align:'center',
+			columns : [ [ {	field : 'prodName',	title : '商品名称',width : 100, sortable : true}, 
+				{field : 'unitPriceCost',title : '进货单价',width : 65,
+					formatter : function(value) {
+						return moneyFormatterNoY(value / 100);
+					}
+				},
+				{field : 'unitPriceSell',title : '销售单价',width : 65,
+					formatter : function(value) {
+						return moneyFormatterNoY(value / 100);
+					}
+				}, 
+				{field : 'brands',title : '品牌',width : 100}, 
+				{field : 'unit',title : '单位',	width : 50}, 
+				{field : 'properties',title : '参数',width : 100}, 
+				{field : 'mark',title : '标签',width : 100}, 
+				{field : 'type',title : '类型',width : 65}, 
+				{field : 'createTime',title : '添加时间',	width : 100,sortable : true}, 
+				{field : 'modifyTime',title : '修改时间',	width : 100,sortable : true}, 
+				{field:'button',title:'操作',width:100,align:'center',
 					formatter:function(value,rec){
 						var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="showProdStockData(\''+rec.prodId+'\',\''+rec.prodName+'\')" href="javascript:void(0)">';
 						btn += '<span class="l-btn-left">';
@@ -99,46 +70,43 @@
 						btn += '</a>';
 						return btn;
 					}
-			} ] ],
+				} ] ],
 			toolbar : [ {
-				text : '增加',
-				iconCls : 'icon-add',
-				handler : function() {
+				text : '增加',iconCls : 'icon-add',handler : function() {
 					saveEntity();
 				}
-			}, '-', {
-				text : '增加产品详情',
-				iconCls : 'icon-add',
-				handler : function() {
+			}, '-', {text : '增加产品详情',iconCls : 'icon-add',handler : function() {
 					saveEntityDetail();
 				}
-			}, '-', {
-				text : '删除',
-				iconCls : 'icon-remove',
-				handler : function() {
+			}, '-', {text : '删除',iconCls : 'icon-remove',handler : function() {
 					deleteEntity();
 				}
-			}, '-', {
-				text : '修改',
-				iconCls : 'icon-edit',
-				handler : function() {
+			}, '-', {text : '修改',iconCls : 'icon-edit',handler : function() {
 					editEntity();
 				}
-			}, '-', {
-				text : '刷新',
-				iconCls : 'icon-reload',
-				handler : function() {
+			}, '-', {text : '刷新',iconCls : 'icon-reload',handler : function() {
 					$('#dataPageList').datagrid('reload');
 				}
 			} ],
 			onDblClickRow : function() {
 				//dataItemTree();
+			},
+			onLoadSuccess : function(data){
+				if (data.flag == 2) {
+					$.messager.alert('结果', data.msg, 'error');
+				} else if (data.flag == 3){
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				} else if(data.flag!= 1){
+					$.messager.alert('结果', '操作失败，请重试', 'error');
+				}
 			}
 		});
 	});
 
 	function refresh() {
-		var url = '${ctx}/products/getProductsDatas.action';
+		var url = '${ctx}/sysManage/products/getProductsDatas.action';
 		$.ajax({
 			type : "post",
 			data : "",
@@ -155,7 +123,7 @@
 
 	function saveEntity() {
 		$('#saveFrame').html('');
-		var url = '${ctx}/products/initAddProducts.do';
+		var url = '${ctx}/sysManage/products/initAddProducts.do';
 		$('#saveFrame').attr("title", '');
 		$('#saveFrame').attr("src", url);
 		$("#saveDiv").window({
@@ -164,7 +132,10 @@
 			height : "550px",
 			width : "650px",
 			left : "50px",
-			top : "30px"
+			top : "30px",
+			onBeforeClose:function(){ 
+		           //alert(111);
+		    }
 		});
 		$('#saveDiv').window('open');
 	}
@@ -172,7 +143,7 @@
 	function saveEntityDetail() {
 		var node = getSelected();
 		if (node) {
-			var url = '${ctx}/products/initAddProductsDetail.do?prodId='
+			var url = '${ctx}/sysManage/products/initAddProductsDetail.do?prodId='
 					+ node.prodId;
 			parent.addTab("添加产品详情-" + node.prodName, url);
 		}
@@ -182,7 +153,7 @@
 	function editEntity() {
 		var node = getSelected();
 		if (node) {
-			var url = '${ctx}/products/initAddProducts.do?id=' + node.prodId;
+			var url = '${ctx}/sysManage/products/initAddProducts.do?id=' + node.prodId;
 			$('#saveFrame').attr("title", "修改" + node.prodName);
 			$('#saveFrame').attr("src", url);
 			$("#saveDiv").window({
@@ -206,7 +177,7 @@
 				if (r) {
 					$.ajax({
 						type : "post",
-						url : "${ctx}/products/delProducts.do?id="
+						url : "${ctx}/sysManage/products/delProducts.do?id="
 								+ node.prodId,
 						dataType : "json",
 						success : function(data) {
@@ -216,6 +187,10 @@
 								});
 							} else if (data.flag == 2) {
 								$.messager.alert('结果', data.msg, 'info');
+							} else if (data.flag == 3) {
+								$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+									document.location.href="${ctx}/sysManage/index.do";
+								});
 							} else {
 								$.messager.alert('结果', '操作失败，请重试', 'error');
 							}
@@ -258,7 +233,7 @@
 			pageNumber : 1
 		});
 		//查询条件放到queryParams中：格式filter_params       
-		queryParams.filter_name = $('#filter_name').val();
+		queryParams.filter_prodName = $('#filter_prodName').val();
 		$('#dataPageList').datagrid("reload");
 	}
 
@@ -274,14 +249,18 @@
 		var endDate = $("#endDate").val();
 		$.ajax({
 			type : "post",
-			url : "${ctx}/products/publishProdDetails.do?startDate="+startDate+"&endDate="+endDate,
+			url : "${ctx}/sysManage/products/publishProdDetails.do?startDate="+startDate+"&endDate="+endDate,
 			dataType : "json",
 			success : function(data) {
 				if (data.flag == 1) {
 					$.messager.alert('结果', data.msg, 'info');
 				} else if (data.flag == 2) {
 					$.messager.alert('结果', data.msg, 'error');
-				} else {
+				} else if(data.flag == 3){
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				}else {
 					$.messager.alert('结果', '操作失败，请重试', 'error');
 				}
 			},
@@ -297,7 +276,7 @@
 		$('#dataItemPageList').datagrid({
 			title:'库存列表-商品ID【'+prodName+'】',
 			iconCls:'icon-ok',
-			url:'${ctx }/stocks/getStocksDatas.do?filter_prodId='+prodId+'&t='+new Date(),
+			url:'${ctx}/sysManage/stocks/getStocksDatas.do?filter_prodId='+prodId+'&t='+new Date(),
 			nowrap: false,
 			striped: true,
 			collapsible:false,				
@@ -343,6 +322,17 @@
 			],
 			onDblClickRow:function(){
 				
+			},
+			onLoadSuccess : function(data){
+				if (data.flag == 2) {
+					$.messager.alert('结果', data.msg, 'error');
+				} else if (data.flag == 3){
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				} else if(data.flag!= 1){
+					$.messager.alert('结果', '操作失败，请重试', 'error');
+				}
 			}
 		});
 	}
@@ -361,7 +351,7 @@
 		var node = getSelected(); // 获取商品ID
 		if(node){
 			$('#saveFrame').html('');
-			var url = '${ctx}/stocks/initAddStocks.do?prodId='+node.prodId;
+			var url = '${ctx}/sysManage/stocks/initAddStocks.do?prodId='+node.prodId;
 			$('#saveFrame').attr("title", '');
 			$('#saveFrame').attr("src", url);
 			$("#saveDiv").window({ title : "添加库存",iconCls : 'icon-add',height : "550px",width : "650px",
@@ -376,7 +366,7 @@
 		var node = getSelectedProductsExtend(); // 获取库存ID
 		if(node){
 			$('#saveFrame').html('');
-			var url = '${ctx}/stocks/initAddStocks.do?stockId='+node.stockId;
+			var url = '${ctx}/sysManage/stocks/initAddStocks.do?stockId='+node.stockId;
 			$('#saveFrame').attr("title", '');
 			$('#saveFrame').attr("src", url);
 			$("#saveDiv").window({ title : "修改库存",iconCls : 'icon-add',height : "550px",width : "650px",

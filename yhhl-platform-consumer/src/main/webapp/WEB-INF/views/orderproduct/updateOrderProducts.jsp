@@ -41,6 +41,10 @@
 					});
 				} else if (result.flag == 2) {
 					$.messager.alert('提交结果', result.msg, 'info');
+				} else if (result.flag == 3) {
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
 				} else {
 					$.messager.alert('提交结果', '操作失败:' + result.msg, 'error');
 				}
@@ -92,7 +96,7 @@
 			//ajax服务端通信 
 			$.ajax({
 				type : "post",
-				url : "${ctx}/products/getProductsDatas.do?t=" + new Date(),
+				url : "${ctx}/sysManage/products/getProductsDatas.do?t=" + new Date(),
 				data : "page=1&rows=10&filter_prodName="
 						+ $("#_easyui_textbox_input1").val(),
 				dataType : "json",
@@ -225,7 +229,7 @@
 <body>
 	<div class="easyui-panel" title="添加订单商品"
 		style="width: 100%; height: 480px; max-width: 630px; padding: 20px 150px 20px 20px;">
-		<form action="${ctx}/orderProducts/saveOrderProducts.do" id="inputForm"
+		<form action="${ctx}/sysManage/orderProducts/saveOrderProducts.do" id="inputForm"
 			name="inputForm" method="post">
 			<input type="hidden" name="token" id="token" value="${token}" />
 			<input type="hidden" name="orderProdId" id="orderProdId" value="${orderProducts.orderProdId}" />

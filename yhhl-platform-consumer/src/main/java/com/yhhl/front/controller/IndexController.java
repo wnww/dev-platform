@@ -29,7 +29,7 @@ import com.yhhl.user.service.UserServiceI;
  * @author 创建时间：2014-11-17 @Copyright(c)2014:瀛海科技
  */
 @Controller
-@RequestMapping("/front")
+@RequestMapping("/")
 public class IndexController {
 
 	@RequestMapping("/index")

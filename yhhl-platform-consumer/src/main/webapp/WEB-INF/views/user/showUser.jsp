@@ -10,14 +10,14 @@
 <script type="text/javascript">
 
 	function addUser(){
-		window.location.href="${ctx}/user/initAddUser.do";
+		window.location.href="${ctx}/sysManage/user/initAddUser.do";
 	}
 	
 		$(function(){
 			$('#dataPageList').datagrid({
 				title:'模板列表',
 				iconCls:'icon-ok',
-				url:'${ctx }/user/getAll.do?t='+new Date(),
+				url:'${ctx}/sysManage/user/getAll.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
 				collapsible:false,				
@@ -70,12 +70,23 @@
 				],
 				onDblClickRow:function(){
 					//dataItemTree();
+				},
+				onLoadSuccess : function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+					}
 				}
 			});		
 		});
 		
 		function refresh(){
-			var url = '${ctx}/template/refresh.action';
+			var url = '${ctx}/sysManage/template/refresh.action';
 			$.ajax({
 				type: "post",
 				data: "",
@@ -92,7 +103,7 @@
 		
 		function saveUser(){
 			$('#saveFrame').html('');			
-			var url = '${ctx}/user/initAddUser.do';				
+			var url = '${ctx}/sysManage/user/initAddUser.do';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$("#saveDiv").window({title:"增加-用户",iconCls:'icon-add',height:"300px",width:"450px",left:"50px",top:"30px"});
@@ -103,7 +114,7 @@
 		function editUser(){
 			var node = getSelected();		
 			if (node){	
-				var url = '${ctx}/user/initAddUser.do?id='+node.id;
+				var url = '${ctx}/sysManage/user/initAddUser.do?id='+node.id;
 				$('#saveFrame').attr("title","修改"+node.name);
 				$('#saveFrame').attr("src",url);
 				$("#saveDiv").window({title:"修改-用户",iconCls:'icon-edit',height:"300px",width:"450px",left:"50px",top:"30px"});
@@ -119,16 +130,20 @@
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/user/delUser.do?id="+node.id,
+							url: "${ctx}/sysManage/user/delUser.do?id="+node.id,
 							dataType: "json",
 							success: function(data){
-								var result = jQuery.parseJSON(data);
-	    						if(data.flag=='T'){
-									$.messager.alert('结果', '操作成功', 'info');	
-								    winReload();
-	    						}else if(data.flag=='H'){
-	    							$.messager.alert('结果', result.msg, 'info');	
-	    						}else{
+								if(data.flag==1){
+	    							$.messager.confirm('提交结果', '操作成功', function(){
+	    				    			winReload();// 刷新列表
+	    							});
+	    						}else if(data.flag==2){
+	    							$.messager.alert('结果', data.msg, 'info');	
+	    						}else if (data.flag == 3) {
+									$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+										document.location.href="${ctx}/sysManage/index.do";
+									});
+								}else{
 	    							$.messager.alert('结果', '操作失败，请重试', 'error');	
 	    						}
 							},
@@ -178,7 +193,7 @@
     }
    
     function selectRoles(userId){
-    	var url = "${ctx }/roles/showRolesPage.do?userId="+userId;
+    	var url = "${ctx}/sysManage/roles/showRolesPage.do?userId="+userId;
 		$('#saveFrame').attr("src",url);
 		$("#saveDiv").window({title:"设置角色",iconCls:'icon-edit',height:"450px",width:"600px",left:"50px",top:"30px"});
 		$('#saveDiv').window('open');

@@ -5,6 +5,7 @@
 <%@ include file="/common/mobilemeta.jsp" %>
 <%@ include file="/common/mobileimport.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
 	String fileRoot = (String)request.getAttribute("includeHtmlPath");
  %>
@@ -27,20 +28,29 @@
      </div><!--sliderA/-->
      <table class="jia-len">
      	<tr>
-	       <td width="80%" colspan="2">
+	       <td width="70%">
 	        <strong>${prod.prodName }</strong>
 	       </td>
-	       <td align="right" width="20%">
+	       <td align="right" width="30%" style="padding-right:15px;">
 	        <a href="javascript:;" class="shoucang"><span class="glyphicon glyphicon-star-empty"></span></a>
 	       </td>
 	   </tr>
        <tr>
-	       <th width="25%"><strong class="orange">￥${prod.unitPriceSell}</strong></th>
-	       <td width="25%" align="right"><input type="text" class="spinnerExample" /></td>
-	       <td width="50%" align="right"><span style="color::#a6a6a6;font-weight: bold;">库存余</span><input type="text" id="showRemainNum" style="width:30px;text-align: center;" readonly="readonly"/></span>&nbsp;<span style="color::#a6a6a6;font-weight: bold;">已售</span><input readonly="readonly" type="text" id="showSelledNum" style="width:30px;text-align: center;"/></td>
+	       <th><strong class="orange">￥<fmt:formatNumber value="${prod.unitPriceSell/100}" type="currency" pattern="0.00"/></strong></th>
+	       <td align="right" style="padding-right:15px;"><input type="text" class="spinnerExample" /></td>
+       </tr>
+       <tr>
+       		<td align="right" colspan="2" style="padding-right:15px;">
+	       		<span style="color::#a6a6a6;font-weight: bold;">库存余</span>
+	       			<input type="text" id="showRemainNum" style="width:30px;text-align: center;" readonly="readonly"/>
+	       			&nbsp;
+	       		<span style="color::#a6a6a6;font-weight: bold;">已售</span>
+	       			<input readonly="readonly" type="text" id="showSelledNum" style="width:30px;text-align: center;"/>
+	       			<input type="hidden" id="selectStockId" name="selectStockId">
+	      </td>
        </tr>
      </table>
-     <div class="height2"></div>
+     <!-- div class="height2"></div-->
      <h3 class="proTitle">商品规格</h3>
      <ul class="guige">
       	<c:forEach var="item" items="${stocks}" varStatus="st">
@@ -53,22 +63,25 @@
       	</c:forEach>
       	<div class="clearfix"></div>
      </ul><!--guige/-->
-     <div class="height2"></div>
+     <!--div class="height2"></div-->
+     <div style="margin-bottom: 5px;">
+	     <ul class="pronav">
+		      <li style="width:50%"><a href="javascript:void(0);" onclick="saveCarts();">加入购物车</a></li>
+		      <li style="width:50%"><a href="prolist.html">直接购买</a></li>
+		      <div class="clearfix"></div>
+	     </ul>
+     </div>
      <div class="zhaieq">
       	<span style="padding-left:10px;height:50px;line-height:50px;text-align:center;font-size:1.8rem;color:#a6a6a6;">商品详情</span>
       <div class="clearfix"></div>
      </div>
      <div class="proinfoList"><!-- 生成的表面页面内容引入 -->
-      	<!-- jsp:include page="<%=fileRoot %>" /-->
+      	<jsp:include page="<%=fileRoot %>" />
      </div>
-     <div style="margin-bottom: 5px;">
-	     <ul class="pronav">
-	     	  <li style="width:30%;"><a href="${ctx}/front/index.do">回首页</a></li>
-		      <li style="width:30%"><a href="prolist.html">加入购物车</a></li>
-		      <li style="width:30%"><a href="prolist.html">直接购买</a></li>
-		      <div class="clearfix"></div>
-	     </ul>
-     </div>
+     
+     <!-- footNav -->
+     <%@ include file="/common/mobilefooter.jsp" %>
+     <!--footNav/-->
     </div>
     <script>
 		$(function () {

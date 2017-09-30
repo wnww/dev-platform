@@ -9,7 +9,7 @@ $(document).ready(function(){
 function getIndexList(page,rows){
 	$.ajax({
 		type: "get",
-		url: ctx+"/products/getFrontProductsDatas.do?t="+new Date(),
+		url: ctx+"/sysManage/products/getFrontProductsDatas.do?t="+new Date(),
 		data: "page="+page+"&rows="+rows,
 		dataType: "json",
 		beforeSend:function(){
@@ -29,10 +29,10 @@ function getIndexList(page,rows){
 				//console.log(item.prodName);
 				var div = $('<div class="index-pro1-list">');
 				var dl = $('<dl>');
-				var dt = $('<dt><a href="'+ctx+'/front/prodDetail.do?prodId='+item.prodId+'"><img src='+getFirstImg(ctx,item.imgUrl)+' /></a></dt>');
-				var dd1 = $('<dd class="ip-text"><a href="'+ctx+'/front/prodDetail.do?prodId='+item.prodId+'">'+item.prodName+'</a></dd>');
-				var dd2 = $('<dd class="ip-text" style="padding-left:0px;"><span>库存余&nbsp;'+item.stockSituation+'&nbsp;件</span>&nbsp;&nbsp;<span>已售&nbsp;'+item.sellNum+'&nbsp;件</span></dd>');
-				var dd3 = $('<dd class="ip-price"><strong>¥'+item.unitPriceSell+'</strong></dd>');
+				var dt = $('<dt><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'"><img src='+getFirstImg(ctx,item.imgUrl)+' /></a></dt>');
+				var dd1 = $('<dd class="ip-text"><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'">'+item.prodName+'</a></dd>');
+				var dd2 = $('<dd class="ip-text" style="padding-left:0px;"><span>库存&nbsp;'+item.stockSituation+'&nbsp;件</span>&nbsp;&nbsp;<span>已售&nbsp;'+item.sellNum+'&nbsp;件</span></dd>');
+				var dd3 = $('<dd class="ip-price"><strong>¥'+moneyFormatterNoY(item.unitPriceSell / 100)+'</strong></dd>');
 				dl.append(dt);
 				dl.append(dd1);
 				dl.append(dd2);

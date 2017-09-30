@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
 import com.yhhl.interceptor.Token;
@@ -23,7 +24,7 @@ import com.yhhl.user.model.User;
 import com.yhhl.user.service.UserServiceI;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/sysManage/user")
 public class UserController {
 
 	public static String TABLETAG = "com.yhhl.user.model.User";
@@ -76,26 +77,25 @@ public class UserController {
 	@RequestMapping("/addUser")
 	@Token(remove = true)
 	@ResponseBody
-	public Map<String, Object> saveUser(User user, HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> saveUser(User user, HttpServletRequest request) {
+		ResultBean<String> result = new ResultBean<String>();
 		if (StringUtil.isNotEmpty(user.getId())) {
 			User u = userService.getById(user.getId());
 			u.setName(user.getName());
 			u.setPwd(user.getPwd());
 			userService.updateUser(u);
-			map.put("flag", "T");
-			map.put("msg", "修改成功");
-			return map;
+			result.setFlag(ResultBean.SUCCESS);
+			result.setMsg("修改成功");
+			return result;
 		}
 		Date d = new Date();
 		user.setCreateTime(d);
 		user.setCreatedatetime(d);
 		user.setId(UUID.randomUUID().toString().replace("-", ""));
 		userService.saveUser(user);
-		map.put("flag", "T");
-		map.put("msg", "保存成功");
-
-		return map;
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("保存成功");
+		return result;
 	}
 
 	/**
@@ -106,28 +106,26 @@ public class UserController {
 	 */
 	@RequestMapping("/getAll")
 	@ResponseBody
-	public Map<String, Object> getUsers(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<User> getUsers(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<User> dataPage = new Page<User>();
 		dataPage = userService.getAll(filterMap, dataPage, page, rows);
 		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-
-		// TransactionContextMain context = new TransactionContextMain();
-		// context.
-		return mapData;
+		ResultBean<User> result = new ResultBean<User>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 
 	@RequestMapping("/delUser")
 	@ResponseBody
-	public Map<String, Object> delUser(HttpServletRequest request, String id) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> delUser(HttpServletRequest request, String id) {
+		ResultBean<String> result = new ResultBean<String>();
 		userService.deleteById(id);
-		map.put("flag", "T");
-		map.put("msg", "删除成功");
-		return map;
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("修改成功");
+		return result;
 	}
 
 	@RequestMapping("/{id}/showUser")

@@ -27,7 +27,11 @@
 					});
 		    	}else if(result.flag==2){
 		    		$.messager.alert('提交结果', result.msg, 'info');
-		    	}else{
+		    	}else if (result.flag == 3) {
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				}else{
 		    		$.messager.alert('提交结果', '操作失败:'+result.msg, 'error');
 		    	}        
 		    },
@@ -54,7 +58,7 @@
 </head>
 <body>	
 <div id="tip" style="height:100%"> 
-		<form id="inputForm" name="inputForm" method="post" action="${ctx}/products/saveProductsDetail.do">
+		<form id="inputForm" name="inputForm" method="post" action="${ctx}/sysManage/products/saveProductsDetail.do">
 			<input type="hidden" name="token" id="token" value="${token}"/>
 			<table class="datagrid-body" id="table" >
 			<tr>

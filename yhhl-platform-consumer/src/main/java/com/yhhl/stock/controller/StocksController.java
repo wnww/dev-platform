@@ -1,6 +1,5 @@
 package com.yhhl.stock.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ import com.yhhl.stock.service.StocksServiceI;
  * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
  */ 
 @Controller
-@RequestMapping("/stocks") 
+@RequestMapping("/sysManage/stocks") 
 public class StocksController {
 	
 	private final static Logger log= Logger.getLogger(StocksController.class);
@@ -58,15 +57,15 @@ public class StocksController {
 	 */
 	@RequestMapping("/getStocksDatas")
 	@ResponseBody
-	public Map<String, Object> getStocksDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<Stocks> getStocksDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Stocks> dataPage = new Page<Stocks>();
 		dataPage = stocksService.getPage(filterMap, dataPage, page, rows);
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<Stocks> result = new ResultBean<Stocks>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**

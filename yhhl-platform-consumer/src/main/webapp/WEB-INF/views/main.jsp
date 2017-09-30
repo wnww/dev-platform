@@ -157,7 +157,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function updatePwd(){
 			// 进入增加页面
 			$('#saveFrame').html('');			
-			var url = '${ctx}/common/update-pwd.action';				
+			var url = '${ctx}/sysManage/common/update-pwd.action';				
 			$('#saveFrame').attr("title",'');
 			$('#saveFrame').attr("src",url);
 			$('#saveDiv').window('open');			
@@ -170,7 +170,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function logout(){
 			$.messager.confirm('提示', '您确定工作已经保存，并退出该系统?', function(r){
 				if (r){					
-					location.href = '${ctx}/logout.do?go=<%=basePath %>${ctx}';
+					location.href = '${ctx}/sysManage/logout.do?go=<%=basePath %>${ctx}';
 				}
 		   });
 		}
@@ -320,25 +320,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <div class="easyui-accordion" data-options="border:false,fit:true">
                         	<div title="产品管理">   
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
-                                    <li><a href="javascript:void(0);" onclick="addTab('产品管理','${ctx}/products/index.do')">产品管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('产品管理','${ctx}/sysManage/products/index.do')">产品管理</a></li>
                                 </ul>      
                             </div>   
                             <div title="订单管理">   
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
-                                    <li><a href="javascript:void(0);" onclick="addTab('订单管理','${ctx}/orders/index.do')">订单管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('订单管理','${ctx}/sysManage/orders/index.do')">订单管理</a></li>
                                 </ul>      
                             </div>   
                             <div title="系统管理"> 
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
-                                    <li><a href="javascript:void(0);" onclick="addTab('字典管理','${ctx}/dicts/index.do')">字典管理</a></li>
-                                    <li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/user/index.do')">用户管理</a></li>
-                                    <li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/roles/index.do')">角色管理</a></li>
-                                    <li><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/authority/index.do')">权限资源管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('字典管理','${ctx}/sysManage/dicts/index.do')">字典管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/sysManage/user/index.do')">用户管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/sysManage/roles/index.do')">角色管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('权限资源管理','${ctx}/sysManage/authority/index.do')">权限资源管理</a></li>
                                 </ul>  
                             </div>   
                             <div title="图表测试">   
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
-                                    <li><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/charts/index.do')">Echarts测试</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/sysManage/charts/index.do')">Echarts测试</a></li>
                                 </ul>      
                             </div>
 

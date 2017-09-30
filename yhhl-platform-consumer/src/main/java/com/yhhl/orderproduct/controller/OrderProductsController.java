@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
-import com.yhhl.common.DateUtils;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
@@ -32,7 +30,7 @@ import com.yhhl.orderproduct.service.OrderProductsServiceI;
  * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
  */ 
 @Controller
-@RequestMapping("/orderProducts") 
+@RequestMapping("/sysManage/orderProducts") 
 public class OrderProductsController {
 	
 	private final static Logger log= Logger.getLogger(OrderProductsController.class);
@@ -59,15 +57,15 @@ public class OrderProductsController {
 	 */
 	@RequestMapping("/getOrderProductsDatas")
 	@ResponseBody
-	public Map<String, Object> getOrderProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+	public ResultBean<OrderProducts> getOrderProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<OrderProducts> dataPage = new Page<OrderProducts>();
 		dataPage = orderProductsService.getPage(filterMap, dataPage, page, rows);
-		Map<String, Object> mapData = new HashMap<String, Object>();
-		mapData.put("total", dataPage.getTotalCount());
-		mapData.put("rows", dataPage.getResult());
-		return mapData;
+		ResultBean<OrderProducts> result = new ResultBean<OrderProducts>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 	
 	/**
@@ -127,12 +125,12 @@ public class OrderProductsController {
 	*/
 	@RequestMapping("/delOrderProducts")
 	@ResponseBody
-	public Map<String, Object> delOrderProducts(HttpServletRequest request,String id){
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> delOrderProducts(HttpServletRequest request,String id){
+		ResultBean<String> result = new ResultBean<String>();
 		orderProductsService.deleteById(id);
-		map.put("flag", "T");
-		map.put("msg", "删除成功");
-		return map;
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("修改成功");
+		return result;
 	}
 
 }

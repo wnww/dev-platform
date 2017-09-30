@@ -18,7 +18,7 @@ public class Orders {
 	private java.lang.String ownerUserName;//
 	private java.lang.String ownerRealName;//
 	private java.lang.String ownerMobile;//
-	private java.lang.Long orderAmount;//
+	private long orderAmount;//
 	private java.lang.String postAddress;//
 	private int status;//
 	private java.lang.String createUserName;//
@@ -58,11 +58,11 @@ public class Orders {
 		this.ownerMobile = ownerMobile;
 	}
 
-	public java.lang.Long getOrderAmount() {
+	public long getOrderAmount() {
 		return orderAmount;
 	}
 
-	public void setOrderAmount(java.lang.Long orderAmount) {
+	public void setOrderAmount(long orderAmount) {
 		this.orderAmount = orderAmount;
 	}
 
