@@ -2,7 +2,6 @@ package com.yhhl.interceptor;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +15,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.yhhl.InitServlet;
 import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
-import com.yhhl.product.controller.ProductsController;
 
 /**
  * 判断是否登录拦截器
@@ -25,7 +23,7 @@ import com.yhhl.product.controller.ProductsController;
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 	
-	private final static Logger log= Logger.getLogger(ProductsController.class);
+	private final static Logger log= Logger.getLogger(LoginInterceptor.class);
 	
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	Object obj = request.getSession().getAttribute("loginUser");

@@ -230,5 +230,10 @@
 			    <groupId>net.coobird</groupId>
 			    <artifactId>thumbnailator</artifactId>
 			</dependency>
+			<dependency>
+				<groupId>com.yhhl</groupId>
+				<artifactId>yhhl-platform-common</artifactId>
+			</dependency>
 	</dependencies> 
+	<packaging>war</packaging>
 </project>

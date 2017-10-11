@@ -1,7 +1,5 @@
 package com.yhhl.common;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,14 +8,12 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
-import com.yhhl.product.controller.ProductsController;
-
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.Builder;
 import net.coobird.thumbnailator.geometry.Positions;
 
 public class ImageUtil {
-	private Logger log = Logger.getLogger(ProductsController.class);
+	private Logger log = Logger.getLogger(ImageUtil.class);
 
 	private static String DEFAULT_PREVFIX = "thumb_";
 	private static Boolean DEFAULT_FORCE = false;// 建议该值为false

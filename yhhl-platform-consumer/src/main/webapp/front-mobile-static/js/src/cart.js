@@ -91,15 +91,18 @@ function setPrice(cartId,unitPrice){
 function computePrice(){
 	var chk_value =[];
 	var totalMoney = 0.00;
+	var totalCount = 0;
 	$('input[name="selectBox"]:checked').each(function(){
 		chk_value.push($(this).val());
 		var count = $("#count_"+$(this).val()).val();
 		var unitPrice = $("#unitPrice_"+$(this).val()).val();
 		var price = parseFloat(count)*parseFloat(unitPrice);
 		totalMoney = totalMoney+price;
+		totalCount = parseInt(totalCount)+parseInt(count);
 	});
 	$("#totalMoney").val(totalMoney);
 	$("#showTotalMoney").html(moneyFormatterNoY(totalMoney));
+	$("#totalCount").html(totalCount);
 	//console.log(chk_value.length==0 ?'你还没有选择任何内容！':chk_value); 
 }
 
