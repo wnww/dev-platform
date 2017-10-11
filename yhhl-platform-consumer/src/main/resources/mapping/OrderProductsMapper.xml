@@ -8,14 +8,16 @@
 	<result column="order_prod_id" property="orderProdId"/>
 	<result column="order_id" property="orderId"/>
 	<result column="prod_id" property="prodId"/>
+	<result column="stock_id" property="stockId"/>
 	<result column="prod_name" property="prodName"/>
 	<result column="unit_price" property="unitPrice"/>
 	<result column="prod_num" property="prodNum"/>
+	<result column="img_url" property="imgUrl"/>
 </resultMap>
        
 <!-- order_products table all fields -->
 <sql id="Base_Column_List" >
-	 order_prod_id,order_id,prod_id,prod_name,unit_price,prod_num
+	 order_prod_id,order_id,prod_id,stock_id,prod_name,unit_price,prod_num
 </sql>
    
    
@@ -32,6 +34,9 @@ where 1=1
 	<if test="prodId != null and prodId != ''" >
 	    and prod_id =  #{prodId}
 	</if>
+	<if test="stockId != null and stockId != ''" >
+	    and stock_id =  #{stockId}
+	</if>
 	<if test="prodName != null and prodName != ''" >
 	    and prod_name =  #{prodName}
 	</if>
@@ -47,13 +52,13 @@ where 1=1
 
 <!-- 插入记录 -->
 <insert id="insert" parameterType="com.yhhl.orderproduct.model.OrderProducts" >
-  insert into order_products (order_prod_id,order_id,prod_id,prod_name,unit_price,prod_num)
- values(#{orderProdId, jdbcType=VARCHAR},#{orderId, jdbcType=VARCHAR},#{prodId, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPrice, jdbcType=BIGINT},#{prodNum, jdbcType=INTEGER})
+  insert into order_products (order_prod_id,order_id,prod_id,stock_Id,prod_name,unit_price,prod_num)
+ values(#{orderProdId, jdbcType=VARCHAR},#{orderId, jdbcType=VARCHAR},#{prodId, jdbcType=VARCHAR},#{stockId, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPrice, jdbcType=BIGINT},#{prodNum, jdbcType=INTEGER})
 </insert>
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.orderproduct.model.OrderProducts" >
-  update order_products set order_prod_id=#{orderProdId, jdbcType=VARCHAR},order_id=#{orderId, jdbcType=VARCHAR},prod_id=#{prodId, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price=#{unitPrice, jdbcType=BIGINT},=#{prodNum, jdbcType=INTEGER} where order_prod_id=#{orderProdId}
+  update order_products set order_prod_id=#{orderProdId, jdbcType=VARCHAR},order_id=#{orderId, jdbcType=VARCHAR},prod_id=#{prodId, jdbcType=VARCHAR},stock_id=#{stockId, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price=#{unitPrice, jdbcType=BIGINT},=#{prodNum, jdbcType=INTEGER} where order_prod_id=#{orderProdId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -65,6 +70,9 @@ where 1=1
 	</if>
 	<if test="prodId != null  ">
 		prod_id=#{prodId, jdbcType=VARCHAR},
+	</if>
+	<if test="stockId != null  ">
+		stock_id=#{stockId, jdbcType=VARCHAR},
 	</if>
 	<if test="prodName != null  ">
 		prod_name=#{prodName, jdbcType=VARCHAR},
@@ -100,8 +108,11 @@ where 1=1
 							<if test="object.orderId != null and object.orderId != ''" >
 			    and order_id =  #{object.orderId}
 			</if>
-							<if test="object.prodId != null and object.prodId != ''" >
+			<if test="object.prodId != null and object.prodId != ''" >
 			    and prod_id =  #{object.prodId}
+			</if>
+			<if test="object.stockId != null and object.stockId != ''" >
+			    and stock_id =  #{object.stockId}
 			</if>
 							<if test="object.prodName != null and object.prodName != ''" >
 			    and prod_name =  #{object.prodName}
@@ -134,8 +145,11 @@ where 1=1
 							<if test="orderId != null and orderId != ''" >
 			    and order_id =  #{orderId}
 			</if>
-							<if test="prodId != null and prodId != ''" >
+			<if test="prodId != null and prodId != ''" >
 			    and prod_id =  #{prodId}
+			</if>
+			<if test="stockId != null and stockId != ''" >
+			    and stock_id =  #{stockId}
 			</if>
 							<if test="prodName != null and prodName != ''" >
 			    and prod_name =  #{prodName}
@@ -148,5 +162,28 @@ where 1=1
 			</if>
 			</trim>
    	</select>
-  	
+  	<!-- 查询订单商品列表 -->
+  	<select useCache="false" id="getByOrderId" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select op.order_prod_id,op.order_id,op.prod_id,op.stock_id,op.prod_name,op.unit_price,op.prod_num,p.img_url 
+		from order_products op left join products p on op.prod_id=p.prod_id
+		where 1=1
+		<trim  suffixOverrides="," >
+			<if test="orderId != null and orderId != ''" >
+			    and order_id =  #{orderId}
+			</if>
+			<if test="prodId != null and prodId != ''" >
+			    and prod_id =  #{prodId}
+			</if>
+			<if test="prodName != null and prodName != ''" >
+			    and prod_name =  #{prodName}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
 </mapper>   

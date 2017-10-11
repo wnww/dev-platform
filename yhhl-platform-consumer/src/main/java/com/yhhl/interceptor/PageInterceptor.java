@@ -134,7 +134,7 @@ public class PageInterceptor implements Interceptor {
 		// 计算第一条记录的位置，Mysql中记录的位置是从0开始的。
 		// int offset = (page.getPage().getPageIndex() - 1) *
 		// page.getPageSize();
-		if(page.getPageSize() != 0){
+		if(page.getPageSize() != 0){ // 等于0时不分页
 			sqlBuffer.append(" limit ").append(page.getStartRow()).append(",").append(page.getPageSize());
 		}
 		return sqlBuffer.toString();
@@ -151,7 +151,7 @@ public class PageInterceptor implements Interceptor {
 	 */
 	private String getOraclePageSql(SearchPageUtil page, StringBuffer sqlBuffer) {
 		// 计算第一条记录的位置，Oracle分页是通过rownum进行的，而rownum是从1开始的
-		if(page.getPageSize() != 0){
+		if(page.getPageSize() != 0){ // 等于0时不分页
 			final int offset = (page.getPage().getPageNo() - 1) * page.getPageSize() + 1;
 			sqlBuffer.insert(0, "select u.*, rownum r from (").append(") u where rownum < ") .append(offset + page.getPageSize());
 			sqlBuffer.insert(0, "select * from (").append(") where r >= ").append(offset);

@@ -66,11 +66,11 @@ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager" order="2"/>
+	<!-- tx:annotation-driven transaction-manager="transactionManager" order="2"/-->
 	
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
-	<!--tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="add*" propagation="REQUIRED" />
 			<tx:method name="append*" propagation="REQUIRED" />
@@ -96,7 +96,7 @@ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
 	<aop:config>
 		<aop:pointcut id="transactionPointcut" expression="execution(* com.yhhl.*.service..*Impl.*(..))" />
 		<aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
-	</aop:config-->
+	</aop:config>
 
 
 	<!-- bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">

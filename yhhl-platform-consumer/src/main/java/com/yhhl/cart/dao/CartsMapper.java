@@ -36,4 +36,10 @@ public interface CartsMapper {
 	int updateByPrimaryKeySelective(Carts record) throws DataAccessException;
 
 	int updateByPrimaryKey(Carts record) throws DataAccessException;
+	
+	Carts selectByProdIdAndStockId(Map<String,String> map) throws DataAccessException;
+	
+	List<Carts> selectByCartIds(Map<String, Object> map) throws DataAccessException;
+	
+	int deleteByCartIds(Map<String, Object> map) throws DataAccessException;
 }

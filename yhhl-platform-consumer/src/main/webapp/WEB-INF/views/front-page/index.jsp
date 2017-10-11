@@ -4,7 +4,7 @@
 <head>
 <%@ include file="/common/mobilemeta.jsp" %>
 <%@ include file="/common/mobileimport.jsp" %>
-<title>晨曦诺言的小店</title>
+<title>${websiteTitle}</title>
 </head>
 <body>
   <div class="maincont">

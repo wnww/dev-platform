@@ -34,7 +34,7 @@ public class OrderProductsServiceImpl implements OrderProductsServiceI {
 	 */
 	@Override
 	public void saveOrderProducts(OrderProducts orderProducts) {
-		orderProducts.setOrderProdId(String.valueOf(idWorker.nextId()));
+		orderProducts.setOrderProdId(idWorker.buildId());
 		orderProductsMapper.insert(orderProducts);
 	}
 
@@ -56,6 +56,14 @@ public class OrderProductsServiceImpl implements OrderProductsServiceI {
 		List<OrderProducts> list = orderProductsMapper.getPage(searchPageUtil);
 		page.setResult(list);
 		return page;
+	}
+	
+	/**
+	 * 根据订单ID查询订单商品
+	 */
+	@Override
+	public List<OrderProducts> getByOrderId(Map<String, Object> map) {
+		return orderProductsMapper.getByOrderId(map);
 	}
 
 	/**

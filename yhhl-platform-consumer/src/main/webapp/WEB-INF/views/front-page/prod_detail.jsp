@@ -9,7 +9,7 @@
 <%
 	String fileRoot = (String)request.getAttribute("includeHtmlPath");
  %>
-<title>晨曦诺言的小店</title>
+<title>${websiteTitle}</title>
 </head>
 <body>
   <div class="maincont">
@@ -46,7 +46,8 @@
 	       			&nbsp;
 	       		<span style="color::#a6a6a6;font-weight: bold;">已售</span>
 	       			<input readonly="readonly" type="text" id="showSelledNum" style="width:30px;text-align: center;"/>
-	       			<input type="hidden" id="selectStockId" name="selectStockId">
+	       			<input type="hidden" name="token" id="token" value="${token}"/>
+	       			<input type="hidden" name="selectStockId" id="selectStockId"/>
 	      </td>
        </tr>
      </table>
@@ -54,11 +55,23 @@
      <h3 class="proTitle">商品规格</h3>
      <ul class="guige">
       	<c:forEach var="item" items="${stocks}" varStatus="st">
+      		<!-- 初始化页面第一个默认选中 -->
       		<c:if test="${st.index==0}">
-      			<li class="guigeCur"><a href="javascript:;">${item.colorsId}&nbsp;${item.specificationId}</a><input type="hidden" id="remainNum" name="remainNum" value="${item.remainNum}"><input type="hidden" id="selledNum" name="selledNum" value="${item.selledNum}"></li>
+      			<li class="guigeCur">
+	      			<a href="javascript:;">${item.colorsId}&nbsp;${item.specificationId}</a>
+	      			<input type="hidden" id="remainNum" name="remainNum" value="${item.remainNum}">
+	      			<input type="hidden" id="selledNum" name="selledNum" value="${item.selledNum}">
+	      			<input type="hidden" id="stockId" name="stockId" value="${item.stockId}">
+      			</li>
       		</c:if>
+      		<!-- 初始化页面，其它不选中 -->
       		<c:if test="${st.index>0}">
-      			<li><a href="javascript:;">${item.colorsId}&nbsp;${item.specificationId}</a><input type="hidden" id="remainNum" name="remainNum" value="${item.remainNum}"><input type="hidden" id="selledNum" name="selledNum" value="${item.selledNum}"></li>
+      			<li>
+      				<a href="javascript:;">${item.colorsId}&nbsp;${item.specificationId}</a>
+      				<input type="hidden" id="remainNum" name="remainNum" value="${item.remainNum}">
+      				<input type="hidden" id="selledNum" name="selledNum" value="${item.selledNum}">
+      				<input type="hidden" id="stockId" name="stockId" value="${item.stockId}">
+      			</li>
       		</c:if>
       	</c:forEach>
       	<div class="clearfix"></div>

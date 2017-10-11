@@ -6,12 +6,17 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.yhhl.cart.dao.CartsMapper;
+import com.yhhl.cart.service.CartsServiceI;
 import com.yhhl.common.IdWorker;
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.order.dao.OrdersMapper;
 import com.yhhl.order.model.Orders;
+import com.yhhl.orderproduct.dao.OrderProductsMapper;
+import com.yhhl.orderproduct.model.OrderProducts;
 
 /**
  * 
@@ -28,6 +33,12 @@ public class OrdersServiceImpl implements OrdersServiceI {
 	private OrdersMapper ordersMapper;
 
 	@Autowired
+	private OrderProductsMapper orderProductsMapper;
+	
+	@Autowired
+	private CartsServiceI cartsService;
+	
+	@Autowired
 	private IdWorker idWorker;
 	
 	/**
@@ -35,9 +46,23 @@ public class OrdersServiceImpl implements OrdersServiceI {
 	 */
 	@Override
 	public void saveOrders(Orders orders) {
-		orders.setOrderId(String.valueOf(idWorker.nextId()));
+		orders.setOrderId(idWorker.buildId());
 		ordersMapper.insert(orders);
 	}
+	
+	/**
+	 * 保存订单主表和订单商品表
+	 */
+	@Override
+	public void saveOrderAndOrderProduct(Orders order, List<OrderProducts> list, List<String> cartIds) {
+		ordersMapper.insert(order);
+		for(OrderProducts op : list){
+			orderProductsMapper.insert(op);
+		}
+		cartsService.deleteByCartIds(cartIds);
+	}
+
+
 
 	/**
 	 * 分页查询

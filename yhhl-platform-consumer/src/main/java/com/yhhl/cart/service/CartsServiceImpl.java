@@ -1,16 +1,17 @@
 package com.yhhl.cart.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
-import com.yhhl.common.SearchPageUtil;
-import com.yhhl.core.Page;
+
 import com.yhhl.cart.dao.CartsMapper;
 import com.yhhl.cart.model.Carts;
 import com.yhhl.common.IdWorker;
+import com.yhhl.common.SearchPageUtil;
+import com.yhhl.core.Page;
 
 /**
  * 
@@ -33,7 +34,7 @@ public class CartsServiceImpl implements CartsServiceI {
 	 */
 	@Override
 	public void saveCarts(Carts carts){
-		carts.setCartId(String.valueOf(idWorker.nextId()));
+		carts.setCartId(idWorker.buildId());
 		cartsMapper.insert(carts);
 	}
 
@@ -47,7 +48,7 @@ public class CartsServiceImpl implements CartsServiceI {
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "", "" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "modify_time	desc", "create_time desc" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -89,4 +90,26 @@ public class CartsServiceImpl implements CartsServiceI {
 		cartsMapper.deleteByPrimaryKey(id);
 	}
 
+	@Override
+	public Carts getByProdIdAndStockId(String prodId,String stockId) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("prodId", prodId);
+		map.put("stockId", stockId);
+		return cartsMapper.selectByProdIdAndStockId(map);
+	}
+
+	@Override
+	public List<Carts> getByCartIds(List<String> list) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("idsList", list);
+		return cartsMapper.selectByCartIds(map);
+	}
+
+	@Override
+	public void deleteByCartIds(List<String> list) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("idsList", list);
+		cartsMapper.deleteByCartIds(map);
+	}
+	
 }

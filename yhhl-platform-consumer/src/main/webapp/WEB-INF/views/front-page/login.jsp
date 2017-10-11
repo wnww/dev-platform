@@ -5,7 +5,7 @@
 <%@ include file="/common/mobilemeta.jsp" %>
 <%@ include file="/common/mobileimport.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<title>晨曦诺言的小店</title>
+<title>${websiteTitle}</title>
 <link href="https://cdn.bootcss.com/bootstrap-validator/0.4.2/css/bootstrapValidator.min.css" rel="stylesheet">
 <script src="https://cdn.bootcss.com/bootstrap-validator/0.4.2/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript">
@@ -88,7 +88,7 @@ function login(){
 				    title: '提示!',
 				    content: '登录成功!',
 				    buttons: {
-				                       确定: function () {
+				        OK: function () {
 				            document.location.href="${ctx}/index.do";
 				        }
 				    }
@@ -100,10 +100,7 @@ function login(){
 			}
 		},
 		error : function(messg) {
-			$.alert({
-			    title: '警告!',
-			    content: messg.responseText
-			});
+			alertMsg(messg.responseText);
 		}
 	});
 }

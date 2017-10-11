@@ -1,11 +1,12 @@
 package com.yhhl.cart.service;
 
-import org.apache.log4j.Logger;
-
+import java.util.List;
 import java.util.Map;
 
-import com.yhhl.core.Page;
+import org.apache.log4j.Logger;
+
 import com.yhhl.cart.model.Carts;
+import com.yhhl.core.Page;
 
 /**
  * 
@@ -30,5 +31,11 @@ public interface CartsServiceI {
 	public void updateCarts(Carts carts);
 	
 	public void deleteById(String id);
+	
+	public Carts getByProdIdAndStockId(String prodId,String stockId);
+	
+	public List<Carts> getByCartIds(List<String> list);
+	
+	public void deleteByCartIds(List<String> list);
 
 }

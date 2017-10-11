@@ -23,7 +23,7 @@ public class Page<T> implements java.io.Serializable{
 
 	//-- 分页参数 --//
 	protected int pageNo = 1;
-	protected int pageSize = 1;
+	protected int pageSize = 1;// 等于0时不分页
 	protected String orderBy = null;
 	protected String order = null;
 	protected boolean autoCount = true;
@@ -54,7 +54,7 @@ public class Page<T> implements java.io.Serializable{
 	public void setPageNo(final int pageNo) {
 		this.pageNo = pageNo;
 
-		if (pageNo < 1) {
+		if (pageNo < 1) { //等于0时不分页
 			this.pageNo = 1;
 		}
 	}

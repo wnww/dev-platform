@@ -17,11 +17,12 @@
 	<result column="space1" property="space1"/>
 	<result column="space2" property="space2"/>
 	<result column="space3" property="space3"/>
+	<result column="img_url" property="imgUrl"/>
 </resultMap>
        
 <!-- carts table all fields -->
 <sql id="Base_Column_List" >
-	 cart_id,prod_id,stock_id,prod_name,buy_num,unit_price,create_user_id,create_time,modify_time,space1,space2,space3
+	 cart_id,prod_id,stock_id,prod_name,buy_num,unit_price,create_user_id,create_time,modify_time,space1,space2,space3 
 </sql>
    
    
@@ -126,14 +127,38 @@ where 1=1
 </delete>
  
 <!-- 根据id查询 购物车 -->
-<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+<select id="selectByPrimaryKey" useCache="false" resultMap="BaseResultMap" parameterType="java.util.Map">
 	select <include refid="Base_Column_List" /> 
 	 from carts where cart_id = #{cartId}
 </select>
 
+<!-- 根据商品ID、库存ID查询 购物车 -->
+<select id="selectByProdIdAndStockId" useCache="false" resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from carts where prod_id = #{prodId} and stock_id = #{stockId}
+</select>
+
+<!-- 根据商品IDs查询购物车 -->
+<select id="selectByCartIds" useCache="false" resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from carts where cart_id in 
+	<foreach collection="idsList" item="item" index="index" open="(" separator="," close=")">  
+        #{item}
+    </foreach>
+</select>
+
+<!-- 根据商品IDs删除购物车商品 -->
+<delete id="deleteByCartIds" parameterType="java.util.Map">
+	delete from carts where cart_id in 
+	<foreach collection="idsList" item="item" index="index" open="(" separator="," close=")">  
+        #{item}
+    </foreach>
+</delete>
+
 <!-- 分页 data-->
 	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
-		select <include refid="Base_Column_List"/> from carts
+		select cart_id,cts.prod_id,stock_id,cts.prod_name,buy_num,cts.unit_price,cts.create_user_id,cts.create_time,cts.modify_time,cts.space1,cts.space2,cts.space3,img_url 
+		from carts cts left join products ps on cts.prod_id=ps.prod_id 
 		where 1=1
 		<trim  suffixOverrides="," >
 							<if test="object.cartId != null and object.cartId != ''" >

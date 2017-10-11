@@ -35,7 +35,7 @@ public class StocksServiceImpl implements StocksServiceI {
 	 */
 	@Override
 	public void saveStocks(Stocks stocks) {
-		stocks.setStockId(String.valueOf(idWorker.nextId()));
+		stocks.setStockId(idWorker.buildId());
 		stocksMapper.insert(stocks);
 	}
 

@@ -48,6 +48,7 @@ public class LoginController {
 			return result;
 		}
 		LoginUser loginUser = new LoginUser();
+		loginUser.setUserId(user.getId());
 		loginUser.setUserName(user.getName());
 		loginUser.setNikeName(user.getName());
 		request.getSession().setAttribute("loginUser", loginUser);

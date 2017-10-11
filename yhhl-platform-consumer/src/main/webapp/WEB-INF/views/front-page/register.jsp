@@ -5,7 +5,7 @@
 <%@ include file="/common/mobilemeta.jsp" %>
 <%@ include file="/common/mobileimport.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<title>晨曦诺言的小店</title>
+<title>${websiteTitle}</title>
 </head>
 <body>
 

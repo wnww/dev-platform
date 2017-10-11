@@ -74,6 +74,7 @@ public class MainAction {
 		if(loginUser==null){
 			loginUser = new LoginUser();
 		}
+		loginUser.setUserId(user.getId());
 		loginUser.setUserName(user.getName());
 		loginUser.setNikeName(user.getName());
 		loginUser.setUserPhoto(

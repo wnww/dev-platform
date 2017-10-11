@@ -51,7 +51,7 @@ public class OrderProductsController {
 	}
 	
 	/**
-	 * 查询用户 列表
+	 * 查询订单商品表
 	 * @param request
 	 * @return
 	 */

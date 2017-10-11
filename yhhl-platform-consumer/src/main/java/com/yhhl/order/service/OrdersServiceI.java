@@ -1,11 +1,13 @@
 package com.yhhl.order.service;
 
-import org.apache.log4j.Logger;
-
+import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.yhhl.core.Page;
 import com.yhhl.order.model.Orders;
+import com.yhhl.orderproduct.model.OrderProducts;
 
 /**
  * 
@@ -30,5 +32,7 @@ public interface OrdersServiceI {
 	public void updateOrders(Orders orders);
 	
 	public void deleteById(String id);
+	
+	public void saveOrderAndOrderProduct(Orders order,List<OrderProducts> list,List<String> cartIds);
 
 }

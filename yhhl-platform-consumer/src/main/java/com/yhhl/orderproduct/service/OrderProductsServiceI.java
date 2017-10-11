@@ -1,8 +1,9 @@
 package com.yhhl.orderproduct.service;
 
-import org.apache.log4j.Logger;
-
+import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.yhhl.core.Page;
 import com.yhhl.orderproduct.model.OrderProducts;
@@ -31,4 +32,5 @@ public interface OrderProductsServiceI {
 	
 	public void deleteById(String id);
 
+	public List<OrderProducts> getByOrderId(Map<String,Object> map);
 }

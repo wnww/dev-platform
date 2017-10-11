@@ -1,6 +1,7 @@
 package com.yhhl.interceptor;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.alibaba.fastjson.JSONObject;
+import com.yhhl.InitServlet;
+import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 
 /**
@@ -33,8 +37,12 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 				boolean needRemoveSession = annotation.remove();
 				if (needRemoveSession) {//移出token
 					if (isRepeatSubmit(request)) {
-						response.setContentType("text/html; charset=utf-8");
-						response.getWriter().write("请不要重复提交!");
+						response.setContentType("text/html; charset=UTF-8");
+						ResultBean<String> rb = new ResultBean<String>();
+						rb.setFlag(ResultBean.REPEAT);
+						rb.setMsg("请刷新页面再提交！");
+						rb.setRows(InitServlet.dataList);
+						response.getWriter().write(JSONObject.toJSON(rb).toString());
 						return false;
 					}
 					request.getSession(false).removeAttribute("token");

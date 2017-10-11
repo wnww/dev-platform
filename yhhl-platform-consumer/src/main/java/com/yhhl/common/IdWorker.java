@@ -124,6 +124,14 @@ public class IdWorker {
 				| (workerId << workerIdShift) //
 				| sequence;
 	}
+	
+	/**
+	 * 获取字符串型ID
+	 * @return
+	 */
+	public String buildId(){
+		return String.valueOf(this.nextId());
+	}
 
 	/**
 	 * 阻塞到下一个毫秒，直到获得新的时间戳

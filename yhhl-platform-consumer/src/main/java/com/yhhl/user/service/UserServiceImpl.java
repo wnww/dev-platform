@@ -30,9 +30,8 @@ public class UserServiceImpl implements UserServiceI {
 	/**
 	 * 保存
 	 */
-	@Transactional
 	public void saveUser(User user) {
-		user.setId(String.valueOf(idWorker.nextId()));
+		user.setId(idWorker.buildId());
 		// 准备远程调用参数
 		try{
 			user.setPwd(MD5Utils.MD5(user.getPwd()));
@@ -42,13 +41,11 @@ public class UserServiceImpl implements UserServiceI {
 		}
 	}
 
-	@Transactional
 	public void confirmSaveUser(User user) {
 		user.setName(user.getName()+"-确认操作");
 		userMapper.updateByPrimaryKey(user);
 	}
 
-	@Transactional
 	public void concelSaveUser(User user) {
 		user.setName(user.getName()+"-取消操作");
 		userMapper.updateByPrimaryKey(user);

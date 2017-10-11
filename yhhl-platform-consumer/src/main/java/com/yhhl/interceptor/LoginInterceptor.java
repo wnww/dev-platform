@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yhhl.InitServlet;
 import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.product.controller.ProductsController;
@@ -70,7 +71,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		ResultBean<String> rb = new ResultBean<String>();
 		rb.setFlag(ResultBean.NO_LOGIN);
 		rb.setMsg("未登录，请先登录！");
-		rb.setRows(new ArrayList());
+		rb.setRows(InitServlet.dataList);
 		response.getWriter().write(JSONObject.toJSON(rb).toString());
     }
 

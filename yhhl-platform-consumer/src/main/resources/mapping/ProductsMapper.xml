@@ -23,11 +23,12 @@
 	<result column="colors" property="colors"/>
 	<result column="create_time" property="createTime"/>
 	<result column="modify_time" property="modifyTime"/>
+	<result column="express_fee" property="expressFee"/>
 </resultMap>
        
 <!-- products table all fields -->
 <sql id="Base_Column_List" >
-	 prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time
+	 prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time,express_fee
 </sql>
    
    
@@ -83,19 +84,22 @@ where 1=1
 	<if test="modifyTime != null and modifyTime != ''" >
 	    and modify_time =  #{modifyTime}
 	</if>
+	<if test="expressFee != null and expressFee != ''" >
+	    and express_fee =  #{expressFee}
+	</if>
 </trim>
 </sql>
    
 
 <!-- 插入记录 -->
 <insert id="insert" parameterType="com.yhhl.product.model.Products" >
-  insert into products (prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time)
- values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=BIGINT},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockSituation, jdbcType=VARCHAR},#{sellNum, jdbcType=VARCHAR},#{colors, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT})
+  insert into products (prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time,express_fee)
+ values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=BIGINT},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockSituation, jdbcType=VARCHAR},#{sellNum, jdbcType=VARCHAR},#{colors, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT},#{expressFee, jdbcType=BIGINT})
 </insert>
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.product.model.Products" >
-  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=BIGINT},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_situation=#{stockSituation, jdbcType=VARCHAR},sell_num=#{sellNum, jdbcType=VARCHAR},colors=#{colors, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT} where prod_id=#{prodId}
+  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=BIGINT},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_situation=#{stockSituation, jdbcType=VARCHAR},sell_num=#{sellNum, jdbcType=VARCHAR},colors=#{colors, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT},express_fee=#{expressFee, jdbcType=BIGINT} where prod_id=#{prodId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -153,6 +157,9 @@ where 1=1
 	<if test="modifyTime != null  ">
 		modify_time=#{modifyTime, jdbcType=BIGINT}
 	</if>
+	<if test="expressFee != null  ">
+		express_fee=#{expressFee, jdbcType=BIGINT}
+	</if>
 	</trim> where prod_id=#{prodId}
 </update>
 
@@ -204,6 +211,9 @@ where 1=1
 			</if>
 			<if test="object.modifyTime != null and object.modifyTime != ''" >
 			    and modify_time =  #{object.modifyTime}
+			</if>
+			<if test="object.expressFee != null and object.expressFee != ''" >
+			    and express_fee =  #{object.expressFee}
 			</if>
 			</trim>
 		<if test="orderBys!=null">
@@ -298,8 +308,11 @@ where 1=1
 							<if test="createTime != null and createTime != ''" >
 			    and create_time =  #{createTime}
 			</if>
-							<if test="modifyTime != null and modifyTime != ''" >
+			<if test="modifyTime != null and modifyTime != ''" >
 			    and modify_time =  #{modifyTime}
+			</if>
+			<if test="expressFee != null and expressFee != ''" >
+			    and express_fee =  #{expressFee}
 			</if>
 			</trim>
    	</select>

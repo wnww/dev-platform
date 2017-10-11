@@ -21,6 +21,8 @@ public class ResultBean<T> implements java.io.Serializable {
 	public static final int NO_LOGIN = 3;
 	
 	public static final int EXCEPTION = 4;
+	
+	public static final int REPEAT = 5;
 
 	private String msg = "success";
 

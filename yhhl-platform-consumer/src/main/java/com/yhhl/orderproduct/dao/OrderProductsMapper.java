@@ -36,4 +36,6 @@ public interface OrderProductsMapper {
 	int updateByPrimaryKeySelective(OrderProducts record) throws DataAccessException;
 
 	int updateByPrimaryKey(OrderProducts record) throws DataAccessException;
+	
+	List<OrderProducts> getByOrderId(Map<String,Object> map) throws DataAccessException;
 }

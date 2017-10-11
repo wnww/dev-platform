@@ -31,7 +31,7 @@
 			<path path="${code.src}/js/src/style.js" />
 			<path path="${code.src}/js/src/util.js" />
 		</concat>
-		<echo message="Concat Code Files Finished!!!" />
+		<echo message="JS文件合并完成!!!" />
 	</target>
 
 	<!-- ====   target: mergeCSS 拼接（合并）文件        ==== -->
@@ -43,7 +43,7 @@
 			<path path="${code.src}/css/style.css" />
 			<path path="${code.src}/css/response.css" />
 		</concat>
-		<echo message="Concat Code Files Finished!!!" />
+		<echo message="CSS文件合并完成!!!" />
 	</target>
 
 

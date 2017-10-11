@@ -35,7 +35,7 @@ public class DictsServiceImpl implements DictsServiceI {
 	 */
 	@Override
 	public void saveDicts(Dicts dicts) {
-		dicts.setDictId(String.valueOf(idWorker.nextId()));
+		dicts.setDictId(idWorker.buildId());
 		dictsMapper.insert(dicts);
 	}
 

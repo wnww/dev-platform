@@ -35,7 +35,7 @@ public class ProductsServiceImpl implements ProductsServiceI {
 	 */
 	@Override
 	public void saveProducts(Products products) {
-		products.setProdId(String.valueOf(idWorker.nextId()));
+		products.setProdId(idWorker.buildId());
 		productsMapper.insert(products);
 	}
 

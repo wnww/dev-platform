@@ -122,3 +122,46 @@ function  formatValue(val) {
 	}
 	return result;
 };
+
+function dateFormat(dtdt){
+	dtdt = dtdt+"";
+	var dt = new Array();
+	for(var i=0; i<dtdt.length; i++){
+		dt[i] = dtdt.charAt(i);
+	}
+	var dDate = "";
+	for(var i=0; i<dt.length; i++){
+		dDate = dDate+dt[i];
+		if((i+1)%2==0 && i>2 && i<7){
+			dDate = dDate+"-";
+		}else if((i+1)%2==0 && i>7 && i<dt.length-1){
+			dDate = dDate+":";
+		}else if(i==7){
+			dDate = dDate+" ";
+		}
+	}
+	return dDate;
+}
+
+String.prototype.endWith=function(s){
+  if(s==null||s==""||this.length==0||s.length>this.length){
+     return false;
+  }
+  if(this.substring(this.length-s.length)==s){
+     return true;
+  }else{
+     return false;
+  }
+};
+
+String.prototype.startWith=function(s){
+	  if(s==null||s==""||this.length==0||s.length>this.length){
+		  return false;
+	  }
+	  if(this.substr(0,s.length)==s){
+	     return true;
+	  }else{
+	     return false;
+	  }
+	  //return true;
+};

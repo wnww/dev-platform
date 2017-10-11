@@ -19,12 +19,14 @@ public class Orders {
 	private java.lang.String ownerRealName;//
 	private java.lang.String ownerMobile;//
 	private long orderAmount;//
+	private long expressFee; // 快递费
 	private java.lang.String postAddress;//
 	private int status;//
 	private java.lang.String createUserName;//
 	private long createTime;//
 	private long modifyTime;//
 	private java.lang.String remark;//
+	private String userType; // 用户类型
 
 	public java.lang.String getOrderId() {
 		return orderId;
@@ -114,4 +116,20 @@ public class Orders {
 		this.remark = remark;
 	}
 
+	public long getExpressFee() {
+		return expressFee;
+	}
+
+	public void setExpressFee(long expressFee) {
+		this.expressFee = expressFee;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
 }

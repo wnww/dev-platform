@@ -24,6 +24,7 @@ import com.yhhl.common.LoginUser;
 import com.yhhl.common.MD5Utils;
 import com.yhhl.common.ResultBean;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.Token;
 import com.yhhl.product.model.Products;
 import com.yhhl.product.service.ProductsServiceI;
 import com.yhhl.stock.model.Stocks;
@@ -45,6 +46,7 @@ public class ProdDetailController {
 	@Autowired
 	private StocksServiceI stocksService; 
 
+	@Token(save = true)
 	@RequestMapping("/prodDetail")
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = new ModelAndView("front-page/prod_detail");

@@ -16,11 +16,14 @@
 	<result column="create_time" property="createTime"/>
 	<result column="modify_time" property="modifyTime"/>
 	<result column="remark" property="remark"/>
+	<result column="express_fee" property="expressFee"/>
+	<result column="user_type" property="userType"/>
+	
 </resultMap>
        
 <!-- orders table all fields -->
 <sql id="Base_Column_List" >
-	 order_id,owner_user_name,owner_real_name,owner_mobile,order_amount,post_address,status,create_user_name,create_time,modify_time,remark
+	 order_id,owner_user_name,owner_real_name,owner_mobile,order_amount,post_address,status,create_user_name,create_time,modify_time,remark,express_fee,user_type
 </sql>
    
    
@@ -61,19 +64,25 @@ where 1=1
 	<if test="remark != null and remark != ''" >
 	    and remark =  #{remark}
 	</if>
+	<if test="expressFee != null and expressFee != ''" >
+	    and express_fee =  #{expressFee}
+	</if>
+	<if test="userType != null and userType != ''" >
+	    and user_type =  #{userType}
+	</if>
 </trim>
 </sql>
    
 
 <!-- 插入记录 -->
 <insert id="insert" parameterType="com.yhhl.order.model.Orders" >
-  insert into orders (order_id,owner_user_name,owner_real_name,owner_mobile,order_amount,post_address,status,create_user_name,create_time,modify_time,remark)
- values(#{orderId, jdbcType=VARCHAR},#{ownerUserName, jdbcType=VARCHAR},#{ownerRealName, jdbcType=VARCHAR},#{ownerMobile, jdbcType=VARCHAR},#{orderAmount, jdbcType=BIGINT},#{postAddress, jdbcType=VARCHAR},#{status, jdbcType=INTEGER},#{createUserName, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT},#{remark, jdbcType=VARCHAR})
+  insert into orders (order_id,owner_user_name,owner_real_name,owner_mobile,order_amount,post_address,status,create_user_name,create_time,modify_time,remark,express_fee,user_type)
+ values(#{orderId, jdbcType=VARCHAR},#{ownerUserName, jdbcType=VARCHAR},#{ownerRealName, jdbcType=VARCHAR},#{ownerMobile, jdbcType=VARCHAR},#{orderAmount, jdbcType=BIGINT},#{postAddress, jdbcType=VARCHAR},#{status, jdbcType=INTEGER},#{createUserName, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT},#{remark, jdbcType=VARCHAR},#{expressFee, jdbcType=BIGINT},#{userType, jdbcType=VARCHAR})
 </insert>
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.order.model.Orders" >
-  update orders set order_id=#{orderId, jdbcType=VARCHAR},owner_user_name=#{ownerUserName, jdbcType=VARCHAR},owner_real_name=#{ownerRealName, jdbcType=VARCHAR},owner_mobile=#{ownerMobile, jdbcType=VARCHAR},order_amount=#{orderAmount, jdbcType=BIGINT},post_address=#{postAddress, jdbcType=VARCHAR},status=#{status, jdbcType=INTEGER},create_user_name=#{createUserName, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT},remark=#{remark, jdbcType=VARCHAR} where order_id=#{orderId}
+  update orders set order_id=#{orderId, jdbcType=VARCHAR},owner_user_name=#{ownerUserName, jdbcType=VARCHAR},owner_real_name=#{ownerRealName, jdbcType=VARCHAR},owner_mobile=#{ownerMobile, jdbcType=VARCHAR},order_amount=#{orderAmount, jdbcType=BIGINT},post_address=#{postAddress, jdbcType=VARCHAR},status=#{status, jdbcType=INTEGER},create_user_name=#{createUserName, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT},remark=#{remark, jdbcType=VARCHAR},express_fee=#{expressFee, jdbcType=BIGINT},user_type=#{userType, jdbcType=VARCHAR} where order_id=#{orderId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -109,6 +118,12 @@ where 1=1
 	</if>
 	<if test="remark != null  ">
 		remark=#{remark, jdbcType=VARCHAR}
+	</if>
+	<if test="expressFee != null  ">
+		express_fee=#{expressFee, jdbcType=VARCHAR}
+	</if>
+	<if test="userType != null  ">
+		user_type=#{userType, jdbcType=VARCHAR}
 	</if>
 	</trim> where order_id=#{orderId}
 </update>
@@ -159,8 +174,14 @@ where 1=1
 							<if test="object.modifyTime != null and object.modifyTime != ''" >
 			    and modify_time =  #{object.modifyTime}
 			</if>
-							<if test="object.remark != null and object.remark != ''" >
+			<if test="object.remark != null and object.remark != ''" >
 			    and remark =  #{object.remark}
+			</if>
+			<if test="object.expressFee != null and object.expressFee != ''" >
+			    and express_fee =  #{object.expressFee}
+			</if>
+			<if test="object.userType != null and object.userType != ''" >
+			    and user_type =  #{object.userType}
 			</if>
 			</trim>
 		<if test="orderBys!=null">
@@ -210,6 +231,12 @@ where 1=1
 			</if>
 							<if test="remark != null and remark != ''" >
 			    and remark =  #{remark}
+			</if>
+			<if test="expressFee != null and expressFee != ''" >
+			    and express_fee =  #{expressFee}
+			</if>
+			<if test="userType != null and userType != ''" >
+			    and user_type =  #{userType}
 			</if>
 			</trim>
    	</select>
