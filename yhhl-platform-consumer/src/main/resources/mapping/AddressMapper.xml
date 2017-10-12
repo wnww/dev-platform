@@ -16,11 +16,12 @@
 	<result column="space1" property="space1"/>
 	<result column="space2" property="space2"/>
 	<result column="space3" property="space3"/>
+	<result column="mobile" property="mobile"/>
 </resultMap>
        
 <!-- address table all fields -->
 <sql id="Base_Column_List" >
-	 addr_id,create_user_id,real_name,province,city,address,status,default_add,space1,space2,space3
+	 addr_id,create_user_id,real_name,province,city,address,status,default_add,space1,space2,space3,mobile 
 </sql>
    
    
@@ -61,19 +62,22 @@ where 1=1
 	<if test="space3 != null and space3 != ''" >
 	    and space3 =  #{space3}
 	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
 </trim>
 </sql>
    
 
 <!-- 插入记录 -->
 <insert id="insert" parameterType="com.yhhl.address.model.Address" >
-  insert into address (addr_id,create_user_id,real_name,province,city,address,status,default_add,space1,space2,space3)
- values(#{addrId, jdbcType=VARCHAR},#{createUserId, jdbcType=VARCHAR},#{realName, jdbcType=VARCHAR},#{province, jdbcType=VARCHAR},#{city, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{status, jdbcType=INTEGER},#{defaultAdd, jdbcType=INTEGER},#{space1, jdbcType=VARCHAR},#{space2, jdbcType=VARCHAR},#{space3, jdbcType=VARCHAR})
+  insert into address (addr_id,create_user_id,real_name,province,city,address,status,default_add,space1,space2,space3,mobile)
+ values(#{addrId, jdbcType=VARCHAR},#{createUserId, jdbcType=VARCHAR},#{realName, jdbcType=VARCHAR},#{province, jdbcType=VARCHAR},#{city, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{status, jdbcType=INTEGER},#{defaultAdd, jdbcType=INTEGER},#{space1, jdbcType=VARCHAR},#{space2, jdbcType=VARCHAR},#{space3, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR})
 </insert>
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.address.model.Address" >
-  update address set addr_id=#{addrId, jdbcType=VARCHAR},create_user_id=#{createUserId, jdbcType=VARCHAR},real_name=#{realName, jdbcType=VARCHAR},province=#{province, jdbcType=VARCHAR},city=#{city, jdbcType=VARCHAR},address=#{address, jdbcType=VARCHAR},status=#{status, jdbcType=INTEGER},default_add=#{defaultAdd, jdbcType=INTEGER},space1=#{space1, jdbcType=VARCHAR},space2=#{space2, jdbcType=VARCHAR},space3=#{space3, jdbcType=VARCHAR} where addr_id=#{addrId}
+  update address set addr_id=#{addrId, jdbcType=VARCHAR},create_user_id=#{createUserId, jdbcType=VARCHAR},real_name=#{realName, jdbcType=VARCHAR},province=#{province, jdbcType=VARCHAR},city=#{city, jdbcType=VARCHAR},address=#{address, jdbcType=VARCHAR},status=#{status, jdbcType=INTEGER},default_add=#{defaultAdd, jdbcType=INTEGER},space1=#{space1, jdbcType=VARCHAR},space2=#{space2, jdbcType=VARCHAR},space3=#{space3, jdbcType=VARCHAR},mobile=#{mobile, jdbcType=VARCHAR} where addr_id=#{addrId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -109,6 +113,9 @@ where 1=1
 	</if>
 	<if test="space3 != null  ">
 		space3=#{space3, jdbcType=VARCHAR}
+	</if>
+	<if test="mobile != null  ">
+		mobile=#{mobile, jdbcType=VARCHAR}
 	</if>
 	</trim> where addr_id=#{addrId}
 </update>
@@ -162,6 +169,9 @@ where 1=1
 							<if test="object.space3 != null and object.space3 != ''" >
 			    and space3 =  #{object.space3}
 			</if>
+							<if test="object.mobile != null and object.mobile != ''" >
+			    and mobile =  #{object.mobile}
+			</if>
 			</trim>
 		<if test="orderBys!=null">
 			order by
@@ -210,6 +220,9 @@ where 1=1
 			</if>
 							<if test="space3 != null and space3 != ''" >
 			    and space3 =  #{space3}
+			</if>
+							<if test="mobile != null and mobile != ''" >
+			    and mobile =  #{mobile}
 			</if>
 			</trim>
    	</select>

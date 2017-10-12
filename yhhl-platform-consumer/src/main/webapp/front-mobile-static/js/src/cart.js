@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	getIndexList();
+	getCartList();
 	$("#jiesuan").on('click',function(){
 		sumbitOrder();
 	});
@@ -14,7 +14,7 @@ function unSelectAll(){
 	computePrice();
 }
 
-function getIndexList(){
+function getCartList(){
 	var totalMoney = 0.00;
 	var totalCount = 0;
 	$.ajax({

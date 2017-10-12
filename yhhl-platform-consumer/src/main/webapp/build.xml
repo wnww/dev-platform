@@ -30,6 +30,7 @@
 			<path path="${code.src}/js/src/jquery.spinner.js" />
 			<path path="${code.src}/js/src/style.js" />
 			<path path="${code.src}/js/src/util.js" />
+			<path path="${code.src}/js/src/jquery-confirm.min.js" />
 		</concat>
 		<echo message="JS文件合并完成!!!" />
 	</target>
@@ -40,6 +41,7 @@
 		<!-- CSS -->
 		<concat destfile="${targetDirCSS}/all.css" encoding="utf-8">
 			<path path="${code.src}/css/bootstrap.min.css" />
+			<path path="${code.src}/css/jquery-confirm.min.css" />
 			<path path="${code.src}/css/style.css" />
 			<path path="${code.src}/css/response.css" />
 		</concat>

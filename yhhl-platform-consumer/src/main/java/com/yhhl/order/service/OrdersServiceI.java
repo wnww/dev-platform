@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.yhhl.core.Page;
 import com.yhhl.order.model.Orders;
+import com.yhhl.order.model.OrdersVo;
 import com.yhhl.orderproduct.model.OrderProducts;
 
 /**
@@ -34,5 +35,7 @@ public interface OrdersServiceI {
 	public void deleteById(String id);
 	
 	public void saveOrderAndOrderProduct(Orders order,List<OrderProducts> list,List<String> cartIds);
+	
+	List<OrdersVo> getMyOrderVoList(Map<String,Object> map);
 
 }

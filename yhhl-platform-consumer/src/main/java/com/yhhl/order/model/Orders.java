@@ -1,8 +1,6 @@
 package com.yhhl.order.model;
 
-import java.math.BigDecimal;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import com.yhhl.common.CustomDateTimeSerializer;
+import java.util.List;
 
 /**
  * 
@@ -27,7 +25,7 @@ public class Orders {
 	private long modifyTime;//
 	private java.lang.String remark;//
 	private String userType; // 用户类型
-
+	private List<OrdersVo> orderDetailList;
 	public java.lang.String getOrderId() {
 		return orderId;
 	}
@@ -130,6 +128,14 @@ public class Orders {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public List<OrdersVo> getOrderDetailList() {
+		return orderDetailList;
+	}
+
+	public void setOrderDetailList(List<OrdersVo> orderDetailList) {
+		this.orderDetailList = orderDetailList;
 	}
 	
 }

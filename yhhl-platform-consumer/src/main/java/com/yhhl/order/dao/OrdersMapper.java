@@ -7,6 +7,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.yhhl.common.SearchPageUtil;
 import com.yhhl.order.model.Orders;
+import com.yhhl.order.model.OrdersVo;
 
 //import com.base.dao.BaseDao;
 /**
@@ -22,6 +23,8 @@ public interface OrdersMapper {
 	int getCount(Map<String, Object> filterMap) throws DataAccessException;
 	
 	List<Orders> getPage(SearchPageUtil searchPageUtil) throws DataAccessException;
+	
+	List<OrdersVo> getMyOrderVoList(Map<String,Object> map) throws DataAccessException;
 
 	List<Orders> findPageByParams(Map<String, Object> filterMap) throws DataAccessException;
 

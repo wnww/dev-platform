@@ -15,6 +15,7 @@ import com.yhhl.common.SearchPageUtil;
 import com.yhhl.core.Page;
 import com.yhhl.order.dao.OrdersMapper;
 import com.yhhl.order.model.Orders;
+import com.yhhl.order.model.OrdersVo;
 import com.yhhl.orderproduct.dao.OrderProductsMapper;
 import com.yhhl.orderproduct.model.OrderProducts;
 
@@ -82,6 +83,11 @@ public class OrdersServiceImpl implements OrdersServiceI {
 		List<Orders> list = ordersMapper.getPage(searchPageUtil);
 		page.setResult(list);
 		return page;
+	}
+	
+	@Override
+	public List<OrdersVo> getMyOrderVoList(Map<String, Object> map) {
+		return ordersMapper.getMyOrderVoList(map);
 	}
 
 	/**

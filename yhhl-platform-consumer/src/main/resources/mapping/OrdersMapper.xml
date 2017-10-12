@@ -18,7 +18,21 @@
 	<result column="remark" property="remark"/>
 	<result column="express_fee" property="expressFee"/>
 	<result column="user_type" property="userType"/>
-	
+</resultMap>
+
+<resultMap id="myOrderList" type="com.yhhl.order.model.OrdersVo" >
+	<result column="order_id" property="orderId"/>
+	<result column="Order_prod_id" property="OrderProdId"/>
+	<result column="prod_id" property="prodId"/>
+	<result column="stock_id" property="stockId"/>
+	<result column="prod_name" property="prodName"/>
+	<result column="prod_num" property="prodNum"/>
+	<result column="order_amount" property="orderAmount"/>
+	<result column="express_fee" property="expressFee"/>
+	<result column="owner_user_name" property="ownerUserName"/>
+	<result column="status" property="status"/>
+	<result column="create_time" property="createTime"/>
+	<result column="img_url" property="imgUrl"/>
 </resultMap>
        
 <!-- orders table all fields -->
@@ -217,7 +231,7 @@ where 1=1
 							<if test="postAddress != null and postAddress != ''" >
 			    and post_address =  #{postAddress}
 			</if>
-							<if test="status != null and status != ''" >
+			<if test="status != null and status != ''" >
 			    and status =  #{status}
 			</if>
 							<if test="createUserName != null and createUserName != ''" >
@@ -238,7 +252,47 @@ where 1=1
 			<if test="userType != null and userType != ''" >
 			    and user_type =  #{userType}
 			</if>
+			<if test="multiStatus != null and multiStatus != ''" >
+			    and status in 
+			    <foreach collection="multiStatus" item="item" open="(" close=")" separator=",">
+					${item}
+				</foreach>
+			</if>
 			</trim>
    	</select>
+
+	<select useCache="false" id="getMyOrderVoList" resultMap="myOrderList" parameterType="com.yhhl.common.SearchPageUtil">
+		select os.order_id,op.order_prod_id,op.prod_id,op.stock_id,op.prod_name,op.prod_num,os.order_amount,os.express_fee,os.owner_user_name,os.status,os.create_time,p.img_url from orders os 
+		left join order_products op on os.order_id=op.order_id 
+		left join products p on op.prod_id=p.prod_id
+		where 1=1
+		<trim  suffixOverrides="," >
+			<if test="orderId != null and orderId != ''" >
+			    and os.order_id =  #{orderId}
+			</if>
+			<if test="ownerUserName != null and ownerUserName != ''" >
+			    and os.owner_user_name =  #{ownerUserName}
+			</if>
+			<if test="ownerRealName != null and ownerRealName != ''" >
+			    and os.owner_real_name =  #{ownerRealName}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			    and os.create_time =  #{createTime}
+			</if>
+			<if test="ids != null and ids != ''" >
+			    and os.order_id in
+			    <foreach collection="ids" item="item" open="(" close=")" separator=",">
+					${item}
+				</foreach>
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
   	
 </mapper>   

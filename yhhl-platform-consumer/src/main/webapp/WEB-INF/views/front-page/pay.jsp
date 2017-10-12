@@ -18,19 +18,21 @@
      </header>
      <div class="dingdanlist" onClick="">
       <table id="tbe">
-       <tr>
+       <tr id="addAddress">
         <td class="dingimg" width="65%" colspan="2">新增收货地址</td>
         <td align="right"><img src="${frontMobileStaticCtx}/images/jian-new.png" /></td>
        </tr>
-       <tr><td colspan="3" style="height:10px; background:#efefef;padding:0;"></td></tr>
-       <tr>
-        <td class="dingimg" width="65%" colspan="2">选择收货时间</td>
-        <td align="right"><img src="${frontMobileStaticCtx}/images/jian-new.png" /></td>
-       </tr>
+       <tr id="showtAddress">
+	        <td width="50%" colspan="2">
+	         <h3 id="realName"></h3>
+	         <time id="addressDetail"></time>
+	        </td>
+	        <td align="right" width="50%"><a href="${ctx}/address/selectAddress.do?orderId=${order.orderId}" class="hui">切换地址</a></td>
+	   </tr>
        <tr><td colspan="3" style="height:10px; background:#efefef;padding:0;"></td></tr>
        <tr>
         <td class="dingimg" width="65%" colspan="2">支付方式</td>
-        <td align="right"><span class="hui">微信付款</span></td>
+        <td align="right"><span class="hui">微信转账</span></td>
        </tr>
        <tr><td colspan="3" style="height:10px; background:#efefef;padding:0;"></td></tr>
        <tr><td colspan="3" style="height:10px; background:#fff;padding:0;"></td></tr>
@@ -57,6 +59,7 @@
        <td width="50%">总计：<strong class="orange" id="orderTotalAmount">¥0.00</strong></td>
        <td width="40%">
        	   <input type="hidden" name="orderId" id="orderId" value="${order.orderId}"/>
+       	   <input type="hidden" name="addrId" id="addrId" value="${addrId}"/>
        	   <a href="success.html" class="jiesuan">提交订单</a>
        </td>
       </tr>

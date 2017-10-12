@@ -1,16 +1,19 @@
 package com.yhhl.address.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
-import com.yhhl.common.SearchPageUtil;
-import com.yhhl.core.Page;
+import org.springframework.util.CollectionUtils;
+
 import com.yhhl.address.dao.AddressMapper;
 import com.yhhl.address.model.Address;
+import com.yhhl.common.Constants;
 import com.yhhl.common.IdWorker;
+import com.yhhl.common.SearchPageUtil;
+import com.yhhl.core.Page;
 
 /**
  * 
@@ -33,8 +36,26 @@ public class AddressServiceImpl implements AddressServiceI {
 	 */
 	@Override
 	public void saveAddress(Address address){
-				address.setAddrId(UUID.randomUUID().toString().replace("-", ""));
-				addressMapper.insert(address);
+		address.setAddrId(idWorker.buildId());
+		if(address.getDefaultAdd()==0){ // 不设置为默认则保存后直接返回
+			addressMapper.insert(address);
+			return;
+		}
+		Map<String,Object> filterMap = new HashMap<String,Object>();
+		filterMap.put("createUserId", address.getCreateUserId());
+		filterMap.put("defaultAdd", Constants.TRUE);
+		Page<Address> page = new Page<Address>();
+		page = this.getPage(filterMap, page, 1, 0);
+		if(CollectionUtils.isEmpty(page.getResult())){// 目前没有默认则保存后返回
+			addressMapper.insert(address);
+			return;
+		}
+		// 如果已经有默认的，先取消默认再保存
+		for(Address addr : page.getResult()){
+			addr.setDefaultAdd(Integer.parseInt(Constants.FALSE));
+			addressMapper.updateByPrimaryKey(addr);
+		}
+		addressMapper.insert(address);
 	}
 
 	/**
@@ -47,7 +68,7 @@ public class AddressServiceImpl implements AddressServiceI {
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "", "" };//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
+		String order[] = { "default_add desc","addr_id desc"};//排序字段，可以是多个 类似：{ "name  desc", "id asc" };
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);
@@ -70,6 +91,24 @@ public class AddressServiceImpl implements AddressServiceI {
 	 */
 	@Override
 	public void updateAddress(Address address) {
+		if(address.getDefaultAdd()==0){// 如果不设置默认则直接更新
+			addressMapper.updateByPrimaryKey(address);
+			return;
+		}
+		Map<String,Object> filterMap = new HashMap<String,Object>();
+		filterMap.put("createUserId", address.getCreateUserId());
+		filterMap.put("defaultAdd", Constants.TRUE);
+		Page<Address> page = new Page<Address>();
+		page = this.getPage(filterMap, page, 1, 0);
+		if(CollectionUtils.isEmpty(page.getResult())){// 目前没有默认则保存后返回
+			addressMapper.updateByPrimaryKey(address);
+			return;
+		}
+		// 如果已经有默认的，先取消默认再保存
+		for(Address addr : page.getResult()){
+			addr.setDefaultAdd(Integer.parseInt(Constants.FALSE));
+			addressMapper.updateByPrimaryKey(addr);
+		}
 		addressMapper.updateByPrimaryKey(address);
 	}
 

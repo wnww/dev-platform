@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<div class="copyright" style="padding-top: 5px;">Copyright &copy; <span class="blue">瀛海Soft</span></div>
+
 <div class="height1"></div>
+
 <div class="footNav">
   <dl>
    <a href="${ctx}/index.do">
@@ -21,7 +22,7 @@
    </a>
   </dl>
   <dl>
-   <a href="user.html">
+   <a href="${ctx}/userCenter/index.do">
     <dt><span class="glyphicon glyphicon-user"></span></dt>
     <dd>我的</dd>
    </a>

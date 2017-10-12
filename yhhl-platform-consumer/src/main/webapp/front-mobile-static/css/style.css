@@ -316,9 +316,8 @@ ul.es-pager li.act {
 	height:auto;
 	}
 .copyright{
-	height:35px;
-	line-height:35px;
-	text-align:center;
+	position: fixed;
+	line-height:16px;
 	}
 
 /*footNav*/
@@ -513,7 +512,7 @@ header{
 	}
 .lrList2 button:hover,.lrSub input:hover,.lrSub a:hover{ background:#f60;}
 .lrSub{
-	padding:20px 10px;
+	padding:5px 5px;
 	}
 .lrSub input,.lrSub a{
 	display:block;

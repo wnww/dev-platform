@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +28,7 @@ import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
 import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.order.model.Orders;
+import com.yhhl.order.model.OrdersVo;
 import com.yhhl.order.service.OrdersServiceI;
 import com.yhhl.orderproduct.model.OrderProducts;
 import com.yhhl.orderproduct.service.OrderProductsServiceI;
@@ -65,9 +67,74 @@ public class FrontOrdersController {
 	@LoginCheck(frontMustLogin = Constants.TRUE)
 	public ModelAndView index(@RequestParam(value="orderId") String orderId,HttpServletRequest request) {
 		Orders order = ordersService.getById(orderId);
+		String addrId = request.getParameter("addrId");
+		if(StringUtil.isEmpty(addrId)){
+			request.setAttribute("addrId", "");
+		}else{
+			request.setAttribute("addrId", addrId);
+		}
 		request.setAttribute("order", order);
 		return new ModelAndView("front-page/pay");
 	}
+	
+	/**
+	 * 进入我的订单列表页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/myOrder")
+	@LoginCheck(frontMustLogin = Constants.TRUE)
+	public ModelAndView myOrder(HttpServletRequest request) {
+		
+		return new ModelAndView("front-page/my_orders");
+	}
+	
+	/**
+	 * 查询 我的订单 列表（前台用户中心使用）
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getMyOrdersDatas")
+	@LoginCheck(frontMustLogin = Constants.TRUE)
+	@ResponseBody
+	public ResultBean<Orders> getMyOrdersDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+			@RequestParam(value = "rows") int rows) {
+		ResultBean<Orders> result = new ResultBean<Orders>();
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		Page<Orders> dataPage = new Page<Orders>();
+		filterMap.put("ownerUserName", SpringWebUtil.getLoginUser().getUserId());
+		dataPage = ordersService.getPage(filterMap, dataPage, page, rows);
+		if(CollectionUtils.isEmpty(dataPage.getResult())){
+			result.setTotal(dataPage.getTotalCount());
+			result.setRows(dataPage.getResult());
+			return result;
+		}
+		List<String> ids = new ArrayList<String>();
+		for(Orders order : dataPage.getResult()){
+			ids.add(order.getOrderId());
+		}
+		filterMap.clear();
+		filterMap.put("ids", ids);
+		List<OrdersVo> orderVos = ordersService.getMyOrderVoList(filterMap);
+		List<Orders> orders = this.putTogether(dataPage.getResult(), orderVos);
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(orders);
+		return result;
+	}
+	
+	private List<Orders> putTogether(List<Orders> orders, List<OrdersVo> orderVos){
+		for(Orders order : orders){
+			List<OrdersVo> orderDetailList = new ArrayList<OrdersVo>();
+			for(OrdersVo ordersVo : orderVos){
+				if(order.getOrderId().equals(ordersVo.getOrderId())){
+					orderDetailList.add(ordersVo);
+				}
+			}
+			order.setOrderDetailList(orderDetailList);
+		}
+		return orders;
+	}
+	
 	
 	/**
 	 * 查询 订单 列表
@@ -81,7 +148,7 @@ public class FrontOrdersController {
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		Page<Orders> dataPage = new Page<Orders>();
-		filterMap.put("createUserName", SpringWebUtil.getLoginUser().getUserId());
+		filterMap.put("ownerUserName", SpringWebUtil.getLoginUser().getUserId());
 		dataPage = ordersService.getPage(filterMap, dataPage, page, rows);
 		ResultBean<Orders> result = new ResultBean<Orders>();
 		result.setTotal(dataPage.getTotalCount());

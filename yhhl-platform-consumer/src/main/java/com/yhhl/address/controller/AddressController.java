@@ -34,7 +34,7 @@ import com.yhhl.address.service.AddressServiceI;
  * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
  */ 
 @Controller
-@RequestMapping("/address") 
+@RequestMapping("/sysManage/address") 
 public class AddressController {
 	
 	private final static Logger log= Logger.getLogger(AddressController.class);
