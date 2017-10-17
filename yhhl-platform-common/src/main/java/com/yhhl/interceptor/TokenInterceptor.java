@@ -1,7 +1,6 @@
 package com.yhhl.interceptor;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yhhl.InitServlet;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 
@@ -22,6 +20,7 @@ import com.yhhl.common.StringUtil;
  *
  */
 public class TokenInterceptor extends HandlerInterceptorAdapter {
+	
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 		if (handler instanceof HandlerMethod) {//方法级拦截
@@ -41,7 +40,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 						ResultBean<String> rb = new ResultBean<String>();
 						rb.setFlag(ResultBean.REPEAT);
 						rb.setMsg("请刷新页面再提交！");
-						rb.setRows(InitServlet.dataList);
+						rb.setRows(LoginInterceptor.dataList);
 						response.getWriter().write(JSONObject.toJSON(rb).toString());
 						return false;
 					}

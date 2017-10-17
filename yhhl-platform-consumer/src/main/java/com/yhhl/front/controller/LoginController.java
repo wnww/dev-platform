@@ -1,5 +1,7 @@
 package com.yhhl.front.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.yhhl.common.LoginUser;
 import com.yhhl.common.MD5Utils;
 import com.yhhl.common.ResultBean;
+import com.yhhl.common.SpringWebUtil;
 import com.yhhl.user.model.User;
 import com.yhhl.user.service.UserServiceI;
 
@@ -37,34 +40,74 @@ public class LoginController {
 		String password = request.getParameter("password");
 		if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)){
 			result.setFlag(ResultBean.FAIL);
-			result.setMsg("用户名或密码不能为空！");
+			result.setMsg("手机号或密码不能为空！");
 			return result;
 		}
 		password = MD5Utils.MD5(password);
 		User user = userService.getByUserNameAndPwd(userName, password);
 		if (user == null) {
 			result.setFlag(ResultBean.FAIL);
-			result.setMsg("用户名或密码不正确！");
+			result.setMsg("手机号或密码不正确！");
 			return result;
 		}
 		LoginUser loginUser = new LoginUser();
 		loginUser.setUserId(user.getId());
 		loginUser.setUserName(user.getName());
 		loginUser.setNikeName(user.getName());
-		request.getSession().setAttribute("loginUser", loginUser);
+		SpringWebUtil.setSessionAttribute("loginUser", loginUser);
 		result.setFlag(ResultBean.SUCCESS);
 		return result;
 	}
 	
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+		if(SpringWebUtil.getLoginUser()!=null){
+			SpringWebUtil.removeSessionAttribute("loginUser");
+		}
+		ModelAndView view = new ModelAndView("front-page/index");
+		return view;
+	}
+	
 	@RequestMapping("/register")
 	public ModelAndView register(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView view = new ModelAndView("front-page/login");
+		ModelAndView view = new ModelAndView("front-page/register");
 		return view;
 	}
 	
 	@RequestMapping("/submitRegister")
-	public ModelAndView submitRegister(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView view = new ModelAndView("front-page/login");
-		return view;
+	@ResponseBody
+	public ResultBean<String> submitRegister(HttpServletRequest request, HttpServletResponse response) {
+		ResultBean<String> result = new ResultBean<String>();
+		String userName = request.getParameter("userName");
+		String password = request.getParameter("password");
+		if(StringUtils.isEmpty(userName)){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("手机号不能为空！");
+			return result;
+		}
+		if(StringUtils.isEmpty(password)){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("密码不能为空！");
+			return result;
+		}
+		User temp = userService.getByUserNameAndPwd(userName, null);
+		if(temp!=null){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("用户名已经存在，不能重复注册");
+			return result;
+		}
+		User user = new User();
+		user.setName(userName);
+		user.setCreateTime(new Date());
+		user.setPwd(password);
+		userService.saveUser(user);
+		LoginUser loginUser = new LoginUser();
+		loginUser.setUserId(user.getId());
+		loginUser.setUserName(user.getName());
+		loginUser.setNikeName(user.getName());
+		SpringWebUtil.setSessionAttribute("loginUser", loginUser);
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("注册成功");
+		return result;
 	}
 }

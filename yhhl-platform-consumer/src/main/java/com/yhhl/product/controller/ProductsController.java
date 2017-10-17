@@ -79,25 +79,6 @@ public class ProductsController {
 	}
 	
 	/**
-	 * 前台查询产品列表
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/getFrontProductsDatas")
-	@ResponseBody
-	public ResultBean<Products> getFrontProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
-			@RequestParam(value = "rows") int rows) {
-		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
-		Page<Products> dataPage = new Page<Products>();
-		dataPage = productsService.getFrontPage(filterMap, dataPage, page, rows);
-		
-		ResultBean<Products> result = new ResultBean<Products>();
-		result.setTotal(dataPage.getTotalCount());
-		result.setRows(dataPage.getResult());
-		return result;
-	}
-	
-	/**
 	 * 进入到初始化新增、修改页面
 	 * @param request
 	 * @return

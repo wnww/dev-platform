@@ -32,7 +32,10 @@ import com.yhhl.order.model.OrdersVo;
 import com.yhhl.order.service.OrdersServiceI;
 import com.yhhl.orderproduct.model.OrderProducts;
 import com.yhhl.orderproduct.service.OrderProductsServiceI;
- 
+import com.yhhl.product.model.Products;
+import com.yhhl.product.service.ProductsServiceI;
+import com.yhhl.stock.service.StocksServiceI;
+
 /**
  * 
  * <br>
@@ -40,24 +43,26 @@ import com.yhhl.orderproduct.service.OrderProductsServiceI;
  * <b>作者：</b>www.cbice.com<br>
  * <b>日期：</b> June 12, 2015 <br>
  * <b>版权所有：<b>版权所有(C) 2015 国版中心<br>
- */ 
+ */
 @Controller
-@RequestMapping("/orders") 
+@RequestMapping("/orders")
 public class FrontOrdersController {
-	
-	private final static Logger log= Logger.getLogger(FrontOrdersController.class);
-	
-	// Servrice start
-	@Autowired //自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
+
+	private final static Logger log = Logger.getLogger(FrontOrdersController.class);
+
+	@Autowired // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
 	private OrdersServiceI ordersService;
 	@Autowired // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
 	private CartsServiceI cartsService;
 	@Autowired
 	private OrderProductsServiceI orderProductsService;
 	@Autowired
+	private StocksServiceI stocksService;
+	@Autowired
+	private ProductsServiceI productsService;
+	@Autowired
 	private IdWorker idWorker;
-	
-	
+
 	/**
 	 * 进入待支付页面
 	 * 
@@ -65,18 +70,18 @@ public class FrontOrdersController {
 	 */
 	@RequestMapping("/pay")
 	@LoginCheck(frontMustLogin = Constants.TRUE)
-	public ModelAndView index(@RequestParam(value="orderId") String orderId,HttpServletRequest request) {
+	public ModelAndView index(@RequestParam(value = "orderId") String orderId, HttpServletRequest request) {
 		Orders order = ordersService.getById(orderId);
 		String addrId = request.getParameter("addrId");
-		if(StringUtil.isEmpty(addrId)){
+		if (StringUtil.isEmpty(addrId)) {
 			request.setAttribute("addrId", "");
-		}else{
+		} else {
 			request.setAttribute("addrId", addrId);
 		}
 		request.setAttribute("order", order);
 		return new ModelAndView("front-page/pay");
 	}
-	
+
 	/**
 	 * 进入我的订单列表页面
 	 * 
@@ -85,12 +90,13 @@ public class FrontOrdersController {
 	@RequestMapping("/myOrder")
 	@LoginCheck(frontMustLogin = Constants.TRUE)
 	public ModelAndView myOrder(HttpServletRequest request) {
-		
+		request.setAttribute("orderStatus", request.getParameter("orderStatus"));
 		return new ModelAndView("front-page/my_orders");
 	}
-	
+
 	/**
 	 * 查询 我的订单 列表（前台用户中心使用）
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -104,13 +110,13 @@ public class FrontOrdersController {
 		Page<Orders> dataPage = new Page<Orders>();
 		filterMap.put("ownerUserName", SpringWebUtil.getLoginUser().getUserId());
 		dataPage = ordersService.getPage(filterMap, dataPage, page, rows);
-		if(CollectionUtils.isEmpty(dataPage.getResult())){
+		if (CollectionUtils.isEmpty(dataPage.getResult())) {
 			result.setTotal(dataPage.getTotalCount());
 			result.setRows(dataPage.getResult());
 			return result;
 		}
 		List<String> ids = new ArrayList<String>();
-		for(Orders order : dataPage.getResult()){
+		for (Orders order : dataPage.getResult()) {
 			ids.add(order.getOrderId());
 		}
 		filterMap.clear();
@@ -121,12 +127,12 @@ public class FrontOrdersController {
 		result.setRows(orders);
 		return result;
 	}
-	
-	private List<Orders> putTogether(List<Orders> orders, List<OrdersVo> orderVos){
-		for(Orders order : orders){
+
+	private List<Orders> putTogether(List<Orders> orders, List<OrdersVo> orderVos) {
+		for (Orders order : orders) {
 			List<OrdersVo> orderDetailList = new ArrayList<OrdersVo>();
-			for(OrdersVo ordersVo : orderVos){
-				if(order.getOrderId().equals(ordersVo.getOrderId())){
+			for (OrdersVo ordersVo : orderVos) {
+				if (order.getOrderId().equals(ordersVo.getOrderId())) {
 					orderDetailList.add(ordersVo);
 				}
 			}
@@ -134,10 +140,10 @@ public class FrontOrdersController {
 		}
 		return orders;
 	}
-	
-	
+
 	/**
 	 * 查询 订单 列表
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -155,16 +161,18 @@ public class FrontOrdersController {
 		result.setRows(dataPage.getResult());
 		return result;
 	}
-	
+
 	/**
 	 * 查询 订单商品 列表
+	 * 
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping("/getOrderProductsDatas")
 	@LoginCheck(frontMustLogin = Constants.TRUE)
 	@ResponseBody
-	public ResultBean<OrderProducts> getOrderProductsDatas(HttpServletRequest request, @RequestParam(value = "orderId") String orderId) {
+	public ResultBean<OrderProducts> getOrderProductsDatas(HttpServletRequest request,
+			@RequestParam(value = "orderId") String orderId) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
 		filterMap.put("orderId", orderId);
 		List<OrderProducts> list = orderProductsService.getByOrderId(filterMap);
@@ -172,24 +180,26 @@ public class FrontOrdersController {
 		result.setRows(list);
 		return result;
 	}
-	
+
 	/**
 	 * 进入到初始化新增、修改页面
+	 * 
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping("/initAddOrders")
 	public ModelAndView initAddOrders(HttpServletRequest request) {
 		String id = request.getParameter("id");
-		if(StringUtil.isNotEmpty(id)){
+		if (StringUtil.isNotEmpty(id)) {
 			Orders orders = ordersService.getById(id);
 			request.setAttribute("orders", orders);
 		}
 		return new ModelAndView("order/addOrders");
 	}
-	
+
 	/**
-	 * 新增
+	 * 根据购物车下单
+	 * 
 	 * @param user
 	 * @param request
 	 * @return
@@ -197,24 +207,25 @@ public class FrontOrdersController {
 	@RequestMapping("/saveOrdersByCarts")
 	@LoginCheck(frontMustLogin = Constants.TRUE)
 	@ResponseBody
-	public ResultBean<String> saveOrdersByCarts(@RequestParam(value="carts") String carts, HttpServletRequest request) {
+	public ResultBean<String> saveOrdersByCarts(@RequestParam(value = "carts") String carts,
+			HttpServletRequest request) {
 		ResultBean<String> result = new ResultBean<String>();
 		long time = DateUtils.getNowDateTime();
-		if(StringUtil.isEmpty(carts)){
+		if (StringUtil.isEmpty(carts)) {
 			result.setFlag(ResultBean.FAIL);
 			result.setMsg("没有选择任何商品，请在购物车中选择商品后再结算");
 			return result;
 		}
 		List<String> idList = new ArrayList<String>();
-		if(carts.indexOf(",")>0){
+		if (carts.indexOf(",") > 0) {
 			String[] ids = carts.split(",");
 			idList = Arrays.asList(ids);
-		}else{
+		} else {
 			idList.add(carts);
 		}
-		
+
 		List<Carts> cartList = cartsService.getByCartIds(idList);
-		if(cartList.size()==0){
+		if (cartList.size() == 0) {
 			result.setFlag(ResultBean.FAIL);
 			result.setMsg("没有选择任何商品，请在购物车中选择商品后再结算");
 			return result;
@@ -229,8 +240,8 @@ public class FrontOrdersController {
 		orders.setStatus(Constants.OrderStatus.S11.getStatus());
 		// 构造订单子表数据
 		long totalAmount = 0l;
-		List<OrderProducts> opList= new ArrayList<OrderProducts>();
-		for(Carts cs : cartList){
+		List<OrderProducts> opList = new ArrayList<OrderProducts>();
+		for (Carts cs : cartList) {
 			OrderProducts op = new OrderProducts();
 			op.setOrderId(orders.getOrderId());
 			op.setOrderProdId(idWorker.buildId());
@@ -240,24 +251,99 @@ public class FrontOrdersController {
 			op.setUnitPrice(cs.getUnitPrice());
 			op.setStockId(cs.getStockId());
 			opList.add(op);
-			totalAmount = totalAmount+(cs.getUnitPrice()*cs.getBuyNum());
+			totalAmount = totalAmount + (cs.getUnitPrice() * cs.getBuyNum());
 		}
 		orders.setOrderAmount(totalAmount);
 		ordersService.saveOrderAndOrderProduct(orders, opList, idList);
 		result.setFlag(ResultBean.SUCCESS);
-		result.setMsg("保存成功");;
+		result.setMsg("保存成功");
+		result.setData(orders.getOrderId());
+		return result;
+	}
+
+	/**
+	 * 直接下单购买
+	 * @param prodId 产品ID
+	 * @param stockId 库存ID
+	 * @param buyNum 购买数量
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/saveOrdersDirect")
+	@LoginCheck(frontMustLogin = Constants.TRUE)
+	@ResponseBody
+	public ResultBean<String> saveOrdersDirect(@RequestParam(value = "prodId") String prodId,
+			@RequestParam(value = "stockId") String stockId, @RequestParam(value = "buyNum") int buyNum,
+			HttpServletRequest request) {
+		ResultBean<String> result = new ResultBean<String>();
+		long time = DateUtils.getNowDateTime();
+		// 构造订单主表数据
+		Orders orders = new Orders();
+		orders.setCreateTime(time);
+		orders.setModifyTime(time);
+		orders.setOrderId(idWorker.buildId());
+		orders.setCreateUserName(SpringWebUtil.getLoginUser().getUserId());
+		orders.setOwnerUserName(SpringWebUtil.getLoginUser().getUserId());
+		orders.setStatus(Constants.OrderStatus.S11.getStatus());
+		Products product = productsService.getById(prodId);
+		orders.setOrderAmount(product.getUnitPriceSell()*buyNum);
+		// 构造订单子表，订单商品数据
+		OrderProducts op = new OrderProducts();
+		op.setOrderId(orders.getOrderId());
+		op.setOrderProdId(idWorker.buildId());
+		op.setProdId(prodId);
+		op.setProdName(product.getProdName());
+		op.setProdNum(buyNum);
+		op.setUnitPrice(product.getUnitPriceSell());
+		op.setStockId(stockId);
+		List<OrderProducts> opList = new ArrayList<OrderProducts>();
+		opList.add(op);
+		ordersService.saveOrderAndOrderProduct(orders, opList, null);
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("保存成功");
+		result.setData(orders.getOrderId());
 		return result;
 	}
 	
 	/**
-	* 删除
-	*
-	* @param request
-	* @param id
-	*/
+	 * 更新订单（更新订单，姓名，电话，地址，运费等）
+	 *
+	 * @param request
+	 * @param id
+	 */
+	@RequestMapping("/updateOrder")
+	@ResponseBody
+	public ResultBean<String> updateOrder(HttpServletRequest request, @RequestParam(value="orderId") String orderId) {
+		ResultBean<String> result = new ResultBean<String>();
+		Orders order = ordersService.getById(orderId);
+		if(order==null){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("找不到该订单");
+		}
+		long time = DateUtils.getNowDateTime();
+		order.setCreateTime(time);
+		order.setOwnerRealName(request.getParameter("ownerRealName"));
+		order.setOwnerMobile(request.getParameter("ownerMobile"));
+		order.setPostAddress(request.getParameter("postAddress"));
+		if(StringUtil.isNotEmpty(request.getParameter("expressFee"))){
+			order.setExpressFee(Long.parseLong(request.getParameter("expressFee")));
+		}else{
+			order.setExpressFee(0l);
+		}
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("订单提交成功");
+		return result;
+	}
+
+	/**
+	 * 删除
+	 *
+	 * @param request
+	 * @param id
+	 */
 	@RequestMapping("/delOrders")
 	@ResponseBody
-	public ResultBean<String> delOrders(HttpServletRequest request,String id){
+	public ResultBean<String> delOrders(HttpServletRequest request, String id) {
 		ResultBean<String> result = new ResultBean<String>();
 		ordersService.deleteById(id);
 		result.setFlag(ResultBean.SUCCESS);

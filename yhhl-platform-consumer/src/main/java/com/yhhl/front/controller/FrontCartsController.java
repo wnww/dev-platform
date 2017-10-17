@@ -129,7 +129,6 @@ public class FrontCartsController {
 
 	@RequestMapping("/saveCarts")
 	@LoginCheck(frontMustLogin = Constants.TRUE)
-	@Token(remove = true)
 	@ResponseBody
 	public ResultBean<String> saveCarts(Carts carts, HttpServletRequest request) {
 		ResultBean<String> result = new ResultBean<String>();

@@ -2,14 +2,25 @@ var getDataFlag = true;
 $(document).ready(function(){
 	
 	$('#ajax_loading').css("display","block"); //显示加载时候的提示
-	getIndexList(1,2);
-	gotoNextPage(1,2);
+	getIndexList(1,pageSize);
+	gotoNextPage(1,pageSize);
+	getRecommendList();
+	$("#aboutMyMall").on("click",function(){
+		$("#myModal").modal('show');
+	});
+	
+	$("#secondCode").on("click",function(){
+		$("#mySecondCodeModal").modal('show');
+	});
+	$("#mySecondCodeModal").on("click",function(){
+		$("#mySecondCodeModal").modal('hide');
+	});
 });
 
 function getIndexList(page,rows){
 	$.ajax({
 		type: "get",
-		url: ctx+"/sysManage/products/getFrontProductsDatas.do?t="+new Date(),
+		url: ctx+"/getFrontProductsDatas.do?t="+new Date(),
 		data: "page="+page+"&rows="+rows,
 		dataType: "json",
 		beforeSend:function(){
@@ -25,6 +36,7 @@ function getIndexList(page,rows){
 				$('#ajax_loading').css("display","none"); 
 				//return;
 			}
+			$("#totalCount").html(data.total);
 			$.each(rows,function(index, item) {
 				//console.log(item.prodName);
 				var div = $('<div class="index-pro1-list">');
@@ -45,14 +57,16 @@ function getIndexList(page,rows){
 			$('#ajax_loading').css("display","none"); 
 		},
 		error:function(messg)  { 
-       	    $.messager.alert('错误提示', '操作失败:'+messg.responseText, 'error');
+			alertMsg(messg.responseText);
        } 
 	});
 }
 
 function gotoNextPage(page,rows){
 	$(window).scroll(function(){
-        if($(document).scrollTop()>=$(document).height()-$(window).height()){
+		var stp = $(document).scrollTop()+40;
+		var sub = $(document).height()-$(window).height();
+        if(stp >= sub){
         	$('#ajax_loading').css("display","block"); //显示加载时候的提示
         	if(getDataFlag){
         		page = page+1;
@@ -63,5 +77,31 @@ function gotoNextPage(page,rows){
         		},2000);
         	}
         }
+	});
+}
+
+function getRecommendList(){
+	$.ajax({
+		type: "get",
+		url: ctx+"/getFrontProductsDatas.do?t="+new Date(),
+		data: "page=1&rows=3&filter_recommend=1",
+		dataType: "json",
+		success: function(data){
+			if(data.rows.length>0){
+				$("#sliderA").empty();
+			}
+			$.each(data.rows,function(index, item) {
+				var img = $('<img src="'+getFirstImg(ctx,item.imgUrl)+'"/>');
+				img.on("click",function(){
+					document.location.href=ctx+"/prodDetail.do?prodId="+item.prodId;
+				});
+				$("#sliderA").append(img);
+			});
+			$("#sliderA").excoloSlider();
+		},
+		error:function(messg)  { 
+			//alertMsg(messg.responseText);
+			console.log(messg.responseText);
+       } 
 	});
 }

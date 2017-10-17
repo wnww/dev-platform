@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.collect.dao.CollectsMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.collect.model.Collects" >
+	<result column="collect_id" property="collectId"/>
+	<result column="prod_id" property="prodId"/>
+	<result column="user_id" property="userId"/>
+	<result column="create_time" property="createTime"/>
+	
+	<result column="prod_name" property="prodName"/>
+	<result column="img_url" property="imgUrl"/>
+</resultMap>
+       
+<!-- collects table all fields -->
+<sql id="Base_Column_List" >
+	 collect_id,prod_id,user_id,create_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereCollectsClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="collectId != null and collectId != ''" >
+	    and collect_id =  #{collectId}
+	</if>
+	<if test="prodId != null and prodId != ''" >
+	    and prod_id =  #{prodId}
+	</if>
+	<if test="userId != null and userId != ''" >
+	    and user_id =  #{userId}
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.collect.model.Collects" >
+  insert into collects (collect_id,prod_id,user_id,create_time)
+ values(#{collectId, jdbcType=VARCHAR},#{prodId, jdbcType=VARCHAR},#{userId, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.collect.model.Collects" >
+  update collects set collect_id=#{collectId, jdbcType=VARCHAR},prod_id=#{prodId, jdbcType=VARCHAR},user_id=#{userId, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT} where collect_id=#{collectId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.collect.model.Collects" >
+	update collects set 
+	<trim  suffixOverrides="," >
+	<if test="prodId != null  ">
+		prod_id=#{prodId, jdbcType=VARCHAR},
+	</if>
+	<if test="userId != null  ">
+		user_id=#{userId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime, jdbcType=BIGINT}
+	</if>
+	</trim> where collect_id=#{collectId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from collects where collect_id = #{collectId}
+</delete>
+
+<!-- 删除记录 -->
+<delete id="deleteByProperty" parameterType="java.util.Map">
+	delete from collects where user_id =  #{userId} 
+	<if test="prodId != null and prodId != ''" >
+		and prod_id =  #{prodId}
+	</if>
+	   
+	
+</delete>
+ 
+<!-- 根据id查询 收藏 -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from collects where collect_id = #{collectId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select cs.collect_id,cs.prod_id,cs.user_id,cs.create_time,p.prod_name,p.img_url 
+		from collects cs left join products p on cs.prod_id=p.prod_id 
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.collectId != null and object.collectId != ''" >
+			    and collect_id =  #{object.collectId}
+			</if>
+							<if test="object.prodId != null and object.prodId != ''" >
+			    and prod_id =  #{object.prodId}
+			</if>
+							<if test="object.userId != null and object.userId != ''" >
+			    and user_id =  #{object.userId}
+			</if>
+							<if test="object.createTime != null and object.createTime != ''" >
+			    and create_time =  #{object.createTime}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM collects 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="collectId != null and collectId != ''" >
+			    and collect_id =  #{collectId}
+			</if>
+							<if test="prodId != null and prodId != ''" >
+			    and prod_id =  #{prodId}
+			</if>
+							<if test="userId != null and userId != ''" >
+			    and user_id =  #{userId}
+			</if>
+							<if test="createTime != null and createTime != ''" >
+			    and create_time =  #{createTime}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

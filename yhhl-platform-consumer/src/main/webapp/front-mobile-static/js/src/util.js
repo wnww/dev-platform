@@ -1,3 +1,5 @@
+// 每页显示数量
+var pageSize=2;
 // currentModle 1:开发； 2:生产
 var currentModle = 1;
 //获取当前网址，如：

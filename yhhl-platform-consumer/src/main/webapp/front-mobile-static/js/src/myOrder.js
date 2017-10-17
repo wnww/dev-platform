@@ -1,16 +1,16 @@
 var getDataFlag = true;
+var currentPage = 1;
 $(document).ready(function(){
 	
 	$('#ajax_loading').css("display","block"); //显示加载时候的提示
-	getOrderList(1,2);
-	gotoNextPage(1,2);
+	
 });
 
-function getOrderList(page,rows){
+function getOrderList(rows,status){
 	$.ajax({
 		type: "get",
 		url: ctx+"/orders/getMyOrdersDatas.do?t="+new Date(),
-		data: "page="+page+"&rows="+rows,
+		data: "page="+currentPage+"&rows="+rows+"&filter_status="+status,
 		dataType: "json",
 		beforeSend:function(){
             
@@ -19,12 +19,16 @@ function getOrderList(page,rows){
 			var rows = data.rows;
 			//$("#prodList").empty();
 			$("#clearDiv").remove();
-			console.log("=============="+rows.length);
 			if(rows.length==0){
 				getDataFlag = false;
-				$('#ajax_loading').css("display","none"); 
+				$('#ajax_loading').css("display","none");
 			}
+			if(currentPage==1&&rows.length==0){
+				$("#orderList").append('<div style="text-align:center;margin-top:30px;"><span style="font-size:16px; border: 1px solid #f60;border-color: #ff3800;border-radius:3px;background: #ffeecc; width:90%;padding-left:30%;padding-right:30%">没有订单!</span></div>');
+			}
+			
 			$.each(rows,function(index, item) {
+				getDataFlag = true;
 				//console.log(item.prodName);
 				var div = $('<div class="dingdanlist">');
 				var table = $('<table>');
@@ -73,13 +77,16 @@ function getOrderList(page,rows){
 	});
 }
 
-function gotoNextPage(page,rows){
+function gotoNextPage(rows,status){
+	orderStatus = status;
 	$(window).scroll(function(){
-        if($(document).scrollTop()>=$(document).height()-$(window).height()){
+		var stp = $(document).scrollTop()+40;
+		var sub = $(document).height()-$(window).height();
+        if(stp >= sub){
         	$('#ajax_loading').css("display","block"); //显示加载时候的提示
         	if(getDataFlag){
-        		page = page+1;
-        		getOrderList(page,rows);
+        		currentPage = currentPage+1;
+        		getOrderList(rows,orderStatus);
         	}else{
         		setTimeout(function(){
         			$('#ajax_loading').css("display","none"); //显示加载时候的提示

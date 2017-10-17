@@ -32,7 +32,7 @@
 	        <strong>${prod.prodName }</strong>
 	       </td>
 	       <td align="right" width="30%" style="padding-right:15px;">
-	        <a href="javascript:;" class="shoucang"><span class="glyphicon glyphicon-star-empty"></span></a>
+	        <a href="javascript:void(0);" id="showCang" class="shoucang"><span id="start" class="glyphicon glyphicon-star-empty"></span></a>
 	       </td>
 	   </tr>
        <tr>
@@ -80,7 +80,7 @@
      <div style="margin-bottom: 5px;">
 	     <ul class="pronav">
 		      <li style="width:50%"><a href="javascript:void(0);" onclick="saveCarts();">加入购物车</a></li>
-		      <li style="width:50%"><a href="prolist.html">直接购买</a></li>
+		      <li style="width:50%"><a href="javascript:void(0);" onclick="saveOrders();">直接购买</a></li>
 		      <div class="clearfix"></div>
 	     </ul>
      </div>

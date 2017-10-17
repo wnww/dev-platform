@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
@@ -46,7 +47,6 @@ public class ProdDetailController {
 	@Autowired
 	private StocksServiceI stocksService; 
 
-	@Token(save = true)
 	@RequestMapping("/prodDetail")
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = new ModelAndView("front-page/prod_detail");
@@ -61,5 +61,35 @@ public class ProdDetailController {
 		dataPage = stocksService.getPage(filterMap, dataPage, 1, 0);
 		request.setAttribute("stocks", dataPage.getResult());
 		return view;
+	}
+	
+	/**
+	 * 商品列表表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/prodList")
+	public ModelAndView prodList (HttpServletRequest request) {
+		ModelAndView view = new ModelAndView("front-page/prodList");
+		return view;
+	}
+	
+	/**
+	 * 查询产品列表数据
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getFrontProductsDatas")
+	@ResponseBody
+	public ResultBean<Products> getFrontProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
+			@RequestParam(value = "rows") int rows) {
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		Page<Products> dataPage = new Page<Products>();
+		dataPage = productsService.getFrontPage(filterMap, dataPage, page, rows);
+		
+		ResultBean<Products> result = new ResultBean<Products>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
 	}
 }

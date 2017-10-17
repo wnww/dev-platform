@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.yhhl.cart.dao.CartsMapper;
 import com.yhhl.cart.service.CartsServiceI;
@@ -60,10 +61,11 @@ public class OrdersServiceImpl implements OrdersServiceI {
 		for(OrderProducts op : list){
 			orderProductsMapper.insert(op);
 		}
-		cartsService.deleteByCartIds(cartIds);
+		// 购物车ID不为空，删除购物车相应的数据
+		if(!CollectionUtils.isEmpty(cartIds)){
+			cartsService.deleteByCartIds(cartIds);
+		}
 	}
-
-
 
 	/**
 	 * 分页查询

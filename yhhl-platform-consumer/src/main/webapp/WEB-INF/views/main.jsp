@@ -327,9 +327,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
                                     <li><a href="javascript:void(0);" onclick="addTab('订单管理','${ctx}/sysManage/orders/index.do')">订单管理</a></li>
                                 </ul>      
-                            </div>   
-                            <div title="系统管理"> 
+                            </div>
+                            <div title="系统管理、配置"> 
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0);" onclick="addTab('类别管理','${ctx}/sysManage/category/index.do')">类别管理</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('运费管理','${ctx}/sysManage/expressFee/index.do')">运费管理</a></li>
                                     <li><a href="javascript:void(0);" onclick="addTab('字典管理','${ctx}/sysManage/dicts/index.do')">字典管理</a></li>
                                     <li><a href="javascript:void(0);" onclick="addTab('用户管理','${ctx}/sysManage/user/index.do')">用户管理</a></li>
                                     <li><a href="javascript:void(0);" onclick="addTab('角色管理','${ctx}/sysManage/roles/index.do')">角色管理</a></li>

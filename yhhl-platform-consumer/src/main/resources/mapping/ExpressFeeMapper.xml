@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.expressfee.dao.ExpressFeeMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.expressfee.model.ExpressFee" >
+	<result column="express_fee_id" property="expressFeeId"/>
+	<result column="province" property="province"/>
+	<result column="city" property="city"/>
+	<result column="fee" property="fee"/>
+	<result column="space1" property="space1"/>
+	<result column="space2" property="space2"/>
+</resultMap>
+       
+<!-- express_fee table all fields -->
+<sql id="Base_Column_List" >
+	 express_fee_id,province,city,fee,space1,space2
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereExpressFeeClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="expressFeeId != null and expressFeeId != ''" >
+	    and express_fee_id =  #{expressFeeId}
+	</if>
+	<if test="province != null and province != ''" >
+	    and province =  #{province}
+	</if>
+	<if test="city != null and city != ''" >
+	    and city =  #{city}
+	</if>
+	<if test="fee != null and fee != ''" >
+	    and fee =  #{fee}
+	</if>
+	<if test="space1 != null and space1 != ''" >
+	    and space1 =  #{space1}
+	</if>
+	<if test="space2 != null and space2 != ''" >
+	    and space2 =  #{space2}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.expressfee.model.ExpressFee" >
+  insert into express_fee (express_fee_id,province,city,fee,space1,space2)
+ values(#{expressFeeId, jdbcType=VARCHAR},#{province, jdbcType=VARCHAR},#{city, jdbcType=VARCHAR},#{fee, jdbcType=BIGINT},#{space1, jdbcType=VARCHAR},#{space2, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.expressfee.model.ExpressFee" >
+  update express_fee set express_fee_id=#{expressFeeId, jdbcType=VARCHAR},province=#{province, jdbcType=VARCHAR},city=#{city, jdbcType=VARCHAR},fee=#{fee, jdbcType=BIGINT},space1=#{space1, jdbcType=VARCHAR},space2=#{space2, jdbcType=VARCHAR} where express_fee_id=#{expressFeeId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.expressfee.model.ExpressFee" >
+	update express_fee set 
+	<trim  suffixOverrides="," >
+	<if test="province != null  ">
+		province=#{province, jdbcType=VARCHAR},
+	</if>
+	<if test="city != null  ">
+		city=#{city, jdbcType=VARCHAR},
+	</if>
+	<if test="fee != null  ">
+		fee=#{fee, jdbcType=BIGINT},
+	</if>
+	<if test="space1 != null  ">
+		space1=#{space1, jdbcType=VARCHAR},
+	</if>
+	<if test="space2 != null  ">
+		space2=#{space2, jdbcType=VARCHAR}
+	</if>
+	</trim> where express_fee_id=#{expressFeeId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from express_fee where express_fee_id = #{expressFeeId}
+</delete>
+ 
+<!-- 根据id查询 运费 -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from express_fee where express_fee_id = #{expressFeeId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from express_fee
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.expressFeeId != null and object.expressFeeId != ''" >
+			    and express_fee_id =  #{object.expressFeeId}
+			</if>
+							<if test="object.province != null and object.province != ''" >
+			    and province =  #{object.province}
+			</if>
+							<if test="object.city != null and object.city != ''" >
+			    and city =  #{object.city}
+			</if>
+							<if test="object.fee != null and object.fee != ''" >
+			    and fee =  #{object.fee}
+			</if>
+							<if test="object.space1 != null and object.space1 != ''" >
+			    and space1 =  #{object.space1}
+			</if>
+							<if test="object.space2 != null and object.space2 != ''" >
+			    and space2 =  #{object.space2}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM express_fee 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="expressFeeId != null and expressFeeId != ''" >
+			    and express_fee_id =  #{expressFeeId}
+			</if>
+							<if test="province != null and province != ''" >
+			    and province =  #{province}
+			</if>
+							<if test="city != null and city != ''" >
+			    and city =  #{city}
+			</if>
+							<if test="fee != null and fee != ''" >
+			    and fee =  #{fee}
+			</if>
+							<if test="space1 != null and space1 != ''" >
+			    and space1 =  #{space1}
+			</if>
+							<if test="space2 != null and space2 != ''" >
+			    and space2 =  #{space2}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

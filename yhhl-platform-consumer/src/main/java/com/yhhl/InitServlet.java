@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import com.yhhl.common.ConfigUtils;
+import com.yhhl.common.SpringContextHolder;
+import com.yhhl.platform.service.CacheOperateI;
 
 public class InitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +23,10 @@ public class InitServlet extends HttpServlet {
     	application.setAttribute("frontPcStaticCtx", application.getContextPath()+"/"+ConfigUtils.getString("frontPcStaticCtx"));
     	
     	application.setAttribute("websiteTitle", ConfigUtils.getString("websiteTitle"));
+    	
+    	CacheOperateI cacheOperate = SpringContextHolder.getBean("cacheOperate");
+
+    	cacheOperate.cacheExpressFee(application);
 	}
 
 }

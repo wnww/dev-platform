@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.category.dao.CategoryMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.category.model.Category" >
+	<result column="cat_id" property="catId"/>
+	<result column="parent_id" property="parentId"/>
+	<result column="wbs" property="wbs"/>
+	<result column="cat_name" property="catName"/>
+	<result column="sub_count" property="subCount"/>
+	<result column="space1" property="space1"/>
+	<result column="space2" property="space2"/>
+</resultMap>
+       
+<!-- category table all fields -->
+<sql id="Base_Column_List" >
+	 cat_id,parent_id,wbs,cat_name,sub_count,space1,space2
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereCategoryClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="catId != null and catId != ''" >
+	    and cat_id =  #{catId}
+	</if>
+	<if test="parentId != null and parentId != ''" >
+	    and parent_id =  #{parentId}
+	</if>
+	<if test="wbs != null and wbs != ''" >
+	    and wbs =  #{wbs}
+	</if>
+	<if test="catName != null and catName != ''" >
+	    and cat_name =  #{catName}
+	</if>
+	<if test="subCount != null and subCount != ''" >
+	    and sub_count =  #{subCount}
+	</if>
+	<if test="space1 != null and space1 != ''" >
+	    and space1 =  #{space1}
+	</if>
+	<if test="space2 != null and space2 != ''" >
+	    and space2 =  #{space2}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.category.model.Category" >
+  insert into category (cat_id,parent_id,wbs,cat_name,sub_count,space1,space2)
+ values(#{catId, jdbcType=VARCHAR},#{parentId, jdbcType=VARCHAR},#{wbs, jdbcType=VARCHAR},#{catName, jdbcType=VARCHAR},#{subCount, jdbcType=INTEGER},#{space1, jdbcType=VARCHAR},#{space2, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.category.model.Category" >
+  update category set cat_id=#{catId, jdbcType=VARCHAR},parent_id=#{parentId, jdbcType=VARCHAR},wbs=#{wbs, jdbcType=VARCHAR},cat_name=#{catName, jdbcType=VARCHAR},sub_count=#{subCount, jdbcType=INTEGER},space1=#{space1, jdbcType=VARCHAR},space2=#{space2, jdbcType=VARCHAR} where cat_id=#{catId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.category.model.Category" >
+	update category set 
+	<trim  suffixOverrides="," >
+	<if test="parentId != null  ">
+		parent_id=#{parentId, jdbcType=VARCHAR},
+	</if>
+	<if test="wbs != null  ">
+		wbs=#{wbs, jdbcType=VARCHAR},
+	</if>
+	<if test="catName != null  ">
+		cat_name=#{catName, jdbcType=VARCHAR},
+	</if>
+	<if test="subCount != null  ">
+		sub_count=#{subCount, jdbcType=INTEGER},
+	</if>
+	<if test="space1 != null  ">
+		space1=#{space1, jdbcType=VARCHAR},
+	</if>
+	<if test="space2 != null  ">
+		space2=#{space2, jdbcType=VARCHAR}
+	</if>
+	</trim> where cat_id=#{catId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from category where cat_id = #{catId}
+</delete>
+ 
+<!-- 根据id查询 category -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from category where cat_id = #{catId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from category
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.catId != null and object.catId != ''" >
+			    and cat_id =  #{object.catId}
+			</if>
+							<if test="object.parentId != null and object.parentId != ''" >
+			    and parent_id =  #{object.parentId}
+			</if>
+							<if test="object.wbs != null and object.wbs != ''" >
+			    and wbs =  #{object.wbs}
+			</if>
+							<if test="object.catName != null and object.catName != ''" >
+			    and cat_name =  #{object.catName}
+			</if>
+							<if test="object.subCount != null and object.subCount != ''" >
+			    and sub_count =  #{object.subCount}
+			</if>
+							<if test="object.space1 != null and object.space1 != ''" >
+			    and space1 =  #{object.space1}
+			</if>
+							<if test="object.space2 != null and object.space2 != ''" >
+			    and space2 =  #{object.space2}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM category 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="catId != null and catId != ''" >
+			    and cat_id =  #{catId}
+			</if>
+							<if test="parentId != null and parentId != ''" >
+			    and parent_id =  #{parentId}
+			</if>
+							<if test="wbs != null and wbs != ''" >
+			    and wbs =  #{wbs}
+			</if>
+							<if test="catName != null and catName != ''" >
+			    and cat_name =  #{catName}
+			</if>
+							<if test="subCount != null and subCount != ''" >
+			    and sub_count =  #{subCount}
+			</if>
+							<if test="space1 != null and space1 != ''" >
+			    and space1 =  #{space1}
+			</if>
+							<if test="space2 != null and space2 != ''" >
+			    and space2 =  #{space2}
+			</if>
+			</trim>
+   	</select>
+  	
+  	<select useCache="false" id="getMaxWbs" parameterType="java.util.Map" resultType="java.lang.String">
+     	SELECT MAX(wbs) FROM category WHERE parent_id=#{parentId}
+   	</select>
+</mapper>   

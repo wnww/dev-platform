@@ -1,9 +1,9 @@
 package com.yhhl.common;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -67,6 +67,10 @@ public class SpringWebUtil {
 
 	public static void removeSessionAttribute(String name) {
 		getRequest().getSession().removeAttribute(name);
+	}
+	
+	public static ServletContext getServletContext(){
+		return getRequest().getSession().getServletContext();
 	}
 	
 	public static LoginUser getLoginUser(){

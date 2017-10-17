@@ -2,7 +2,7 @@
 
 <div class="height1"></div>
 
-<div class="footNav">
+<div class="footNav" id="footNav">
   <dl>
    <a href="${ctx}/index.do">
     <dt><span class="glyphicon glyphicon-home"></span></dt>
@@ -10,7 +10,7 @@
    </a>
   </dl>
   <dl>
-   <a href="prolist.html">
+   <a href="${ctx}/prodList.do">
     <dt><span class="glyphicon glyphicon-th"></span></dt>
     <dd>商品列表</dd>
    </a>

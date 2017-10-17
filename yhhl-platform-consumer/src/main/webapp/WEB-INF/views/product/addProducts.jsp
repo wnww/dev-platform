@@ -32,7 +32,8 @@
 		    },
 		    error:function(messg)  { 
 	       	    $.messager.alert('错误提示', messg.responseText, 'error');
-	       }  
+	       }
+		    
 		});
 		$('#prodName').focus();
 		
@@ -74,9 +75,6 @@
 	        },
 	        "autoCommit":false,//文件是否自动上传
 	        "fileType":['png','jpg','jpeg','docx','doc']//文件类型限制，默认不限制，注意写的是文件后缀
-
-	        
-	        
 	    });
 		
 		var showImg = "${products.imgUrl }";
@@ -104,6 +102,16 @@
 	}
 	
 	///////////////////////////////////
+	
+	$(document).ready(function(){
+		// 初始化商品类别
+	    $('#type').combotree({
+	        url: '${ctx}//sysManage/category/getCategoryCombTree.do?filter_parentId=0',
+	        editable:false,
+	        multiple: false,
+	        required: true
+	    });
+	});
 </script>
 </head>
 <body>
@@ -143,8 +151,8 @@
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="mark" value="${products.mark }" style="width:100%;" data-options="required:true">
 	    </div>
 	    <div style="margin-bottom:20px">
-	        <label class="label-top">类型</label>
-	        <input class="easyui-textbox theme-textbox-radius" type="text" name="type" value="${products.type }" style="width:100%;" data-options="required:true">
+	        <label class="label-top">类别</label>
+	        <input class="easyui-textbox theme-textbox-radius" type="text" id="type" name="type" value="${products.type }" style="width:100%;" data-options="required:true">
 	    </div>
 	    <div id="showImg">
 	    </div>

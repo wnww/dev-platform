@@ -201,6 +201,7 @@
     </div><!--maincont-->
   </body>
   <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/jquery.cityselect.js"></script>
+  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/keyboard_opt.js"></script>
   <script type="text/javascript">
   $.fn.bootstrapSwitch.defaults.onText = '是';
   $.fn.bootstrapSwitch.defaults.offText = '否';

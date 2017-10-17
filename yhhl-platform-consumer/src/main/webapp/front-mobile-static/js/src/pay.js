@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	getIndexList();
-	getDefaultAddress();
+	
 	$("#addAddress").on('click',function(){
-		document.location.href=ctx+"/address/initAddAddress.do";
+		document.location.href=ctx+"/address/initAddAddress.do?orderId="+$("#orderId").val();
 	});
 	$("#selectAddress").on('click',function(){
 		document.location.href=ctx+"/address/selectAddress.do?orderId="+$("#orderId").val();
@@ -21,10 +21,10 @@ function getIndexList(){
 			$.each(rows,function(index, item) {
 				var tr1 = $('<tr>');
 				var td1 = $('<td class="dingimg" width="30%"><img src="'+getFirstImg(ctx,item.imgUrl)+'" /></td>');
-				var td2 = $('<td width="50%">');
+				var td2 = $('<td width="45%">');
 				var th = $('<h3>'+item.prodName+'</h3>');
 				td2.append(th);
-				var td3 = $('<td align="right" width="20%"><span class="qingdan">×'+item.prodNum+'</span></td>');
+				var td3 = $('<td align="right" width="25%"><span class="qingdan">×'+item.prodNum+'</span></td>');
 				tr1.append(td1);
 				tr1.append(td2);
 				tr1.append(td3);
@@ -37,6 +37,7 @@ function getIndexList(){
 			});
 			$("#orderAmount").val(totalMoney);
 			$("#showOrderAmount").html(moneyFormatterNoY(totalMoney/100));
+			getDefaultAddress();
 		},
 		error:function(messg)  { 
 			alertMsg('操作失败:'+messg.responseText);
@@ -58,6 +59,30 @@ function getDefaultAddress(){
 				$("#addAddress").hide();
 				$("#realName").html(data.rows[0].realName+" "+data.rows[0].mobile);
 				$("#addressDetail").html(data.rows[0].province+data.rows[0].city+data.rows[0].address);
+				$("#ownerRealName").val(data.rows[0].realName);
+				$("#ownerMobile").val(data.rows[0].mobile);
+				$("#postAddress").val(data.rows[0].province+data.rows[0].city+data.rows[0].address);
+				
+				console.log("data.rows[0].province==="+data.rows[0].province);
+				if(data.rows[0].province=="北京"){
+					for(var i=0; i<expressFeeData.length; i++){
+						if(expressFeeData[i].province=="北京"){
+							$("#expressFee").html(expressFeeData[i].fee);
+							console.log("expressFee==="+expressFeeData[i].fee);
+							break;
+						}
+					}
+				}else if(data.rows[0].province=="河北"){
+					for(var i=0; i<expressFeeData.length; i++){
+						if(expressFeeData[i].province=="河北"){
+							$("#expressFee").html(expressFeeData[i].fee);
+							console.log("expressFee==="+expressFeeData[i].fee);
+							break;
+						}
+					}
+				}
+				var amountT = parseFloat($("#expressFee").html())+parseFloat($("#orderAmount").val()/100);
+				$("#orderTotalAmount").html(moneyFormatterNoY(amountT));
 			}else{
 				$("#showtAddress").hide();
 				$("#addAddress").show();
@@ -87,7 +112,7 @@ function sumbitOrder(){
 		dataType : "json",
 		success : function(data) {
 			if (data.flag == 1) {
-				alertMsg(data.msg,"/index.do");
+				alertMsg(data.msg,"/userCenter/myOrder.do");
 			} else if (data.flag == 3) {
 				alertMsg(data.msg,"/login.do");
 			} else {

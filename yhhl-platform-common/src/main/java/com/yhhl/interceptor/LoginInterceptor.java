@@ -2,6 +2,8 @@ package com.yhhl.interceptor;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yhhl.InitServlet;
 import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 
@@ -24,6 +25,7 @@ import com.yhhl.common.ResultBean;
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 	
 	private final static Logger log= Logger.getLogger(LoginInterceptor.class);
+	public static List dataList = new ArrayList();
 	
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	Object obj = request.getSession().getAttribute("loginUser");
@@ -69,7 +71,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		ResultBean<String> rb = new ResultBean<String>();
 		rb.setFlag(ResultBean.NO_LOGIN);
 		rb.setMsg("未登录，请先登录！");
-		rb.setRows(InitServlet.dataList);
+		rb.setRows(dataList);
 		response.getWriter().write(JSONObject.toJSON(rb).toString());
     }
 

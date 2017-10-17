@@ -36,32 +36,13 @@
      </div><!--userName/-->
      
      <ul class="userNav">
-      <li><span class="glyphicon glyphicon-list-alt"></span><a href="${ctx}/orders/myOrder.do">我的订单</a></li>
-      <div class="height2"></div>
-      <div class="state">
-         <dl>
-          <dt><a href="order.html"><img src="${frontMobileStaticCtx}/images/user1.png" /></a></dt>
-          <dd><a href="order.html">待支付</a></dd>
-         </dl>
-         <dl>
-          <dt><a href="order.html"><img src="${frontMobileStaticCtx}/images/user2.png" /></a></dt>
-          <dd><a href="order.html">待发货</a></dd>
-         </dl>
-         <dl>
-          <dt><a href="order.html"><img src="${frontMobileStaticCtx}/images/user3.png" /></a></dt>
-          <dd><a href="order.html">待收货</a></dd>
-         </dl>
-         <dl>
-          <dt><a href="order.html"><img src="${frontMobileStaticCtx}/images/user4.png" /></a></dt>
-          <dd><a href="order.html">全部订单</a></dd>
-         </dl>
-         <div class="clearfix"></div>
-      </div><!--state/-->
-      <li><span class="glyphicon glyphicon-map-marker"></span><a href="${ctx}/address/selectAddress.do">收货地址管理</a></li>
+      <li><span class="glyphicon glyphicon-list-alt" style="color:#00ff00"></span><a href="${ctx}/orders/myOrder.do">我的订单</a></li>
+      <li><span class="glyphicon glyphicon-star" style="color:#ff6600"></span><a href="${ctx}/collects/index.do">我的收藏</a></li>
+      <li><span class="glyphicon glyphicon-map-marker" style="color:#0066ff"></span><a href="${ctx}/address/selectAddress.do">收货地址管理</a></li>
 	 </ul><!--userNav/-->
      
-     <div class="lrSub">
-       <a href="javascript:;">退出登录</a>
+     <div class="lrSub" style="margin-bottom: 10px">
+       <a href="${ctx}/logout.do">退出登录</a>
      </div>
      
     <!--footNav-->
