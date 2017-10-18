@@ -109,9 +109,17 @@ public class ProductsController {
 		if(StringUtil.isNotEmpty(products.getProdId())){
 			Products productsTemp = productsService.getById(products.getProdId());
 			// 将页面修改的信息在这里替换
+			productsTemp.setProdName(products.getProdName());
 			productsTemp.setUnitPriceCost(products.getUnitPriceCost());
+			productsTemp.setUnitPriceSell(products.getUnitPriceSell());
+			//productsTemp.setBrands(products.getBrands());
+			//productsTemp.setUnit(products.getUnit());
+			//productsTemp.setMark(products.getMark());
 			productsTemp.setImgUrl(products.getImgUrl());
 			productsTemp.setModifyTime(time);
+			productsTemp.setType(products.getType());
+			productsTemp.setProdCome(products.getProdCome());
+			productsTemp.setProdComeUrl(products.getProdComeUrl());
 			productsService.updateProducts(productsTemp);
 			result.setFlag(ResultBean.SUCCESS);
 			result.setMsg("修改成功");
@@ -191,6 +199,38 @@ public class ProductsController {
 		productsService.deleteById(id);
 		result.setFlag(ResultBean.SUCCESS);
 		result.setMsg("修改成功");
+		return result;
+	}
+	
+	/**
+	* 设置推荐
+	*
+	* @param request
+	* @param id
+	*/
+	@RequestMapping("/recommend")
+	@ResponseBody
+	public ResultBean<String> recommend(HttpServletRequest request,String id,String recommend){
+		ResultBean<String> result = new ResultBean<String>();
+		Map<String,Object> filterMap = new HashMap<String,Object>();
+		filterMap.put("recommend", Constants.TRUE);
+		int count = productsService.getCount(filterMap);
+		if(count>=5 && recommend.equals(Constants.TRUE)){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("推荐商品不能超过5个");
+			return result;
+		}
+		Products product = productsService.getById(id);
+		if(!recommend.equals(product.getRecommend())){
+			product.setRecommend(recommend);
+			productsService.updateProducts(product);
+		}
+		result.setFlag(ResultBean.SUCCESS);
+		if(recommend.equals(Constants.TRUE)){
+			result.setMsg("推荐成功");
+		}else{
+			result.setMsg("取消推荐成功");
+		}
 		return result;
 	}
 	

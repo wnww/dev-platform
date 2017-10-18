@@ -5,11 +5,17 @@
 <%@ include file="/common/mobilemeta.jsp" %>
 <%@ include file="/common/mobileimport.jsp" %>
 <title>${websiteTitle}</title>
+<style type="text/css">
+.slider .slide-dragcontainer .slide-container .slide-wrapper img{
+	width:80% !important;
+	margin-left: 10% !important;
+}
+</style>
 </head>
 <body>
   <div class="maincont">
      <div class="head-top">
-      	<div id="sliderA" class="slider">
+      	<div id="sliderA" class="slider" style="background-image: url('${frontMobileStaticCtx}/images/bg.jpg'); background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;">
 	      <img src="${ctx}/userfiles/imgFiles/20170928/2017092815521893134.jpg"/>
 	      <img src="${ctx}/userfiles/imgFiles/20170926/2017092616262334430.jpg"/>
      	</div><!--sliderA/-->
@@ -25,10 +31,6 @@
        <div class="clearfix"></div>
       </dl>
      </div><!--head-top/-->
-     <form action="#" method="get" class="search">
-      <input type="text" class="seaText fl" />
-      <input type="submit" value="搜索" class="seaSub fr" />
-     </form><!--search/-->
      <c:if test="${empty loginUser}">
 	     <ul class="reg-login-click">
 	      <li><a href="${ctx}/login.do">登录</a></li>
@@ -56,7 +58,7 @@
     </div><!--maincont-->
     <script>
 		$(function () {
-		 
+		 	
 		});
 	</script>
 	

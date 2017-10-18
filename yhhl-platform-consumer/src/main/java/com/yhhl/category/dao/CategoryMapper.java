@@ -38,4 +38,8 @@ public interface CategoryMapper {
 	int updateByPrimaryKey(Category record) throws DataAccessException;
 	
 	String getMaxWbs(Map<String,Object> filterMap) throws DataAccessException;
+	
+	List<Category> getChildrenByWbs(Map<String,Object> filterMap) throws DataAccessException;
+	
+	String getByWbs(String wbs) throws DataAccessException;
 }

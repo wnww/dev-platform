@@ -10,6 +10,12 @@
 	String fileRoot = (String)request.getAttribute("includeHtmlPath");
  %>
 <title>${websiteTitle}</title>
+<style type="text/css">
+.slider .slide-dragcontainer .slide-container .slide-wrapper img{
+	width:80% !important;
+	margin-left: 10% !important;
+}
+</style>
 </head>
 <body>
   <div class="maincont">

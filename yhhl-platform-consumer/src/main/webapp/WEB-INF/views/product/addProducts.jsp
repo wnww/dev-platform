@@ -106,10 +106,39 @@
 	$(document).ready(function(){
 		// 初始化商品类别
 	    $('#type').combotree({
-	        url: '${ctx}//sysManage/category/getCategoryCombTree.do?filter_parentId=0',
+	        url: '${ctx}/sysManage/category/getCategoryCombTree.do?filter_parentId=0',
 	        editable:false,
 	        multiple: false,
-	        required: true
+	        required: true,
+	        onBeforeExpand:function(node){
+	        	$('#type').combotree('tree').tree('options').url = '${ctx}/sysManage/category/getCategoryCombTree.do?filter_wbs='+node.id;
+	        },
+	        onLoadSuccess:function(node,data){
+	        	var currentType = "${products.type}";
+	        	console.log("currentType=="+currentType);
+	        	$.ajax({
+					type : "get",
+					url : "${ctx}/sysManage/category/getByWbs.do?wbs="+currentType,
+					dataType : "json",
+					success : function(data) {
+						if (data.flag == 1) {
+							$("#_easyui_textbox_input11").val(data.data);
+						} else if (data.flag == 2) {
+							$.messager.alert('结果', data.msg, 'info');
+						} else if (data.flag == 3) {
+							$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+								document.location.href="${ctx}/sysManage/index.do";
+							});
+						} else {
+							$.messager.alert('结果', '操作失败，请重试', 'error');
+						}
+					},
+					error : function(messg) {
+						$.messager.alert('错误提示', '操作失败:'
+								+ messg.responseText, 'error');
+					}
+				});
+	        }
 	    });
 	});
 </script>
@@ -125,6 +154,18 @@
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="prodName" value="${products.prodName }" style="width:100%;" data-options="required:true">
 	    </div>
 	    <div style="margin-bottom:20px">
+	        <label class="label-top">类别</label>
+	        <input class="easyui-textbox theme-textbox-radius" type="text" id="type" name="type" value="${products.type }" style="width:100%;" data-options="required:true">
+	    </div>
+	    <div style="margin-bottom:20px">
+	        <label class="label-top">进货方</label>
+	        <input class="easyui-textbox theme-textbox-radius" type="text" name="prodCome" value="${products.prodCome }" style="width:100%;" data-options="required:true">
+	    </div>
+	    <div style="margin-bottom:20px">
+	        <label class="label-top">商品原URL</label>
+	        <input class="easyui-textbox theme-textbox-radius" type="text" name="prodComeUrl" value="${products.prodComeUrl }" style="width:100%;" data-options="required:true">
+	    </div>
+	    <div style="margin-bottom:20px">
 	        <label class="label-top">进货单价</label>
 	        <input class="easyui-textbox theme-textbox-radius" type="text" id="unitPriceCostTemp" name="unitPriceCostTemp" value='<fmt:formatNumber value="${products.unitPriceCost/100}" type="currency" pattern="0.00"/>' style="width:100%;" data-options="required:true">
 	        <input type="hidden" name="unitPriceCost" id="unitPriceCost"/>
@@ -134,7 +175,7 @@
 	        <input class="easyui-textbox theme-textbox-radius" type="text" id="unitPriceSellTemp" name="unitPriceSellTemp" value="<fmt:formatNumber value="${products.unitPriceSell/100}" type="currency" pattern="0.00"/>" style="width:100%;" data-options="required:true">
 	        <input type="hidden" name="unitPriceSell" id="unitPriceSell"/>
 	    </div>
-	    <div style="margin-bottom:20px">
+	    <!-- div style="margin-bottom:20px">
 	        <label class="label-top">品牌</label>
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="brands" value="${products.brands }" style="width:100%;" data-options="required:true">
 	    </div>
@@ -149,11 +190,7 @@
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">标签</label>
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="mark" value="${products.mark }" style="width:100%;" data-options="required:true">
-	    </div>
-	    <div style="margin-bottom:20px">
-	        <label class="label-top">类别</label>
-	        <input class="easyui-textbox theme-textbox-radius" type="text" id="type" name="type" value="${products.type }" style="width:100%;" data-options="required:true">
-	    </div>
+	    </div-->
 	    <div id="showImg">
 	    </div>
 	    <div>

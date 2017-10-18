@@ -1,17 +1,40 @@
 var getDataFlag = true;
 pageSize = 10;
+
 $(document).ready(function(){
 	
 	$('#ajax_loading').css("display","block"); //显示加载时候的提示
 	getProdList(1,pageSize);
 	gotoNextPage(1,pageSize);
+	getAllCategory();
+	// 筛选、排序
+	$('.retrie dt a').click(function(){
+		var $t=$(this);
+		if($t.hasClass('up')){
+			$(".retrie dt a").removeClass('up');
+			$('.downlist').hide();
+			$('.mask').hide();
+		}else{
+			$(".retrie dt a").removeClass('up');
+			$('.downlist').hide();
+			$t.addClass('up');
+			$('.downlist').eq($(".retrie dt a").index($(this)[0])).show();
+			$('.mask').show();
+		}
+	});
+	$(".area ul li a:contains('"+$('#area').text()+"')").addClass('selected');
+	$(".wage ul li a:contains('"+$('#wage').text()+"')").addClass('selected');
 });
 
-function getProdList(page,rows){
+function getProdList(page,rows,type){
+	var param = "page="+page+"&rows="+rows;
+	if(type!=null && typeof(type)!="undefined" && type!='' && type!=undefined){
+		param = "page="+page+"&rows="+rows+"&filter_type="+type;
+	}
 	$.ajax({
 		type: "get",
 		url: ctx+"/getFrontProductsDatas.do?t="+new Date(),
-		data: "page="+page+"&rows="+rows,
+		data: param,
 		dataType: "json",
 		beforeSend:function(){
             
@@ -62,4 +85,48 @@ function gotoNextPage(page,rows){
         	}
         }
 	});
+}
+
+function getAllCategory(){
+	$.ajax({
+		type: "get",
+		url: ctx+"/category/getCategoryDatas.do?t="+new Date(),
+		data: "page=1&rows=0",
+		dataType: "json",
+		success: function(data){
+			$.each(data.rows,function(index, item) {
+				var space = "";
+				var wbs = item.wbs.split("-");
+				if(wbs.length>1){
+					space="|";
+				}
+				for(var i=1; i<wbs.length;i++){
+					space = space+"----";
+				}
+				space = space+item.catName;
+				var cat = $('<li><a href="javascript:void(0);">'+space+'</a></li> ');
+				cat.on("click",function(){
+					$("#prodList").empty();
+					getProdList(1,pageSize,item.wbs);
+					hideShow();
+				});
+				$("#category").append(cat);
+			});
+		},
+		error:function(messg)  { 
+			console.log(messg.responseText);
+       } 
+	});
+}
+
+function hideShow(){
+	$(".retrie dt a").removeClass('up');
+	$('.downlist').hide();
+	$('.mask').hide();
+}
+
+function prodOrder(){
+	$("#prodList").empty();
+	getProdList(1,pageSize,item.wbs);
+	hideShow();
 }

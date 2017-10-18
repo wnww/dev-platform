@@ -9,6 +9,7 @@
 <%@ include file="/common/meta.jsp"%>
 <%@ include file="/common/import.jsp"%>
 <script type="text/javascript" src="${ctx}/js/money.js"></script>
+<script type="text/javascript" src="${frontMobileStaticCtx}/js/src/util.js"></script>
 <script type="text/javascript"
 	src="${ctx}/js/WdatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
@@ -44,31 +45,52 @@
 			pageList : [ 3, 5, 10, 50 ],
 			idField : 'prodId',
 			columns : [ [ {	field : 'prodName',	title : '商品名称',width : 100, sortable : true}, 
-				{field : 'unitPriceCost',title : '进货单价',width : 65,
+				{field : 'unitPriceCost',title : '进货单价',width : 50,
 					formatter : function(value) {
 						return moneyFormatterNoY(value / 100);
 					}
 				},
-				{field : 'unitPriceSell',title : '销售单价',width : 65,
+				{field : 'unitPriceSell',title : '销售单价',width : 50,
 					formatter : function(value) {
 						return moneyFormatterNoY(value / 100);
 					}
 				}, 
-				{field : 'brands',title : '品牌',width : 100}, 
-				{field : 'unit',title : '单位',	width : 50}, 
-				{field : 'properties',title : '参数',width : 100}, 
-				{field : 'mark',title : '标签',width : 100}, 
-				{field : 'type',title : '类型',width : 65}, 
-				{field : 'createTime',title : '添加时间',	width : 100,sortable : true}, 
-				{field : 'modifyTime',title : '修改时间',	width : 100,sortable : true}, 
-				{field:'button',title:'操作',width:100,align:'center',
+				{field : 'prodCome',title : '进货方',width : 100}, 
+				{field : 'createTime',title : '添加时间',	width : 80,sortable : true,
+					formatter:function(value,rec){
+						return dateFormat(value);
+					}
+				},
+				{field:'button',title:'操作',width:150,align:'left',
 					formatter:function(value,rec){
 						var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="showProdStockData(\''+rec.prodId+'\',\''+rec.prodName+'\')" href="javascript:void(0)">';
 						btn += '<span class="l-btn-left">';
 						btn += '<span class="l-btn-text">添加库存</span>';
 						btn += '</span>';
 						btn += '</a>';
-						return btn;
+						
+						var link = '<a class="button-edit button-default l-btn l-btn-small" onclick="showSourceProd(\''+rec.prodComeUrl+'\')" href="javascript:void(0)">';
+						link += '<span class="l-btn-left">';
+						link += '<span class="l-btn-text">查看原商品</span>';
+						link += '</span>';
+						link += '</a>';
+						
+						var rcd = '';
+						if(rec.recommend=="1"){
+							rcd = '<a class="button-edit button-default l-btn l-btn-small" onclick="recommend(\''+rec.prodId+'\',\'0\')" href="javascript:void(0)">';
+						}else{
+							rcd = '<a class="button-edit button-default l-btn l-btn-small" onclick="recommend(\''+rec.prodId+'\',\'1\')" href="javascript:void(0)">';
+						}
+						rcd += '<span class="l-btn-left">';
+						if(rec.recommend=="1"){
+							rcd += '<span class="l-btn-text">取消推荐</span>';
+						}else{
+							rcd += '<span class="l-btn-text">推荐</span>';
+						}
+						rcd += '</span>';
+						rcd += '</a>';
+						
+						return btn+"&nbsp;&nbsp;"+link+"&nbsp;&nbsp;"+rcd;
 					}
 				} ] ],
 			toolbar : [ {
@@ -380,6 +402,37 @@
 	// 刷新列表
 	function productExtendReload(){
 		$('#dataItemPageList').datagrid('reload');
+	}
+	
+	function showSourceProd(url){
+		window.open(url);
+	}
+	
+	function recommend(prodId,recommend){
+		$.ajax({
+			type : "get",
+			url : "${ctx}/sysManage/products/recommend.do?id="+prodId+"&recommend="+recommend,
+			dataType : "json",
+			success : function(data) {
+				if (data.flag == 1) {
+					$.messager.alert('结果', data.msg, 'info',function(){
+						winReload();
+					});
+				} else if (data.flag == 2 || data.flag == 0) {
+					$.messager.alert('结果', data.msg, 'error');
+				} else if(data.flag == 3){
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				}else {
+					$.messager.alert('结果', '操作失败，请重试', 'error');
+				}
+			},
+			error : function(messg) {
+				$.messager.alert('错误提示', '操作失败:'
+						+ messg.responseText, 'error');
+			}
+		});
 	}
 </script>
 </script>

@@ -165,4 +165,16 @@ where 1=1
   	<select useCache="false" id="getMaxWbs" parameterType="java.util.Map" resultType="java.lang.String">
      	SELECT MAX(wbs) FROM category WHERE parent_id=#{parentId}
    	</select>
+   	
+   	<select useCache="false" id="getChildrenByWbs" parameterType="java.util.Map" resultMap="BaseResultMap">
+     	SELECT <include refid="Base_Column_List"/> FROM category WHERE 1=1 
+		<if test="wbs != null and wbs != ''" >
+		    and wbs like #{wbs}
+		</if>
+   	</select>
+   	
+   	<!-- 根据Wbs查询 category -->
+	<select id="getByWbs"  resultType="java.lang.String" parameterType="java.lang.String">
+		select cat_name from category where wbs = #{wbs}
+	</select>
 </mapper>   

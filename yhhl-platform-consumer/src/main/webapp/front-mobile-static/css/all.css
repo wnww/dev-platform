@@ -687,7 +687,7 @@ img{max-width:100%;height:auto}.maincont{width:640px;margin:0 auto}.fl{float:lef
 .head-top dt{float:left;width:20%}.head-top dt a{display:block;width:70px;height:70px;border:#fff 1px solid}.head-top dd{float:left;width:95%;padding-left:10px}
 .username{height:30px;line-height:30px;color:#fff;text-shadow:0 0 2px #000;font-size:1.6rem;font-weight:bold}.head-top li{float:left;width:33.33%;font-family:1rem;text-align:center;background:url(../images/xian0.jpg) right center no-repeat}
 .head-top li span{display:inline-block;height:25px;line-height:25px;font-size:2rem;margin:5px 0 0 0}.head-top li strong{display:inline-block;height:25px;line-height:25px;margin:5px 0 0 0}
-.head-top li p{font-size:1.2rem;color:#666;height:20px;line-height:20px}.search{margin:50px 0 0 0;width:100%;height:50px;padding:10px}.search input{border:0;background:0;margin:0;padding:0}
+.head-top li p{font-size:1.2rem;color:#666;height:20px;line-height:20px}.search{margin:0;width:100%;height:50px;padding:10px}.search input{border:0;background:0;margin:0;padding:0}
 .search .seaText{width:80%;height:30px;line-height:30px;border:#ddd 1px solid;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;background:#f1f1f1}
 .search .seaSub{width:18%;height:30px;line-height:30px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;background:#f60;color:#fff}.slider .slide-prev{cursor:pointer;height:48px;width:48px;position:absolute;left:0;top:50%;margin-top:-24px;background-color:rgba(255,255,255,0.8);padding:0}
 .slider .slide-next{cursor:pointer;height:48px;width:48px;position:absolute;right:0;top:50%;margin-top:-24px;background-color:rgba(255,255,255,0.8);padding:0}

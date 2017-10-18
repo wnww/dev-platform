@@ -84,7 +84,7 @@ function getRecommendList(){
 	$.ajax({
 		type: "get",
 		url: ctx+"/getFrontProductsDatas.do?t="+new Date(),
-		data: "page=1&rows=3&filter_recommend=1",
+		data: "page=1&rows=5&filter_recommend=1",
 		dataType: "json",
 		success: function(data){
 			if(data.rows.length>0){

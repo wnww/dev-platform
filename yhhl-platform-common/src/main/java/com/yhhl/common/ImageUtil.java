@@ -79,7 +79,7 @@ public class ImageUtil {
 	}
 
 	public static void main(String[] args) {
-		new ImageUtil().thumbnailImage("C:/Users/cm/Desktop/我的页面/images/girlNoImg.jpg", 100, 150, DEFAULT_PREVFIX,
+		new ImageUtil().thumbnailImage("E:\\帽子2.jpg", 1200, 800, DEFAULT_PREVFIX,
 				DEFAULT_FORCE);
 	}
 }

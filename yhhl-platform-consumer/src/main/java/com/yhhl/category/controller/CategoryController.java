@@ -102,11 +102,17 @@ public class CategoryController {
 	@ResponseBody
 	public List<CategoryVo> getCategoryCombTree(HttpServletRequest request) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
-		Page<Category> dataPage = new Page<Category>();
-		dataPage = categoryService.getPage(filterMap, dataPage, 1, 0);
+		List<Category> dataList = new ArrayList<Category>();
+		if(StringUtil.isEmpty(filterMap.get("wbs"))){
+			dataList = categoryService.getPage(filterMap, new Page<Category>(), 1, 0).getResult();
+		}else{
+			filterMap.put("wbs", filterMap.get("wbs")+"-___");
+			dataList = categoryService.getChildrenByWbs(filterMap);
+		}
+		
 		List<CategoryVo> list = new ArrayList<CategoryVo>();
 		try {
-			for (Category cat : dataPage.getResult()) {
+			for (Category cat : dataList) {
 				CategoryVo vo = new CategoryVo();
 				BeanUtils.copyProperties(vo, cat);
 				vo.setId(cat.getWbs());
@@ -126,6 +132,20 @@ public class CategoryController {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	@RequestMapping("/getByWbs")
+	@ResponseBody
+	public ResultBean<String> getByWbs(HttpServletRequest request) {
+		String wbs = request.getParameter("wbs");
+		if(StringUtil.isEmpty(wbs)){
+			wbs = "001";
+		}
+		String catName = categoryService.getByWbs(wbs);
+		ResultBean<String> result = new ResultBean<String>();
+		result.setFlag(ResultBean.SUCCESS);
+		result.setData(catName);
+		return result;
 	}
 
 	/**

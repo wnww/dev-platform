@@ -116,4 +116,15 @@ public class CategoryServiceImpl implements CategoryServiceI {
 		categoryMapper.deleteByPrimaryKey(id);
 	}
 
+	@Override
+	public List<Category> getChildrenByWbs(Map<String, Object> filterMap) {
+		return categoryMapper.getChildrenByWbs(filterMap);
+	}
+
+	@Override
+	public String getByWbs(String wbs) {
+		return categoryMapper.getByWbs(wbs);
+	}
+
+	
 }

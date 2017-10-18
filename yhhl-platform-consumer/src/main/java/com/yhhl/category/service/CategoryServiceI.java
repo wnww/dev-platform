@@ -3,6 +3,7 @@ package com.yhhl.category.service;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 
+import java.util.List;
 import java.util.Map;
 
 import com.yhhl.core.Page;
@@ -34,4 +35,7 @@ public interface CategoryServiceI {
 	
 	public String getMaxWbs(Map<String,Object> filterMap);
 
+	public List<Category> getChildrenByWbs(Map<String,Object> filterMap);
+	
+	public String getByWbs(String wbs);
 }
