@@ -61,7 +61,7 @@
 		//取得div层 
 		var $search = $('#search');
 		//取得输入框JQuery对象 
-		var $searchInput = $search.find('#_easyui_textbox_input1');
+		var $searchInput = $search.find('#prodName');
 		//关闭浏览器提供给输入框的自动完成 
 		$searchInput.attr('autocomplete', 'off');
 		//创建自动完成的下拉列表，用于显示服务器返回的数据,插入在搜索按钮的后面，等显示的时候再调整位置 
@@ -94,16 +94,16 @@
 					.addClass('highlight');
 		};
 		var ajax_request = function() {
-			if ($("#_easyui_textbox_input1").val() == ""
-					|| $("#_easyui_textbox_input1").val().length == 0) {
+			if ($("#prodName").val() == ""
+					|| $("#prodName").val().length == 0) {
 				return;
 			}
 			//ajax服务端通信 
 			$.ajax({
 				type : "post",
-				url : "${ctx}/sysManage/products/getProductsDatas.do?t=" + new Date(),
-				data : "page=1&rows=10&filter_prodName="
-						+ $("#_easyui_textbox_input1").val(),
+				url : "${ctx}/sysManage/products/getProductsByProdName.do?t=" + new Date(),
+				data : "page=1&rows=30&filter_prodName="
+						+ $("#prodName").val(),
 				dataType : "json",
 				'success' : function(prods) {
 					var data = prods.rows;
@@ -112,7 +112,7 @@
 						$.each(data, function(index, term) {
 							//创建li标签,添加到下拉列表中 
 							$('<li style="height:25px"></li>').text(
-									term.prodName + "," + term.prodId)
+									term.prodName + "," +term.colors+"," + term.specification + "," + term.prodId + "," + term.stockSituation)
 									.appendTo($autocomplete).addClass(
 											'clickable').hover(
 											function() {
@@ -124,15 +124,14 @@
 											},
 											function() {
 												//下拉列表每一项的事件，鼠标离开的操作 
-												$(this)
-														.removeClass(
-																'highlight');
+												$(this).removeClass('highlight');
 												//当鼠标离开时索引置-1，当作标记 
 												selectedItem = -1;
 											}).click(function() {
 										//鼠标单击下拉列表的这一项的话，就将这一项的值添加到输入框中
 										$searchInput.val(term.prodName);
 										$("#prodId").val(term.prodId);
+										$("#stockId").val(term.stockSituation);
 										//清空并隐藏下拉列表 
 										$autocomplete.empty().hide();
 									});
@@ -154,8 +153,13 @@
 			});
 		};
 		//对输入框进行事件注册 
+		  var bind_name = 'input keyup';
+	      if (navigator.userAgent.indexOf("MSIE") != -1){
+	        bind_name = 'propertychange';
+	      }
+	      
 		$searchInput
-				.keyup(
+				.on(bind_name,
 						function(event) {
 							//字母数字，退格，空格 
 							if (event.keyCode > 40 || event.keyCode == 8
@@ -198,7 +202,8 @@
 										selectedItem).text();
 								var text = allText.split(",");
 								$searchInput.val(text[0]);
-								$("#prodId").val(text[1]);
+								$("#prodId").val(text[3]);
+								$("#stockId").val(text[4]);
 								$autocomplete.empty().hide();
 								event.preventDefault();
 							}
@@ -220,6 +225,20 @@
 				'top' : ypos + "px"
 			});
 		});
+		
+		$("#prodName").on("keyup click",function(){
+			if($("#prodName").val()==""){
+				$("#showNotEmpty").show();
+				$("#prodName").css("border-color","#ff8800");
+			}else{
+				$("#showNotEmpty").hide();
+				$("#prodName").css("border-color","#aaaaaa");
+			}
+		});
+		
+		if($("#prodName").val()==""){
+			$("#prodName").css("border-color","#ff8800");
+		}
 	});
 
 	function doSubmit() {
@@ -229,6 +248,10 @@
 					.toFixed(0);
 			inputValue = parseInt(inputValue);
 			$("#unitPrice").val(inputValue);
+			if($("#prodName").val()==""){
+				$("#showNotEmpty").show();
+				return;
+			}
 			$(inputForm).submit();
 		}
 	}
@@ -239,13 +262,14 @@
 		style="width: 100%; height: 480px; max-width: 630px; padding: 20px 150px 20px 20px;">
 		<form action="${ctx}/sysManage/orderProducts/saveOrderProducts.do" id="inputForm"
 			name="inputForm" method="post">
-			<input type="hidden" name="token" id="token" value="${token}" /> <input
-				type="text" name="orderId" id="orderId" value="${orderId }" /> <input
-				type="text" name="prodId" id="prodId" />
+			<input type="hidden" name="token" id="token" value="${token}" /> 
+			<input type="hidden" name="orderId" id="orderId" value="${orderId }" /> 
+			ProdId:<input type="text" name="prodId" id="prodId" />
+			stockId:<input type="text" name="stockId" id="stockId" />
 			<div style="margin-bottom: 20px" id="search">
 				<label class="label-top">商品名称</label> <input
-					class="easyui-textbox theme-textbox-radius" type="text"
-					id="prodName" name="prodName" style="width: 100%;"
+					type="text"id="prodName" name="prodName" 
+					style="width:100%; border: 1px solid #aaaaaa;border-color: #aaaaaa;height:30px;border-radius:3px;background: #fff;"
 					data-options="required:true"> <span id="searchBtn"></span>
 			</div>
 			<div style="margin-bottom: 20px">
@@ -269,6 +293,10 @@
 			<div style="height: 20px"></div>
 		</form>
 	</div>
-
+<div id="showNotEmpty" class="tooltip tooltip-right" tabindex="-1" style="left:491px;top:93.4px;display:none;color:rgb(255,255,255);border:medium none;background-color:rgb(255,126,0);">
+	<div class="tooltip-content">该输入项为必输项</div>
+	<div class="tooltip-arrow-outer" style="border-right-color:rgb(255,255,255);"></div>
+	<div class="tooltip-arrow" style="border-right-color:rgb(255,126,0);"></div>
+<div>
 </body>
 </html>

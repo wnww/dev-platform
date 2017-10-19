@@ -79,6 +79,25 @@ public class ProductsController {
 	}
 	
 	/**
+	 * 后台根据商品名AJAX查询调用
+	 * @param request
+	 * @return
+	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
+	@RequestMapping("/getProductsByProdName")
+	@ResponseBody
+	public ResultBean<Products> getProductsByProdName(HttpServletRequest request, @RequestParam(value = "page") int page,
+			@RequestParam(value = "rows") int rows) {
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		Page<Products> dataPage = new Page<Products>();
+		dataPage = productsService.getByProdName(filterMap, dataPage, page, rows);
+		ResultBean<Products> result = new ResultBean<Products>();
+		result.setTotal(dataPage.getTotalCount());
+		result.setRows(dataPage.getResult());
+		return result;
+	}
+	
+	/**
 	 * 进入到初始化新增、修改页面
 	 * @param request
 	 * @return

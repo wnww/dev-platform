@@ -227,7 +227,7 @@
 </script>
 </head>
 <body>
-	<div class="easyui-panel" title="添加订单商品"
+	<div class="easyui-panel" title="修改订单商品"
 		style="width: 100%; height: 480px; max-width: 630px; padding: 20px 150px 20px 20px;">
 		<form action="${ctx}/sysManage/orderProducts/saveOrderProducts.do" id="inputForm"
 			name="inputForm" method="post">
@@ -252,7 +252,7 @@
 			<div style="margin-bottom: 20px">
 				<label class="label-top">出售数量</label> <input
 					class="easyui-textbox theme-textbox-radius" type="text"
-					name="ownerMobile" value="${orderProducts.ownerMobile }"
+					name="ownerMobile" value="${orderProducts.prodNum }"
 					style="width: 100%;" data-options="required:true">
 			</div>
 			<div>

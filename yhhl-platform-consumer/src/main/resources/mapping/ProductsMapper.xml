@@ -256,6 +256,21 @@ where 1=1
 		</if> 
 	</select>
 	
+	<!-- 后台根据商品名称AJAX检索时调用SQL -->
+	<select useCache="false" id="getByProdName" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select ps.prod_id,ps.prod_name,ps.unit_price_cost,ps.unit_price_sell,
+			   st.stock_id stockSituation,dc.dict_value AS colors,ds.dict_value AS specification  
+		from products ps 
+		left join stocks st on ps.prod_id=st.prod_id
+		left join dicts dc on st.colors_id=dc.dict_id
+		left join dicts ds on st.specification_id=ds.dict_id
+		where 1=1
+			<if test="object.prodName != null and object.prodName != ''" >
+			    and prod_name like concat(concat('%', #{object.prodName}),'%') 
+			</if>
+			order by prod_name
+	</select>
+	
 	<!-- 前台 分页 data-->
 	<select useCache="false" id="getFrontPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
 		select p.prod_id,p.prod_name,p.unit_price_sell,p.img_url,p.remark,p.brands,p.unit,

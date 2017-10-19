@@ -36,4 +36,5 @@ public interface ProductsServiceI {
 	
 	List<Products> getList(Map<String,Object> filterMap);
 
+	public Page<Products> getByProdName(Map<String,Object> filterMap, Page<Products> page, int pageNo, int pageSize);
 }

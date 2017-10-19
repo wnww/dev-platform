@@ -58,6 +58,24 @@ public class ProductsServiceImpl implements ProductsServiceI {
 		return page;
 	}
 	
+	/**
+	 * 后台根据商品名AJAX查询调用 
+	 */
+	@Override
+	public Page<Products> getByProdName(Map<String, Object> filterMap, Page<Products> page, int pageNo, int pageSize) {
+		page.setPageNo(pageNo);
+		page.setPageSize(pageSize);
+		SearchPageUtil searchPageUtil = new SearchPageUtil();
+		searchPageUtil.setPage(page);
+		searchPageUtil.setObject(filterMap);
+		List<Products> list = productsMapper.getByProdName(searchPageUtil);
+		page.setResult(list);
+		return page;
+	}
+
+	/**
+	 * 前台分页查询
+	 */
 	@Override
 	public Page<Products> getFrontPage(Map<String, Object> filterMap, Page<Products> page, int pageNo, int pageSize) {
 		int count = productsMapper.getCount(filterMap);

@@ -38,4 +38,6 @@ public interface ProductsMapper {
 	int updateByPrimaryKeySelective(Products record) throws DataAccessException;
 
 	int updateByPrimaryKey(Products record) throws DataAccessException;
+	
+	List<Products> getByProdName(SearchPageUtil searchPageUtil) throws DataAccessException;
 }

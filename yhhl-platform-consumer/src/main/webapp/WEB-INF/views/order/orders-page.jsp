@@ -17,7 +17,7 @@
 				url:'${ctx}/sysManage/orders/getOrdersDatas.do?t='+new Date(),
 				nowrap: false,
 				striped: true,
-				collapsible:false,				
+				collapsible:true,
 				fitColumns: true,
 				pagination:true,
 				singleSelect:true,
@@ -237,12 +237,6 @@
 					deleteOrderProductEntity();
 				}
 			},'-',{
-				text:'修改',
-				iconCls:'icon-edit',
-				handler:function(){
-					editOrderProductEntity();
-				}
-			},'-',{
 				text:'刷新',
 				iconCls:'icon-reload',
 				handler:function(){
@@ -266,6 +260,17 @@
 			}
 		});
 	}
+	
+	// 判断是否选中一条记录
+	function getSelectedOrderProd(){
+		var selected = $('#dataItemPageList').datagrid('getSelected');
+		if (selected){
+			return selected;
+		}else{
+			$.messager.alert('提示', '请选择要操作的数据', 'info');
+		}
+	}
+	
 	// 增加订单商品
 	function saveOrderProduct(id){
 		$('#saveFrame').html('');			
@@ -276,9 +281,55 @@
 		$('#saveDiv').window('open');
 	}
 	
+	// 修改订单商品
+	function editOrderProductEntity(){
+		var node = getSelectedOrderProd();
+		if(node){
+			$('#saveFrame').html('');
+			var url = '${ctx}/sysManage/orderProducts/initUpdateOrderProducts.do?id='+node.orderProdId;				
+			$('#saveFrame').attr("title",'');
+			$('#saveFrame').attr("src",url);
+			$("#saveDiv").window({title:"添加-订单商品",iconCls:'icon-add',height:"550px",width:"650px",left:"50px",top:"30px"});
+			$('#saveDiv').window('open');
+		}
+	}
+	
 	// 刷新列表
 	function orderProductReload(){
 		$('#dataItemPageList').datagrid('reload');
+	}
+	
+	function deleteOrderProductEntity(){
+		var node = getSelectedOrderProd();
+		if(node){
+	    	$.messager.confirm('确认','您确定要删除：<font color=red>'+node.prodName+'</font> ？',function(r){
+	        	if(r){
+					$.ajax({
+						type: "post",
+						url: "${ctx}/sysManage/orderProducts/delOrderProducts.do?id="+node.orderProdId,
+						dataType: "json",
+						success: function(data){
+    						if(data.flag==1){
+    							$.messager.confirm('提交结果', '操作成功', function(){
+    								orderProductReload();// 刷新列表
+    							});
+    						}else if(data.flag==2){
+    							$.messager.alert('结果', data.msg, 'info');	
+    						}else if (data.flag == 3) {
+								$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+									document.location.href="${ctx}/sysManage/index.do";
+								});
+							}else{
+    							$.messager.alert('结果', '操作失败，请重试', 'error');	
+    						}
+						},
+						error:function(messg)  { 
+				       	    $.messager.alert('错误提示', '操作失败:'+messg.responseText, 'error');
+				       } 
+					});
+	          	}
+	       });		             		
+	    }	
 	}
 	</script>
 </script>
