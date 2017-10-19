@@ -31,6 +31,9 @@
        <div class="clearfix"></div>
       </dl>
      </div><!--head-top/-->
+     <form action="#" method="get" class="search">
+      
+     </form><!--search/-->
      <c:if test="${empty loginUser}">
 	     <ul class="reg-login-click">
 	      <li><a href="${ctx}/login.do">登录</a></li>

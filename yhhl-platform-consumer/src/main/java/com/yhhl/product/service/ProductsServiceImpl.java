@@ -65,7 +65,7 @@ public class ProductsServiceImpl implements ProductsServiceI {
 		page.setPageSize(pageSize);
 		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
-		String order[] = { "p.modify_time desc", "p.create_time desc" };
+		String order[] = { page.getOrderBy()+" "+page.getOrder()};
 		searchPageUtil.setOrderBys(order);
 		searchPageUtil.setPage(page);
 		searchPageUtil.setObject(filterMap);

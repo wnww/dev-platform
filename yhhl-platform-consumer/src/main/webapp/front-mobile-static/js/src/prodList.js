@@ -1,38 +1,35 @@
 var getDataFlag = true;
-pageSize = 10;
-
+pageSize = 5;
+var currentPage = 1;
 $(document).ready(function(){
 	
 	$('#ajax_loading').css("display","block"); //显示加载时候的提示
-	getProdList(1,pageSize);
-	gotoNextPage(1,pageSize);
+	getProdList(pageSize);
+	gotoNextPage(pageSize);
 	getAllCategory();
-	// 筛选、排序
-	$('.retrie dt a').click(function(){
-		var $t=$(this);
-		if($t.hasClass('up')){
-			$(".retrie dt a").removeClass('up');
-			$('.downlist').hide();
-			$('.mask').hide();
-		}else{
-			$(".retrie dt a").removeClass('up');
-			$('.downlist').hide();
-			$t.addClass('up');
-			$('.downlist').eq($(".retrie dt a").index($(this)[0])).show();
-			$('.mask').show();
-		}
+	// 检索
+	$("#searchBtn").on("click",function(){
+		$("#prodList").empty();
+        getDataFlag = true;
+        currentPage = 1;
+        getProdList(pageSize,$("#category").val(),$("#prodOrder").val(),$("#keyWords").val());
 	});
-	$(".area ul li a:contains('"+$('#area').text()+"')").addClass('selected');
-	$(".wage ul li a:contains('"+$('#wage').text()+"')").addClass('selected');
+	
 });
 
-function getProdList(page,rows,type){
-	var param = "page="+page+"&rows="+rows;
+function getProdList(rows,type,orderBy,keyWords){
+	var param = "page="+currentPage+"&rows="+rows;
 	if(type!=null && typeof(type)!="undefined" && type!='' && type!=undefined){
-		param = "page="+page+"&rows="+rows+"&filter_type="+type;
+		param = param+"&filter_type="+type;
+	}
+	if(orderBy!=null && typeof(orderBy)!="undefined" && orderBy!='' && orderBy!=undefined){
+		param = param+"&filter_orderBy="+orderBy;
+	}
+	if(keyWords!=null && typeof(keyWords)!="undefined" && keyWords!='' && keyWords!=undefined){
+		param = param+"&filter_keyWords="+keyWords;
 	}
 	$.ajax({
-		type: "get",
+		type: "post",
 		url: ctx+"/getFrontProductsDatas.do?t="+new Date(),
 		data: param,
 		dataType: "json",
@@ -69,15 +66,15 @@ function getProdList(page,rows,type){
 	});
 }
 
-function gotoNextPage(page,rows){
+function gotoNextPage(rows){
 	$(window).scroll(function(){
 		var stp = $(document).scrollTop()+40;
 		var sub = $(document).height()-$(window).height();
         if(stp >= sub){
         	$('#ajax_loading').css("display","block"); //显示加载时候的提示
         	if(getDataFlag){
-        		page = page+1;
-        		getProdList(page,rows);
+        		currentPage = currentPage+1;
+        		getProdList(rows,$("#category").val(),$("#prodOrder").val(),$("#keyWords").val());
         	}else{
         		setTimeout(function(){
         			$('#ajax_loading').css("display","none"); //显示加载时候的提示
@@ -94,6 +91,9 @@ function getAllCategory(){
 		data: "page=1&rows=0",
 		dataType: "json",
 		success: function(data){
+			$($(".topmenu").children()[0]).find(".select_first_ul").empty();
+			var all = $('<li><p wbs="" catName="全部">全部</p></li>');
+			$($(".topmenu").children()[0]).find(".select_first_ul").append(all);
 			$.each(data.rows,function(index, item) {
 				var space = "";
 				var wbs = item.wbs.split("-");
@@ -104,14 +104,14 @@ function getAllCategory(){
 					space = space+"----";
 				}
 				space = space+item.catName;
-				var cat = $('<li><a href="javascript:void(0);">'+space+'</a></li> ');
-				cat.on("click",function(){
-					$("#prodList").empty();
-					getProdList(1,pageSize,item.wbs);
-					hideShow();
-				});
-				$("#category").append(cat);
+				var show = '<li><p wbs="'+item.wbs+'" catName="'+item.catName+'">'+space+'</p></li>';
+				//var hideWbs = '<input type="hidden" id="wbs_'+item.wbs+'" name="wbs_'+item.wbs+'" value="'+item.wbs+'"/>';
+				//var hideCatName = '<input type="hidden" id="catName_'+item.catName+'" name="catName_'+item.wbs+'" value="'+item.catName+'"/>';
+				var cat = $(show);
+				$($(".topmenu").children()[0]).find(".select_first_ul").append(cat);
 			});
+			
+			selectMenuJs();
 		},
 		error:function(messg)  { 
 			console.log(messg.responseText);
@@ -119,14 +119,36 @@ function getAllCategory(){
 	});
 }
 
-function hideShow(){
-	$(".retrie dt a").removeClass('up');
-	$('.downlist').hide();
-	$('.mask').hide();
+// 分类样式下拉基础JS
+function selectMenuJs(){
+	var v_width= $(document.body).width();
+    $(".select_textul").width(v_width);
+    
+    $(".select_textdiv").click(function(){
+    	$(".select_textdiv").removeClass("divfocus");
+    	$(this).addClass("divfocus");
+    	$(this).siblings(".select_textul").fadeToggle(500);
+        var lilength = $(this).siblings(".select_textul").find("li.focus").has(".select_second_ul").length;
+    	if(lilength > 0){
+    		$(this).siblings(".select_textul").find("li.focus>.select_second_ul").show();
+    	}else{
+    		$(".select_first_ul>li>p").css("width","100%");
+    	}
+    })
+	$(".select_first_ul>li>p").click(function(){
+		//$(".select_second_ul").hide();
+		$(this).parent("li").addClass("focus").siblings("li").removeClass("focus");
+		var choose = $(this).attr("catName");
+		var chooseWbs = $(this).attr("wbs");
+        $(this).parents(".select_textul").siblings(".select_textdiv").find(".s_text").text(choose);
+        $(this).parents(".select_textul").siblings(".select_textdiv").find("input").val(chooseWbs);
+        $(this).parents(".select_textul").fadeOut(300);
+        $("#prodList").empty();
+        getDataFlag = true;
+        currentPage = 1;
+        getProdList(pageSize,$("#category").val(),$("#prodOrder").val(),$("#keyWords").val());
+	});
+	
 }
 
-function prodOrder(){
-	$("#prodList").empty();
-	getProdList(1,pageSize,item.wbs);
-	hideShow();
-}
+

@@ -234,6 +234,10 @@
 				<groupId>com.yhhl</groupId>
 				<artifactId>yhhl-platform-common</artifactId>
 			</dependency>
+			<dependency>
+	            <groupId>org.ansj</groupId>
+	            <artifactId>ansj_seg</artifactId>
+	        </dependency>
 	</dependencies> 
 	<packaging>war</packaging>
 </project>

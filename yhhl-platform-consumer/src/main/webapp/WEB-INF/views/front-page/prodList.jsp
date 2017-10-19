@@ -17,33 +17,44 @@
       <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
       <div class="head-mid">
        	<form action="#" method="get" class="search">
-		      <input type="text" class="seaText fl" />
-		      <input type="submit" value="搜索" class="seaSub fr" />
+		      <input type="text" id="keyWords" name="keyWords" class="seaText fl" />
+		      <input type="button" id="searchBtn" name="searchBtn" value="搜索" class="seaSub fr" />
 		</form><!--search/-->
       </div>
      </header>
-     <section class="job-module" style="position: fixed;top:40px;height:400px;width:100%;overflow-y:auto;"> 
-		<dl class="retrie" > 
-			<dt>
-				<a id="area" href="javascript:;">分类 </a>
-				<a id="wage" href="javascript:;">排序</a>
-			</dt> 
-			<dd class="area"> 
-				<ul class="slide downlist" id="category"> 
-					
-				</ul> 
-			</dd> 
-			<dd class="wage"> 
-				<ul class="slide downlist" id="prodOrder"> 
-					<li><a href="javascript:void(0);" onclick="prodOrder('1');">销量由高到低</a></li> 
-					<li><a href="javascript:void(0);" onclick="prodOrder('2');">价格从高到低</a></li> 
-					<li><a href="javascript:void(0);" onclick="prodOrder('3');">价格从低到高</a></li>
-					<li><a href="javascript:void(0);" onclick="prodOrder('4');">商品上最新架</a></li> 
-				</ul> 
-			</dd> 
-		</dl> 
-</section> 
-     <div class="prolist" id="prodList" style="margin-top: 89px;">
+     <dl class="topmenu">
+		<dt>
+			<div class="selectlist">
+				<div class="select_textdiv">
+					<input id="category" type="hidden" value="">
+					<p class="s_text">分类</p><span class="down"><img src="http://www.jsdaima.com/Upload/1482902489/down2.png"></span>
+				</div>
+				<div class="select_textul" style="width: 1304px;">
+					<ul class="select_first_ul">
+						<li><p>服装</p></li>
+						<li><p>鞋帽</p></li>
+					</ul>
+				</div>
+			</div>	
+		</dt>
+		<dt>
+			<div class="selectlist">
+				<div class="select_textdiv">
+					<input id="prodOrder" type="hidden" value="">
+					<p class="s_text">排序</p><span class="down"><img src="http://www.jsdaima.com/Upload/1482902489/down2.png"></span>
+				</div>
+				<div class="select_textul" style="width: 1304px;">
+					<ul class="select_first_ul">
+						<li><p wbs="sellCount" catName="销量由高到低">销量由高到低</p></li>
+						<li><p wbs="priceHigh2Low" catName="价格从高到低">价格从高到低</p></li>
+						<li><p wbs="priceLow2High" catName="价格从低到高">价格从低到高</p></li>
+						<li><p wbs="newProd" catName="商品上最新架">商品上最新架</p></li>
+					</ul>
+				</div>
+			</div>	
+		</dt>
+	</dl>
+     <div class="prolist" id="prodList" style="margin-top: 70px;">
       
      </div><!--prolist/-->
      
