@@ -1,5 +1,4 @@
 var getDataFlag = true;
-pageSize = 5;
 var currentPage = 1;
 $(document).ready(function(){
 	
