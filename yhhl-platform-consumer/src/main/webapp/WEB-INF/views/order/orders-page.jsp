@@ -7,7 +7,8 @@
 <title>Demo</title>
 	<%@ include file="/common/meta.jsp" %>
     <%@ include file="/common/import.jsp" %>
-    <script type="text/javascript" src="${ctx}/js/money.js"></script>
+    <script type="text/javascript" src="${ctx}/js/money.js?v=1.0.0"></script>
+    <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/util.js?v=1.0.0"></script>
 <script type="text/javascript">
 
 		$(function(){
@@ -26,15 +27,18 @@
 				pageList:[3,5,10,50],
 				idField:'orderId',
 				columns:[[
-					{field:'orderId',title:'订单编号',width:100,sortable:true},
+					{field:'orderId',title:'订单编号',width:130,sortable:true},
 					{field:'ownerRealName',title:'用户姓名',width:100,sortable:true},
 					{field:'ownerMobile',title:'联系电话',width:100,sortable:true},
-					{field:'orderAmount',title:'订单总额',width:100,formatter:function(value){
+					{field:'orderAmount',title:'订单总额',width:90,formatter:function(value){
 						return moneyFormatterNoY(value/100);
 					}},
-					{field:'status',title:'订单状态',width:100,sortable:true},
-					{field:'createTime',title:'创建时间',width:100,sortable:true},
-					{field:'modifyTime',title:'修改时间',width:100,sortable:true},
+					{field:'status',title:'订单状态',width:70,sortable:true},
+					{field:'createTime',title:'创建时间',width:100,sortable:true,
+						formatter:function(value,rec){
+							return dateFormat(value);
+						}
+					},
 					{field:'button',title:'操作',width:100,align:'center',
 						formatter:function(value,rec){
 							var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="showProdItemData(\''+rec.orderId+'\')" href="javascript:void(0)">';
@@ -341,7 +345,18 @@
 		    <center style="line-height:22spx;padding:5px;">
 			         姓名：
 			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
-			         <input type="text" id="filter_name" name="filter_name" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
+			         <input type="text" id="filter_ownerRealName" name="filter_ownerRealName" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
+			      </span>
+			        电话：
+			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
+			         <input type="text" id="filter_ownerMobile" name="filter_ownerMobile" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
+			      </span>
+			         状态：
+			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
+			         <input type="text" id="filter_Status" name="filter_ownerMobile" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
+			         <select id="filter_Status" name="filter_Status">
+			         	<option value=""></option>
+			         </select>
 			      </span>
 			    <a href="javascript:void(0);" onclick="searchList();" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 			    <a href="javascript:void(0);" onclick="clearForm();" class="easyui-linkbutton" iconCls="icon-cancel">清空</a>

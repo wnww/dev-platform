@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.LocaleMessage;
 import com.yhhl.common.LoginUser;
 import com.yhhl.common.MD5Utils;
 import com.yhhl.common.ResultBean;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.roles.model.Roles;
 import com.yhhl.roles.service.RolesServiceI;
 import com.yhhl.user.model.User;
@@ -43,14 +45,16 @@ public class MainAction {
 	@Autowired 
 	private RolesServiceI rolesService; 
 
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = new ModelAndView("main");
-		HttpSession session = request.getSession();
-		LoginUser user = (LoginUser) session.getAttribute("loginUser");
-		if (user == null) {
-			view = new ModelAndView("login");
-		}
+		return view;
+	}
+	
+	@RequestMapping("/initLogin")
+	public ModelAndView initLogin(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = new ModelAndView("login");
 		return view;
 	}
 

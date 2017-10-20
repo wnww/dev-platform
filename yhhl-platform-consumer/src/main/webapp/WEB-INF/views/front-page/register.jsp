@@ -159,5 +159,5 @@ function regUser(){
   </div>
 </div>
 </body>
-  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/keyboard_opt.js"></script>
+  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/keyboard_opt.js?v=1.0.0"></script>
 </html>

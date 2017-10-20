@@ -38,6 +38,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			if (loginCheck != null) {
 				// 前台登录判断
 				if(loginCheck.frontMustLogin().equals(Constants.TRUE)){
+					if(loginUser!=null){
+						return true;
+					}
 					if(method.getReturnType().isAssignableFrom(ModelAndView.class)){
 						log.error(">>>未登录，请先登录<<<");
 						response.sendRedirect(request.getContextPath()+"/login.do");
@@ -63,7 +66,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 					}
 					if(method.getReturnType().isAssignableFrom(ModelAndView.class)){
 						log.error(">>>未登录，请先登录<<<");
-						response.sendRedirect(request.getContextPath()+"/sysManage/index.do");
+						response.sendRedirect(request.getContextPath()+"/sysManage/initLogin.do");
 					}else{
 						this.ajaxNoLoginBuild(response,ResultBean.NO_LOGIN,"未登录，请先登录");
 					}

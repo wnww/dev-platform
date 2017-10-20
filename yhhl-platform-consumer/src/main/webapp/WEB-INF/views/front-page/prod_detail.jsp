@@ -111,5 +111,5 @@
 		$('.spinnerExample').spinner({});
 	</script>
   </body>
-  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/prod_detail.js"></script>
+  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/prod_detail.js?v=1.0.0"></script>
 </html>

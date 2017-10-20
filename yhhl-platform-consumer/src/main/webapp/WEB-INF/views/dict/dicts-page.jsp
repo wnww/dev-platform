@@ -27,7 +27,6 @@
 				idField:'dictId',
 				columns:[[
 					{field:'dictId',title:'编号',width:100,sortable:true},
-					{field:'dictWbsCode',title:'字典编码',width:100,sortable:true},
 					{field:'dictTypeName',title:'字典类型名称',width:100,sortable:true},
 					{field:'dictValue',title:'值',width:100,sortable:true}
 				]],
@@ -115,11 +114,11 @@
 		function deleteEntity(){					
 			var node = getSelected();	
 			if(node){
-		    	$.messager.confirm('确认','您确定要删除：<font color=red>'+node.orderId+'</font> ？',function(r){
+		    	$.messager.confirm('确认','您确定要删除：<font color=red>'+node.dictTypeName+'</font> ？',function(r){
 		        	if(r){
 						$.ajax({
 							type: "post",
-							url: "${ctx}/sysManage/dicts/delDicts.do?id="+node.orderId,
+							url: "${ctx}/sysManage/dicts/delDicts.do?id="+node.dictId,
 							dataType: "json",
 							success: function(data){
 	    						if(data.flag==1){

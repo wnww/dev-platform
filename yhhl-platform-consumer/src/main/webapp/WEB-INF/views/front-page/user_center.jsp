@@ -50,5 +50,5 @@
     <!--footNav/-->
     </div><!--maincont-->
   </body>
-  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/userCenter.js"></script>
+  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/userCenter.js?v=1.0.0"></script>
 </html>

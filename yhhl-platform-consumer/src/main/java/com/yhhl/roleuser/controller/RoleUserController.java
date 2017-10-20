@@ -119,17 +119,17 @@ public class RoleUserController {
 	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delRoleUser")
 	@ResponseBody
-	public Map<String, Object> delRoleUser(HttpServletRequest request,String userId,String roleId){
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> delRoleUser(HttpServletRequest request,String userId,String roleId){
+		ResultBean<String> result = new ResultBean<String>();
 		int row = roleUserService.deleteByUserIdAndRoleId(userId,roleId);
 		if(row >= 1){
-			map.put("flag", "T");
-			map.put("msg", "删除成功");
+			result.setFlag(ResultBean.SUCCESS);
+			result.setMsg("删除成功");
 		}else{
-			map.put("flag", "F");
-			map.put("msg", "删除失败");
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("删除失败");
 		}
-		return map;
+		return result;
 	}
 
 }

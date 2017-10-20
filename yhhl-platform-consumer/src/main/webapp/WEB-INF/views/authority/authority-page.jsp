@@ -165,18 +165,6 @@
 </head>
 <body>
 
-	<div id="" class="easyui-panel" title="查询条件" collapsible="true" style="padding:5px;">
-	    <form id="queryForm" name="queryForm" method="post">
-		    <center style="line-height:22spx;padding:5px;">
-			         姓名：
-			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
-			         <input type="text" id="filter_name" name="filter_name" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
-			      </span>
-			    <a href="javascript:void(0);" onclick="searchList();" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-			    <a href="javascript:void(0);" onclick="clearForm();" class="easyui-linkbutton" iconCls="icon-cancel">清空</a>
-		    </center>
-		</form>
-	</div>
 
 	<table id="dataPageList"></table>
 

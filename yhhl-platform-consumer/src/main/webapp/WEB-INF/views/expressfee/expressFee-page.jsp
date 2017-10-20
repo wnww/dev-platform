@@ -27,8 +27,8 @@
 				idField:'expressFeeId',
 				columns:[[
 					{field:'expressFeeId',title:'编号',width:"18%",sortable:true},
-					{field:'province',title:'省',width:"28%",sortable:true},
-					{field:'city',title:'市',width:"28%",sortable:true},
+					{field:'province',title:'省/市',width:"28%",sortable:true},
+					{field:'city',title:'市/区/县',width:"28%",sortable:true},
 					{field:'fee',title:'运费',width:"17%",sortable:true}
 				]],
 				toolbar:[{
@@ -99,7 +99,7 @@
 		function deleteEntity(){					
 			var node = getSelected();	
 			if(node){
-		    	$.messager.confirm('确认','您确定要删除：<font color=red>'+node.orderId+'</font> ？',function(r){
+		    	$.messager.confirm('确认','您确定要删除：<font color=red>'+node.province+"-"+node.city+"："+node.fee+'</font> ？',function(r){
 		        	if(r){
 						$.ajax({
 							type: "post",
@@ -155,7 +155,8 @@
 			$('#dataPageList').datagrid('options').pageNumber = 1;
 			$('#dataPageList').datagrid('getPager').pagination({pageNumber: 1});
 	    	//查询条件放到queryParams中：格式filter_params       
-	        queryParams.filter_dictTypeName = $('#filter_dictTypeName').val();
+	        queryParams.filter_province = $('#filter_province').val();
+	        queryParams.filter_city = $('#filter_city').val();
 	        $('#dataPageList').datagrid("reload");
    }
    
@@ -173,9 +174,14 @@
 	<div id="" class="easyui-panel" title="查询条件" collapsible="true" style="padding:5px;">
 	    <form id="queryForm" name="queryForm">
 		    <center style="line-height:22spx;padding:5px;">
-			         字典类型：
-			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
-			         <input type="text" id="filter_dictTypeName" name="filter_dictTypeName" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
+			         省/市：
+			       <span class="textbox easyui-fluid" style="width: 100px; height: 30px;">
+			         	<input type="text" id="filter_province" name="filter_province" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 100px;" autocomplete="off" />
+			      </span>
+			      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			   市/区/县：
+			      <span class="textbox easyui-fluid" style="width: 100px; height: 30px;">
+			   			<input type="text" id="filter_city" name="filter_province" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 100px;" autocomplete="off" />   
 			      </span>
 			    <a href="javascript:void(0);" onclick="searchList();" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 			    <a href="javascript:void(0);" onclick="clearForm();" class="easyui-linkbutton" iconCls="icon-cancel">清空</a>

@@ -7,7 +7,7 @@
 <title>Demo</title>
 	<%@ include file="/common/meta.jsp" %>
     <%@ include file="/common/import.jsp" %>
-    <script type="text/javascript" src="${ctx}/js/money.js"></script>
+    <script type="text/javascript" src="${ctx}/js/money.js?v=1.0.0"></script>
 <script type="text/javascript">
 
 		$(function(){

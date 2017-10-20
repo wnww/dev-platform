@@ -38,5 +38,5 @@
      
     </div><!--maincont-->
   </body>
-  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/collects.js"></script>
+  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/collects.js?v=1.0.0"></script>
 </html>

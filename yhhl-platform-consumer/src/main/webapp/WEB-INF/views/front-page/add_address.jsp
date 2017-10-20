@@ -10,8 +10,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link href="https://cdn.bootcss.com/bootstrap-validator/0.4.2/css/bootstrapValidator.min.css" rel="stylesheet">
 <script src="https://cdn.bootcss.com/bootstrap-validator/0.4.2/js/bootstrapValidator.min.js"></script>
-<link href="${frontMobileStaticCtx}/css/bootstrap-switch.css" rel="stylesheet">
-<script src="${frontMobileStaticCtx}/js/src/bootstrap-switch.js"></script>
+<link href="${frontMobileStaticCtx}/css/bootstrap-switch.css?v=1.0.0" rel="stylesheet">
+<script src="${frontMobileStaticCtx}/js/src/bootstrap-switch.js?v=1.0.0"></script>
     <title>${websiteTitle}</title>
     <style type="text/css">
     	#provSelect,#citySelect{
@@ -201,8 +201,8 @@
     <!--footNav/-->
     </div><!--maincont-->
   </body>
-  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/jquery.cityselect.js"></script>
-  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/keyboard_opt.js"></script>
+  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/jquery.cityselect.js?v=1.0.0"></script>
+  <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/keyboard_opt.js?v=1.0.0"></script>
   <script type="text/javascript">
   $.fn.bootstrapSwitch.defaults.onText = '是';
   $.fn.bootstrapSwitch.defaults.offText = '否';

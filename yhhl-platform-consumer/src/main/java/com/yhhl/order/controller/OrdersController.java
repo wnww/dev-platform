@@ -1,5 +1,8 @@
 package com.yhhl.order.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.yhhl.common.Constants;
+import com.yhhl.common.Constants.OrderStatus;
 import com.yhhl.common.DateUtils;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
@@ -106,6 +110,12 @@ public class OrdersController {
 			Orders ordersTemp = ordersService.getById(orders.getOrderId());
 			// 将页面修改的信息在这里替换
 			ordersTemp.setModifyTime(time);
+			ordersTemp.setOwnerRealName(orders.getOwnerRealName());
+			ordersTemp.setOrderAmount(orders.getOrderAmount());
+			ordersTemp.setOwnerMobile(orders.getOwnerMobile());
+			ordersTemp.setStatus(orders.getStatus());
+			ordersTemp.setPostAddress(orders.getPostAddress());
+			ordersTemp.setRemark(orders.getRemark());
 			ordersService.updateOrders(ordersTemp);
 			result.setFlag(ResultBean.SUCCESS);
 			result.setMsg("修改成功");
@@ -137,4 +147,21 @@ public class OrdersController {
 		return result;
 	}
 
+	/**
+	* 删除
+	*
+	* @param request
+	* @param id
+	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
+	@RequestMapping("/getOrderStatus")
+	@ResponseBody
+	public ResultBean<List<OrderStatus>> getOrderStatus(HttpServletRequest request,String id){
+		ResultBean<List<OrderStatus>> result = new ResultBean<List<OrderStatus>>();
+		OrderStatus[] status = Constants.OrderStatus.values();
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("删除成功");
+		result.setData(Arrays.asList(status));
+		return result;
+	}
 }

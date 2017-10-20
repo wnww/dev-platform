@@ -57,10 +57,20 @@
 		<servlet-name>springMvc</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+	<error-page>
+	    <!-- 路径不正确、找不到页面 -->
+	    <error-code>404</error-code>
+	    <location>/error.do?errorCode=404</location>
+	</error-page>
+	<error-page>
+	    <!-- 路径不正确、找不到页面 -->
+	    <error-code>500</error-code>
+	    <location>/error.do?errorCode=500</location>
+	</error-page>
 	<welcome-file-list>
 		<welcome-file>/index.jsp</welcome-file>
 	</welcome-file-list>
 	<session-config>
-		<session-timeout>15</session-timeout>
+		<session-timeout>2880</session-timeout>
 	</session-config>
 </web-app>

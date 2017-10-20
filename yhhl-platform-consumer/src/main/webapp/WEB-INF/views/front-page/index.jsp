@@ -92,11 +92,11 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
-				<img alt="" src="${frontMobileStaticCtx}/images/jf2.jpg">
+				<img alt="" src="${frontMobileStaticCtx}/images/secondCode.jpg">
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
 </div>
 </body>
-<script type="text/javascript" src="${frontMobileStaticCtx}/js/src/index.js"></script>
+<script type="text/javascript" src="${frontMobileStaticCtx}/js/src/index.js?v=1.0.0"></script>
 </html>

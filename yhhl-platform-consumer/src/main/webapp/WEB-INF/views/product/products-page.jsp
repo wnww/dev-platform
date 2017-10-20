@@ -8,10 +8,9 @@
 <title>Demo</title>
 <%@ include file="/common/meta.jsp"%>
 <%@ include file="/common/import.jsp"%>
-<script type="text/javascript" src="${ctx}/js/money.js"></script>
-<script type="text/javascript" src="${frontMobileStaticCtx}/js/src/util.js"></script>
-<script type="text/javascript"
-	src="${ctx}/js/WdatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx}/js/money.js?v=1.0.0"></script>
+<script type="text/javascript" src="${frontMobileStaticCtx}/js/src/util.js?v=1.0.0"></script>
+<script type="text/javascript" src="${ctx}/js/WdatePicker/WdatePicker.js?v=1.0.0"></script>
 <script type="text/javascript">
 	function addEntity() {
 		var url = "${ctx}/sysManage/products/initAddProducts.do" + '?t=' + new Date();
@@ -433,6 +432,42 @@
 						+ messg.responseText, 'error');
 			}
 		});
+	}
+	
+	//删除，物理删除
+	function deleteProductExtend() {
+		var node = getSelectedProductsExtend();
+		if (node) {
+			$.messager.confirm('确认', '您确定要删除：<font color=red>' + node.colorsId+"-"+node.specificationId
+					+ '</font> ？', function(r) {
+				if (r) {
+					$.ajax({
+						type : "post",
+						url : "${ctx}/sysManage/stocks/delStocks.do?id="+ node.stockId,
+						dataType : "json",
+						success : function(data) {
+							if (data.flag == 1) {
+								$.messager.confirm('提交结果', '操作成功', function() {
+									productExtendReload();// 刷新列表
+								});
+							} else if (data.flag == 2) {
+								$.messager.alert('结果', data.msg, 'info');
+							} else if (data.flag == 3) {
+								$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+									document.location.href="${ctx}/sysManage/index.do";
+								});
+							} else {
+								$.messager.alert('结果', '操作失败，请重试', 'error');
+							}
+						},
+						error : function(messg) {
+							$.messager.alert('错误提示', '操作失败:'
+									+ messg.responseText, 'error');
+						}
+					});
+				}
+			});
+		}
 	}
 </script>
 </script>

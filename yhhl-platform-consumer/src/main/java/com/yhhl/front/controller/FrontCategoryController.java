@@ -47,16 +47,6 @@ public class FrontCategoryController {
 	@Autowired // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
 	private CategoryServiceI categoryService;
 
-	/**
-	 * 进入列表页面
-	 * 
-	 * @return
-	 */
-	@LoginCheck(frontMustLogin=Constants.TRUE)
-	@RequestMapping("/index")
-	public ModelAndView index() {
-		return new ModelAndView("category/category-page");
-	}
 
 	/**
 	 * 查询列表
@@ -64,7 +54,6 @@ public class FrontCategoryController {
 	 * @param request
 	 * @return
 	 */
-	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@RequestMapping("/getCategoryDatas")
 	@ResponseBody
 	public ResultBean<Category> getCategoryDatas(HttpServletRequest request, @RequestParam(value = "page") int page,

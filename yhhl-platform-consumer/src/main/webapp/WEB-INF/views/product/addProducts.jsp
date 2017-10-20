@@ -7,8 +7,8 @@
 	<%@ include file="/common/meta.jsp" %>
 	<%@ include file="/common/import.jsp" %>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-	<link href="${ctx}/JQueryFileUpload/css/fileUpload.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="${ctx}/JQueryFileUpload/js/fileUpload.js"></script>
+	<link href="${ctx}/JQueryFileUpload/css/fileUpload.css?v=1.0.0" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="${ctx}/JQueryFileUpload/js/fileUpload.js?v=1.0.0"></script>
 <script type="text/javascript">
 	var inputForm = '#inputForm';
 	$(function(){

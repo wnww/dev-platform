@@ -159,12 +159,12 @@ public class AuthorityController {
 	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delAuthority")
 	@ResponseBody
-	public Map<String, Object> delAuthority(HttpServletRequest request,String id){
-		Map<String, Object> map = new HashMap<String, Object>();
+	public ResultBean<String> delAuthority(HttpServletRequest request,String id){
+		ResultBean<String> result = new ResultBean<String>();
 		authorityService.deleteById(id);
-		map.put("flag", "T");
-		map.put("msg", "删除成功");
-		return map;
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("删除成功");
+		return result;
 	}
 
 }
