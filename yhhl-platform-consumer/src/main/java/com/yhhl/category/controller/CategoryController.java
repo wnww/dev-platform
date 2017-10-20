@@ -22,9 +22,11 @@ import org.springframework.web.util.WebUtils;
 import com.yhhl.category.model.Category;
 import com.yhhl.category.model.CategoryVo;
 import com.yhhl.category.service.CategoryServiceI;
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 
 /**
@@ -50,6 +52,7 @@ public class CategoryController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("category/category-page");
@@ -61,6 +64,7 @@ public class CategoryController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getCategoryDatas")
 	@ResponseBody
 	public ResultBean<Category> getCategoryDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -81,6 +85,7 @@ public class CategoryController {
 		return result;
 	}
 
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getCategoryTree")
 	@ResponseBody
 	public List<Category> getCategoryTree(HttpServletRequest request) {
@@ -98,6 +103,7 @@ public class CategoryController {
 		return list;
 	}
 	
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getCategoryCombTree")
 	@ResponseBody
 	public List<CategoryVo> getCategoryCombTree(HttpServletRequest request) {
@@ -134,6 +140,7 @@ public class CategoryController {
 		return list;
 	}
 	
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getByWbs")
 	@ResponseBody
 	public ResultBean<String> getByWbs(HttpServletRequest request) {
@@ -154,6 +161,7 @@ public class CategoryController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddCategory")
 	@Token(save = true)
 	public ModelAndView initAddCategory(HttpServletRequest request) {
@@ -180,6 +188,7 @@ public class CategoryController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveCategory")
 	@Token(remove = true)
 	@ResponseBody
@@ -253,6 +262,7 @@ public class CategoryController {
 	 * @param request
 	 * @param id
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delCategory")
 	@ResponseBody
 	public ResultBean<String> delCategory(HttpServletRequest request, String id) {

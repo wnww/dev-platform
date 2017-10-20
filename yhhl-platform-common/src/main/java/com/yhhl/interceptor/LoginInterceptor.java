@@ -15,7 +15,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yhhl.common.Constants;
+import com.yhhl.common.LoginUser;
 import com.yhhl.common.ResultBean;
+import com.yhhl.common.SpringWebUtil;
 
 /**
  * 判断是否登录拦截器
@@ -28,10 +30,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	public static List dataList = new ArrayList();
 	
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-    	Object obj = request.getSession().getAttribute("loginUser");
-    	if(obj!=null){ // 如果已经登录，直接返回True
-			return true;
-		}
+    	LoginUser loginUser = SpringWebUtil.getLoginUser();
+    	
 		if (handler instanceof HandlerMethod) {//方法级拦截
 			Method method = ((HandlerMethod) handler).getMethod();
 			LoginCheck loginCheck = method.getAnnotation(LoginCheck.class);
@@ -42,21 +42,36 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 						log.error(">>>未登录，请先登录<<<");
 						response.sendRedirect(request.getContextPath()+"/login.do");
 					}else{
-						this.ajaxNoLoginBuild(response);
+						this.ajaxNoLoginBuild(response,ResultBean.NO_LOGIN,"未登录，请先登录");
 					}
 					return false;
 					// 后台登录判断
 				}else if(loginCheck.backMustLogin().equals(Constants.TRUE)){
+					if(loginUser!=null){
+			    		if(loginUser.getUserRole().indexOf("前台普通用户")>=0){
+			    			if(method.getReturnType().isAssignableFrom(ModelAndView.class)){
+				    			log.error(">>>前台用户不能访问后台资源，重新定位到前台首页<<<");
+								response.sendRedirect(request.getContextPath()+"/index.do?flag=2");
+								return false;
+			    			}else{
+			    				this.ajaxNoLoginBuild(response, ResultBean.NO_PERMISSION,"无权访问！");
+			    				return false;
+			    			}
+			    		}else{
+			    			return true;
+			    		}
+					}
 					if(method.getReturnType().isAssignableFrom(ModelAndView.class)){
 						log.error(">>>未登录，请先登录<<<");
 						response.sendRedirect(request.getContextPath()+"/sysManage/index.do");
 					}else{
-						this.ajaxNoLoginBuild(response);
+						this.ajaxNoLoginBuild(response,ResultBean.NO_LOGIN,"未登录，请先登录");
 					}
 					return false;
 				}else{
 					return true;
 				}
+				
 			}
 			return true;
 		} else {
@@ -65,12 +80,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	}
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	private void ajaxNoLoginBuild(HttpServletResponse response) throws IOException{
+	private void ajaxNoLoginBuild(HttpServletResponse response,int flag,String msg) throws IOException{
     	response.setContentType("text/html; charset=UTF-8");
-		log.error(">>>未登录，请先登录<<<");
+		log.error(">>>"+msg+"<<<");
 		ResultBean<String> rb = new ResultBean<String>();
-		rb.setFlag(ResultBean.NO_LOGIN);
-		rb.setMsg("未登录，请先登录！");
+		rb.setFlag(flag);
+		rb.setMsg(msg);
 		rb.setRows(dataList);
 		response.getWriter().write(JSONObject.toJSON(rb).toString());
     }

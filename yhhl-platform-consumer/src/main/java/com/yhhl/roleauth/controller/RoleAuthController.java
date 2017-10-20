@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.roleauth.model.RoleAuth;
 import com.yhhl.roleauth.service.RoleAuthServiceI;
  
@@ -44,6 +46,7 @@ public class RoleAuthController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("roleauth/roleAuth-page");
@@ -54,6 +57,7 @@ public class RoleAuthController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getRoleAuthDatas")
 	@ResponseBody
 	public ResultBean<RoleAuth> getRoleAuthDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -72,6 +76,7 @@ public class RoleAuthController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddRoleAuth")
 	public ModelAndView initAddRoleAuth(HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -88,6 +93,7 @@ public class RoleAuthController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveRoleAuth")
 	@ResponseBody
 	public ResultBean<String> saveRoleAuth(RoleAuth roleAuth, HttpServletRequest request) {
@@ -111,6 +117,7 @@ public class RoleAuthController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delRoleAuth")
 	@ResponseBody
 	public ResultBean<String> delRoleAuth(HttpServletRequest request,String authId,String roleId){

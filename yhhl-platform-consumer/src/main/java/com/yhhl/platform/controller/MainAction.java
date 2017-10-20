@@ -5,6 +5,10 @@
  */
 package com.yhhl.platform.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,6 +24,8 @@ import com.yhhl.common.LocaleMessage;
 import com.yhhl.common.LoginUser;
 import com.yhhl.common.MD5Utils;
 import com.yhhl.common.ResultBean;
+import com.yhhl.roles.model.Roles;
+import com.yhhl.roles.service.RolesServiceI;
 import com.yhhl.user.model.User;
 import com.yhhl.user.service.UserServiceI;
 
@@ -34,6 +40,8 @@ public class MainAction {
 
 	@Autowired
 	private UserServiceI userService;
+	@Autowired 
+	private RolesServiceI rolesService; 
 
 	@RequestMapping("/index")
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
@@ -74,11 +82,25 @@ public class MainAction {
 		if(loginUser==null){
 			loginUser = new LoginUser();
 		}
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userId", user.getId());
+		List<Roles> roleList = rolesService.getUserRole(map);
+		StringBuffer sb = new StringBuffer();
+		for(int i=0; i<roleList.size(); i++){
+			Roles role = roleList.get(i);
+			if(i>0){
+				sb.append(",");
+			}
+			sb.append(role.getRoleName());
+		}
 		loginUser.setUserId(user.getId());
 		loginUser.setUserName(user.getName());
 		loginUser.setNikeName(user.getName());
 		loginUser.setUserPhoto(
 				"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505368475834&di=c9816987fdeecdf67bc6c97b88e7740e&imgtype=0&src=http%3A%2F%2Fpic1a.nipic.com%2F2008-12-01%2F200812193221582_2.jpg");
+		loginUser.setUserRole(sb.toString());
+		
 		session.setAttribute("loginUser", loginUser);
 		return result;
 	}

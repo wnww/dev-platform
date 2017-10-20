@@ -34,7 +34,7 @@ import com.yhhl.interceptor.Token;
  * <b>版权所有：<b>版权所有(C) 2015 瀛海互联<br>
  */ 
 @Controller
-@RequestMapping("/SysManage/collects") 
+@RequestMapping("/sysManage/collects") 
 public class CollectsController {
 	
 	private final static Logger log= Logger.getLogger(CollectsController.class);
@@ -49,6 +49,7 @@ public class CollectsController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 	       return new ModelAndView("collect/collects-page");
@@ -59,6 +60,7 @@ public class CollectsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getCollectsDatas")
 	@ResponseBody
 	public ResultBean<Collects> getCollectsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -77,6 +79,7 @@ public class CollectsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddCollects")
 	@Token(save = true)
 	public ModelAndView initAddCollects(HttpServletRequest request) {
@@ -94,6 +97,7 @@ public class CollectsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveCollects")
 	@ResponseBody
 	public ResultBean<String> saveCollects(Collects collects, HttpServletRequest request) {
@@ -121,6 +125,7 @@ public class CollectsController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delCollects")
 	@ResponseBody
 	public ResultBean<String> delCollects(HttpServletRequest request,String id){

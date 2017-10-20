@@ -2,6 +2,7 @@ package com.yhhl.roles.service;
 
 import org.apache.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 
 import com.yhhl.core.Page;
@@ -31,5 +32,7 @@ public interface RolesServiceI {
 	public void updateRoles(Roles roles);
 	
 	public void deleteById(String id);
+	
+	public List<Roles> getUserRole(Map<String,Object> map);
 
 }

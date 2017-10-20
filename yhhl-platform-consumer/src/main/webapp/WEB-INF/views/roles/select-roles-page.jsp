@@ -36,10 +36,27 @@
 					{field:'remark',title:'备注',width:100}
 				]],
 				onLoadSuccess:function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+						return;
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+							return;
+						});
+						return;
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+						return;
+					}
+					console.log("data.rows"+data.rows);
 					isClick=false;
 				    var rowData = data.rows;
+				    
 				    $.each(rowData, function (idx, val) {
+				    	console.log("val.userId="+val.userId);
 				    	if (val.userId!=null && val.userId!="") {
+				    		
 					    	$("#dataPageList").datagrid("checkRow", idx);
 				    	}
 			    	});
@@ -60,17 +77,6 @@
 				},
 				onDblClickRow:function(){
 					//dataItemTree();
-				},
-				onLoadSuccess : function(data){
-					if (data.flag == 2) {
-						$.messager.alert('结果', data.msg, 'error');
-					} else if (data.flag == 3){
-						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
-							document.location.href="${ctx}/sysManage/index.do";
-						});
-					} else if(data.flag!= 1){
-						$.messager.alert('结果', '操作失败，请重试', 'error');
-					}
 				}
 			});
 			

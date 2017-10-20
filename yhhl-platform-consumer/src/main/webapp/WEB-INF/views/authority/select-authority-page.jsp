@@ -35,6 +35,19 @@
 					{field:'authMark',title:'权限路径',width:'48%'}
 				]],
 				onLoadSuccess:function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+						return;
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+							return;
+						});
+						return;
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+						return;
+					}
 					isClick=false;
 				    var rowData = data.rows;
 				    $.each(rowData, function (idx, val) {
@@ -58,17 +71,6 @@
 				},
 				onDblClickRow:function(){
 					//dataItemTree();
-				},
-				onLoadSuccess : function(data){
-					if (data.flag == 2) {
-						$.messager.alert('结果', data.msg, 'error');
-					} else if (data.flag == 3){
-						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
-							document.location.href="${ctx}/sysManage/index.do";
-						});
-					} else if(data.flag!= 1){
-						$.messager.alert('结果', '操作失败，请重试', 'error');
-					}
 				}
 			});		
 		});

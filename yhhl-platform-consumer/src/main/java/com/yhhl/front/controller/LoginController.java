@@ -1,6 +1,9 @@
 package com.yhhl.front.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +19,8 @@ import com.yhhl.common.LoginUser;
 import com.yhhl.common.MD5Utils;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.SpringWebUtil;
+import com.yhhl.roles.model.Roles;
+import com.yhhl.roles.service.RolesServiceI;
 import com.yhhl.user.model.User;
 import com.yhhl.user.service.UserServiceI;
 
@@ -25,6 +30,8 @@ public class LoginController {
 	
 	@Autowired
 	private UserServiceI userService;
+	@Autowired 
+	private RolesServiceI rolesService; 
 
 	@RequestMapping("/login")
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
@@ -50,10 +57,21 @@ public class LoginController {
 			result.setMsg("手机号或密码不正确！");
 			return result;
 		}
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userId", user.getId());
+		List<Roles> roleList = rolesService.getUserRole(map);
+		if(roleList.size()>1){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("账户异常！");
+			return result;
+		}
+		
 		LoginUser loginUser = new LoginUser();
 		loginUser.setUserId(user.getId());
 		loginUser.setUserName(user.getName());
 		loginUser.setNikeName(user.getName());
+		loginUser.setUserRole(roleList.get(0).getRoleName());
 		SpringWebUtil.setSessionAttribute("loginUser", loginUser);
 		result.setFlag(ResultBean.SUCCESS);
 		return result;

@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
 import com.yhhl.dict.model.Dicts;
 import com.yhhl.dict.service.DictsServiceI;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.product.model.Products;
  
@@ -47,6 +49,7 @@ public class DictsController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("dict/dicts-page");
@@ -57,6 +60,7 @@ public class DictsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getDictsDatas")
 	@ResponseBody
 	public ResultBean<Dicts> getDictsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -75,6 +79,7 @@ public class DictsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getDictsList")
 	@ResponseBody
 	public List<Dicts> getDictsList(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -90,6 +95,7 @@ public class DictsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddDicts")
 	@Token(save = true)
 	public ModelAndView initAddDicts(HttpServletRequest request) {
@@ -107,6 +113,7 @@ public class DictsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveDicts")
 	@Token(remove = true)
 	@ResponseBody
@@ -134,6 +141,7 @@ public class DictsController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delDicts")
 	@ResponseBody
 	public ResultBean<String> delDicts(HttpServletRequest request,String id){

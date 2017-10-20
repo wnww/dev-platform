@@ -8,6 +8,7 @@ public class LoginUser implements java.io.Serializable {
 	private String userName;
 	private String nikeName;
 	private String userPhoto;
+	private String userRole;
 
 	public String getUserId() {
 		return userId;
@@ -39,5 +40,13 @@ public class LoginUser implements java.io.Serializable {
 
 	public void setUserPhoto(String userPhoto) {
 		this.userPhoto = userPhoto;
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
 	}
 }

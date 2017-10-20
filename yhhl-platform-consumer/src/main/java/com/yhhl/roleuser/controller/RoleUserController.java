@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.roleuser.model.RoleUser;
 import com.yhhl.roleuser.service.RoleUserServiceI;
  
@@ -44,6 +46,7 @@ public class RoleUserController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("roleuser/roleUser-page");
@@ -54,6 +57,7 @@ public class RoleUserController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getRoleUserDatas")
 	@ResponseBody
 	public ResultBean<RoleUser> getRoleUserDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -72,6 +76,7 @@ public class RoleUserController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddRoleUser")
 	public ModelAndView initAddRoleUser(HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -88,6 +93,7 @@ public class RoleUserController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveRoleUser")
 	@ResponseBody
 	public ResultBean<String> saveRoleUser(RoleUser roleUser, HttpServletRequest request) {
@@ -110,6 +116,7 @@ public class RoleUserController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delRoleUser")
 	@ResponseBody
 	public Map<String, Object> delRoleUser(HttpServletRequest request,String userId,String roleId){

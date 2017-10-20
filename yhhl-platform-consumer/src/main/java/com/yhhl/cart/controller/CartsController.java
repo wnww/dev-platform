@@ -15,9 +15,11 @@ import org.springframework.web.util.WebUtils;
 
 import com.yhhl.cart.model.Carts;
 import com.yhhl.cart.service.CartsServiceI;
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
  
 /**
@@ -44,6 +46,7 @@ public class CartsController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 	       return new ModelAndView("cart/carts-page");
@@ -54,6 +57,7 @@ public class CartsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getCartsDatas")
 	@ResponseBody
 	public ResultBean<Carts> getCartsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -72,6 +76,7 @@ public class CartsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddCarts")
 	@Token(save = true)
 	public ModelAndView initAddCarts(HttpServletRequest request) {
@@ -89,7 +94,7 @@ public class CartsController {
 	 * @param request
 	 * @return
 	 */
-	
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveCarts")
 	@Token(remove = true)
 	@ResponseBody
@@ -115,6 +120,7 @@ public class CartsController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delCarts")
 	@ResponseBody
 	public ResultBean<String> delCarts(HttpServletRequest request,String id){

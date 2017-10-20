@@ -20,8 +20,10 @@ import org.springframework.web.util.WebUtils;
 
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.platform.service.CacheOperateI;
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.expressfee.model.ExpressFee;
 import com.yhhl.expressfee.service.ExpressFeeServiceI;
@@ -52,6 +54,7 @@ public class ExpressFeeController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 	       return new ModelAndView("expressfee/expressFee-page");
@@ -62,6 +65,7 @@ public class ExpressFeeController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getExpressFeeDatas")
 	@ResponseBody
 	public ResultBean<ExpressFee> getExpressFeeDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -80,6 +84,7 @@ public class ExpressFeeController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddExpressFee")
 	@Token(save = true)
 	public ModelAndView initAddExpressFee(HttpServletRequest request) {
@@ -99,6 +104,7 @@ public class ExpressFeeController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveExpressFee")
 	@Token(remove = true)
 	@ResponseBody
@@ -129,6 +135,7 @@ public class ExpressFeeController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delExpressFee")
 	@ResponseBody
 	public ResultBean<String> delExpressFee(HttpServletRequest request,String id){

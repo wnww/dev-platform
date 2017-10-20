@@ -102,6 +102,7 @@ public class ProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddProducts")
 	@Token(save = true)
 	public ModelAndView initAddProducts(HttpServletRequest request) {
@@ -119,6 +120,7 @@ public class ProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveProducts")
 	@Token(remove = true)
 	@ResponseBody
@@ -158,6 +160,7 @@ public class ProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddProductsDetail")
 	@Token(save = true)
 	public ModelAndView initAddProductsDetail(HttpServletRequest request) {
@@ -173,6 +176,7 @@ public class ProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddProductsExtend")
 	@Token(save = true)
 	public ModelAndView initAddProductsExtend(HttpServletRequest request) {
@@ -188,6 +192,7 @@ public class ProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveProductsDetail")
 	@Token(remove = true)
 	@ResponseBody
@@ -211,6 +216,7 @@ public class ProductsController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delProducts")
 	@ResponseBody
 	public ResultBean<String> delProducts(HttpServletRequest request,String id){
@@ -227,6 +233,7 @@ public class ProductsController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/recommend")
 	@ResponseBody
 	public ResultBean<String> recommend(HttpServletRequest request,String id,String recommend){
@@ -258,6 +265,7 @@ public class ProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/publishProdDetails")
 	@ResponseBody
 	public ResultBean<String> publisProductsDetail(HttpServletRequest request){

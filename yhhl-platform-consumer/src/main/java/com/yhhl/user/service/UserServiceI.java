@@ -23,5 +23,7 @@ public interface UserServiceI {
 	public void deleteById(String id);
 	
 	public User getByUserNameAndPwd(String userName, String pwd);
+	
+	public void registerFromFront(User user);
 
 }

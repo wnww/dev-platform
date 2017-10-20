@@ -77,6 +77,13 @@ public class RolesServiceImpl implements RolesServiceI {
 		page.setResult(list);
 		return page;
 	}
+	
+	
+
+	@Override
+	public List<Roles> getUserRole(Map<String, Object> map) {
+		return rolesMapper.getUserRole(map);
+	}
 
 	/**
 	 *

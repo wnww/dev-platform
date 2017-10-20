@@ -182,22 +182,6 @@ public class FrontOrdersController {
 	}
 
 	/**
-	 * 进入到初始化新增、修改页面
-	 * 
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/initAddOrders")
-	public ModelAndView initAddOrders(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if (StringUtil.isNotEmpty(id)) {
-			Orders orders = ordersService.getById(id);
-			request.setAttribute("orders", orders);
-		}
-		return new ModelAndView("order/addOrders");
-	}
-
-	/**
 	 * 根据购物车下单
 	 * 
 	 * @param user
@@ -312,6 +296,7 @@ public class FrontOrdersController {
 	 * @param id
 	 */
 	@RequestMapping("/updateOrder")
+	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@ResponseBody
 	public ResultBean<String> updateOrder(HttpServletRequest request, @RequestParam(value="orderId") String orderId) {
 		ResultBean<String> result = new ResultBean<String>();
@@ -342,6 +327,7 @@ public class FrontOrdersController {
 	 * @param id
 	 */
 	@RequestMapping("/delOrders")
+	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@ResponseBody
 	public ResultBean<String> delOrders(HttpServletRequest request, String id) {
 		ResultBean<String> result = new ResultBean<String>();

@@ -22,9 +22,11 @@ import org.springframework.web.util.WebUtils;
 import com.yhhl.category.model.Category;
 import com.yhhl.category.model.CategoryVo;
 import com.yhhl.category.service.CategoryServiceI;
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 
 /**
@@ -50,6 +52,7 @@ public class FrontCategoryController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("category/category-page");
@@ -61,6 +64,7 @@ public class FrontCategoryController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@RequestMapping("/getCategoryDatas")
 	@ResponseBody
 	public ResultBean<Category> getCategoryDatas(HttpServletRequest request, @RequestParam(value = "page") int page,

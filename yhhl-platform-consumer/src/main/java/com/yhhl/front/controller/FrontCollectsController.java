@@ -76,22 +76,6 @@ public class FrontCollectsController {
 	}
 	
 	/**
-	 * 进入到初始化新增、修改页面
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/initAddCollects")
-	@Token(save = true)
-	public ModelAndView initAddCollects(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if(StringUtil.isNotEmpty(id)){
-			Collects collects = collectsService.getById(id);
-			request.setAttribute("collects", collects);
-		}
-		return new ModelAndView("collect/addCollects");
-	}
-	
-	/**
 	 * 新增、修改
 	 * @param user
 	 * @param request

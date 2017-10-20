@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.orderproduct.model.OrderProducts;
 import com.yhhl.orderproduct.service.OrderProductsServiceI;
@@ -45,6 +47,7 @@ public class OrderProductsController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("orderproduct/orderProducts-page");
@@ -55,6 +58,7 @@ public class OrderProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getOrderProductsDatas")
 	@ResponseBody
 	public ResultBean<OrderProducts> getOrderProductsDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -73,6 +77,7 @@ public class OrderProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddOrderProducts")
 	@Token(save = true)
 	public ModelAndView initAddOrderProducts(HttpServletRequest request) {
@@ -81,6 +86,7 @@ public class OrderProductsController {
 		return new ModelAndView("orderproduct/addOrderProducts");
 	}
 	
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initUpdateOrderProducts")
 	@Token(save = true)
 	public ModelAndView initUpdateOrderProducts(HttpServletRequest request) {
@@ -98,6 +104,7 @@ public class OrderProductsController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveOrderProducts")
 	@Token(remove = true)
 	@ResponseBody
@@ -123,6 +130,7 @@ public class OrderProductsController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delOrderProducts")
 	@ResponseBody
 	public ResultBean<String> delOrderProducts(HttpServletRequest request,String id){

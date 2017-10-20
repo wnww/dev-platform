@@ -18,6 +18,7 @@ import com.yhhl.common.DateUtils;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.order.model.Orders;
 import com.yhhl.order.service.OrdersServiceI;
@@ -46,6 +47,7 @@ public class OrdersController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("order/orders-page");
@@ -56,6 +58,7 @@ public class OrdersController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getOrdersDatas")
 	@ResponseBody
 	public ResultBean<Orders> getOrdersDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -74,6 +77,7 @@ public class OrdersController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddOrders")
 	@Token(save = true)
 	public ModelAndView initAddOrders(HttpServletRequest request) {
@@ -91,6 +95,7 @@ public class OrdersController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveOrders")
 	@Token(remove = true)
 	@ResponseBody
@@ -121,6 +126,7 @@ public class OrdersController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delOrders")
 	@ResponseBody
 	public ResultBean<String> delOrders(HttpServletRequest request,String id){

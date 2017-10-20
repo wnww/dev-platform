@@ -16,9 +16,11 @@ import org.springframework.web.util.WebUtils;
 
 import com.yhhl.authority.model.Authority;
 import com.yhhl.authority.service.AuthorityServiceI;
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
  
 /**
@@ -45,6 +47,7 @@ public class AuthorityController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("authority/authority-page");
@@ -55,6 +58,7 @@ public class AuthorityController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/showAuthorityPage")
 	public ModelAndView showAuthorityPage(HttpServletRequest request) {
 		String roleId = request.getParameter("roleId");
@@ -67,6 +71,7 @@ public class AuthorityController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getAuthorityDatas")
 	@ResponseBody
 	public ResultBean<Authority> getAuthorityDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -85,6 +90,7 @@ public class AuthorityController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getSelectAuthorityDatas")
 	@ResponseBody
 	public ResultBean<Authority> getSelectAuthorityDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -103,6 +109,7 @@ public class AuthorityController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddAuthority")
 	@Token(save = true)
 	public ModelAndView initAddAuthority(HttpServletRequest request) {
@@ -120,6 +127,7 @@ public class AuthorityController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveAuthority")
 	@Token(remove = true)
 	@ResponseBody
@@ -148,6 +156,7 @@ public class AuthorityController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delAuthority")
 	@ResponseBody
 	public Map<String, Object> delAuthority(HttpServletRequest request,String id){

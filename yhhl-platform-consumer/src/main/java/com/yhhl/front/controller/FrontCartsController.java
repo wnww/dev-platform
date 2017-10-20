@@ -87,6 +87,7 @@ public class FrontCartsController {
 	 * @return
 	 */
 	@RequestMapping("/initAddCarts")
+	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@Token(save = true)
 	public ModelAndView initAddCarts(HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -164,6 +165,7 @@ public class FrontCartsController {
 	 * @param id
 	 */
 	@RequestMapping("/delCarts")
+	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@ResponseBody
 	public ResultBean<String> delCarts(HttpServletRequest request, String id) {
 		ResultBean<String> result = new ResultBean<String>();

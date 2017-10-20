@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.roles.model.Roles;
 import com.yhhl.roles.service.RolesServiceI;
@@ -45,11 +47,13 @@ public class RolesController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("roles/roles-page");
 	}
 	
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/showRolesPage")
 	public ModelAndView showRolesPage(HttpServletRequest request) {
 		String userId = request.getParameter("userId");
@@ -62,6 +66,7 @@ public class RolesController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getRolesDatas")
 	@ResponseBody
 	public ResultBean<Roles> getRolesDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -80,6 +85,7 @@ public class RolesController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getSelectRolesDatas")
 	@ResponseBody
 	public ResultBean<Roles> getSelectRolesDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -98,6 +104,7 @@ public class RolesController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddRoles")
 	@Token(save = true)
 	public ModelAndView initAddRoles(HttpServletRequest request) {
@@ -115,6 +122,7 @@ public class RolesController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveRoles")
 	@Token(remove = true)
 	@ResponseBody
@@ -142,6 +150,7 @@ public class RolesController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delRoles")
 	@ResponseBody
 	public ResultBean<String> delRoles(HttpServletRequest request,String id){

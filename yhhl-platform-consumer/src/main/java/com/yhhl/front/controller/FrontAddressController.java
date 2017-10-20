@@ -158,6 +158,7 @@ public class FrontAddressController {
 	 * @param id
 	 */
 	@RequestMapping("/delAddress")
+	@LoginCheck(frontMustLogin=Constants.TRUE)
 	@ResponseBody
 	public ResultBean<String> delAddress(HttpServletRequest request, String id) {
 		ResultBean<String> result = new ResultBean<String>();

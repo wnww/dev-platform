@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.stock.model.Stocks;
 import com.yhhl.stock.service.StocksServiceI;
@@ -45,6 +47,7 @@ public class StocksController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		return new ModelAndView("stock/stocks-page");
@@ -55,6 +58,7 @@ public class StocksController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getStocksDatas")
 	@ResponseBody
 	public ResultBean<Stocks> getStocksDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -73,6 +77,7 @@ public class StocksController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getStocksList")
 	@ResponseBody
 	public List<Stocks> getStocksList(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -88,6 +93,7 @@ public class StocksController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddStocks")
 	@Token(save = true)
 	public ModelAndView initAddStocks(HttpServletRequest request) {
@@ -109,6 +115,7 @@ public class StocksController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/saveStocks")
 	@Token(remove = true)
 	@ResponseBody
@@ -138,6 +145,7 @@ public class StocksController {
 	* @param request
 	* @param id
 	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delStocks")
 	@ResponseBody
 	public ResultBean<String> delStocks(HttpServletRequest request,String id){

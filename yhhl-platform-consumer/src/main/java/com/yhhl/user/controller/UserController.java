@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.user.model.User;
 import com.yhhl.user.service.UserServiceI;
@@ -45,6 +47,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index.do")
 	public ModelAndView index() {
 		return new ModelAndView("user/showUser");
@@ -56,6 +59,7 @@ public class UserController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/initAddUser")
 	@Token(save = true)
 	public ModelAndView initAdd(HttpServletRequest request) {
@@ -74,6 +78,7 @@ public class UserController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/addUser")
 	@Token(remove = true)
 	@ResponseBody
@@ -104,6 +109,7 @@ public class UserController {
 	 * @param request
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getAll")
 	@ResponseBody
 	public ResultBean<User> getUsers(HttpServletRequest request, @RequestParam(value = "page") int page,
@@ -118,6 +124,7 @@ public class UserController {
 		return result;
 	}
 
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/delUser")
 	@ResponseBody
 	public ResultBean<String> delUser(HttpServletRequest request, String id) {
@@ -128,6 +135,7 @@ public class UserController {
 		return result;
 	}
 
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/{id}/showUser")
 	public String showUser(@PathVariable String id, HttpServletRequest request) {
 		User u = userService.getById(id);
@@ -140,6 +148,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/index-json.do")
 	public ModelAndView indexJson() {
 		return new ModelAndView("user/user-json-page");
@@ -153,6 +162,7 @@ public class UserController {
 	 * @param rows
 	 * @return
 	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/jsonPage")
 	@ResponseBody
 	public Map<String, Object> getJsonPage(HttpServletRequest request, @RequestParam(value = "page") int page,

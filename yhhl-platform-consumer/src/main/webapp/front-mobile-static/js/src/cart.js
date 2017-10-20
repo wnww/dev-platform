@@ -115,6 +115,9 @@ function updateCart(cartId,buyNum,obj){
 		success : function(data) {
 			if (data.flag == 1) {
 				
+			} else if (data.flag == 2) {
+				// 无权限
+				alertMsg(data.msg,"/index.do");
 			} else if (data.flag == 3) {
 				alertMsg(data.msg,"/login.do");
 			} else {
@@ -152,6 +155,9 @@ function sumbitOrder(){
 		success : function(data) {
 			if (data.flag == 1) {
 				alertMsg(data.msg,"/orders/pay.do?orderId="+data.data);
+			} else if (data.flag == 2) {
+				// 无权限
+				alertMsg(data.msg,"/index.do");
 			} else if (data.flag == 3) {
 				alertMsg(data.msg,"/login.do");
 			} else {

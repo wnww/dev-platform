@@ -37,4 +37,6 @@ public interface RolesMapper {
 	int updateByPrimaryKeySelective(Roles record) throws DataAccessException;
 
 	int updateByPrimaryKey(Roles record) throws DataAccessException;
+	
+	List<Roles> getUserRole(Map<String,Object> map) throws DataAccessException;
 }

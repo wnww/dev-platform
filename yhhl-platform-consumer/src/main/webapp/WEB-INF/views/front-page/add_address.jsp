@@ -144,7 +144,8 @@
     				    }
     				});
     			} else if (data.flag == 2) {
-    				alertMsg(data.msg);
+    				// 无权限
+    				alertMsg(data.msg,"/index.do");
     			} else if (data.flag == 3) {
     				alertMsg(data.msg,"/login.do");
     			} else {

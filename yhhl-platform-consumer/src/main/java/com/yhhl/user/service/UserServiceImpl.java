@@ -3,17 +3,17 @@ package com.yhhl.user.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.yhhl.common.MD5Utils;
 import com.yhhl.common.IdWorker;
+import com.yhhl.common.MD5Utils;
 import com.yhhl.common.SearchPageUtil;
+import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
+import com.yhhl.roleuser.dao.RoleUserMapper;
+import com.yhhl.roleuser.model.RoleUser;
 import com.yhhl.user.dao.UserMapper;
 import com.yhhl.user.model.User;
 
@@ -25,7 +25,32 @@ public class UserServiceImpl implements UserServiceI {
 	private UserMapper userMapper;
 	
 	@Autowired
+	private RoleUserMapper roleUserMapper;
+	
+	@Autowired
 	private IdWorker idWorker;
+	
+	
+
+	@Override
+	public void registerFromFront(User user) {
+		if(StringUtil.isEmpty(user.getId())){
+			user.setId(idWorker.buildId());
+		}
+		try{
+			user.setPwd(MD5Utils.MD5(user.getPwd()));
+			userMapper.insert(user);
+			RoleUser roleUser = new RoleUser();
+			roleUser.setId(idWorker.buildId());
+			// 前台普通用户角色
+			roleUser.setRoleId("c9985e7c752e4862ac52a0e45ce02b51");
+			roleUser.setUserId(user.getId());
+			roleUserMapper.insert(roleUser);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
 	 * 保存
