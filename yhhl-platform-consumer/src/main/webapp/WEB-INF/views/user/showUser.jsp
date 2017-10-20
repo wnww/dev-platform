@@ -29,7 +29,7 @@
 				pageList:[3,5,10,50],
 				idField:'id',
 				columns:[[
-					{field:'name',title:'姓名',width:100,sortable:true},
+					{field:'name',title:'用户名',width:100,sortable:true},
 					{field:'createdatetime',title:'创建时间',width:100,sortable:true},
 					{field:'button',title:'操作',width:50,align:'center',
 						formatter:function(value,rec){
@@ -206,7 +206,7 @@
 	<div id="" class="easyui-panel" title="查询条件" collapsible="true" style="padding:5px;">
 	    <form id="queryForm" name="queryForm">
 		    <center style="line-height:22spx;padding:5px;">
-			         姓名：
+			         用户名：
 			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
 			         <input type="text" id="filter_name" name="filter_name" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
 			      </span>

@@ -197,6 +197,12 @@ where 1=1
 			<if test="object.userType != null and object.userType != ''" >
 			    and user_type =  #{object.userType}
 			</if>
+			<if test="object.startDate !=null and object.startDate !=''">
+				<![CDATA[ and create_time >= #{object.startDate}  ]]>
+			</if>
+			<if test="object.endDate !=null and object.endDate !=''">
+				<![CDATA[ and create_time <= #{object.endDate}  ]]>
+			</if>
 			</trim>
 		<if test="orderBys!=null">
 			order by

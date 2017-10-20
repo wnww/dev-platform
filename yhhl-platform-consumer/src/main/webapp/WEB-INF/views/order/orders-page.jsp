@@ -7,6 +7,7 @@
 <title>Demo</title>
 	<%@ include file="/common/meta.jsp" %>
     <%@ include file="/common/import.jsp" %>
+    <script type="text/javascript" src="${ctx}/js/WdatePicker/WdatePicker.js?v=1.0.0"></script>
     <script type="text/javascript" src="${ctx}/js/money.js?v=1.0.0"></script>
     <script type="text/javascript" src="${frontMobileStaticCtx}/js/src/util.js?v=1.0.0"></script>
 <script type="text/javascript">
@@ -33,7 +34,7 @@
 					{field:'orderAmount',title:'订单总额',width:90,formatter:function(value){
 						return moneyFormatterNoY(value/100);
 					}},
-					{field:'status',title:'订单状态',width:70,sortable:true},
+					{field:'statusValue',title:'订单状态',width:70,sortable:true},
 					{field:'createTime',title:'创建时间',width:100,sortable:true,
 						formatter:function(value,rec){
 							return dateFormat(value);
@@ -90,7 +91,14 @@
 						$.messager.alert('结果', '操作失败，请重试', 'error');
 					}
 				}
-			});		
+			});
+			// 状态值
+			// 获取规格选项列表并回显
+			$('#filter_status').combobox({
+			    url:'${ctx}/sysManage/orders/getOrderStatus.do',
+			    valueField:'status',
+			    textField:'value'
+			});
 		});
 		
 		function refresh(){
@@ -186,18 +194,24 @@
 
 	//查询
     function searchList(){					
-	    	var queryParams = $('#dataPageList').datagrid('options').queryParams;
-			$('#dataPageList').datagrid('options').pageNumber = 1;
-			$('#dataPageList').datagrid('getPager').pagination({pageNumber: 1});
-	    	//查询条件放到queryParams中：格式filter_params       
-	        queryParams.filter_name = $('#filter_name').val();
-	        $('#dataPageList').datagrid("reload");
+    	var queryParams = $('#dataPageList').datagrid('options').queryParams;
+		$('#dataPageList').datagrid('options').pageNumber = 1;
+		$('#dataPageList').datagrid('getPager').pagination({pageNumber: 1});
+    	//查询条件放到queryParams中：格式filter_params       
+        queryParams.filter_ownerRealName = $('#filter_ownerRealName').val();
+        if($('#filter_status').val()!=0){
+    		queryParams.filter_status = $('#filter_status').val();
+        }
+        queryParams.filter_startDate = $('#filter_startDate').val();
+        queryParams.filter_endDate = $('#filter_endDate').val();
+        $('#dataPageList').datagrid("reload");
    }
    
    //清空查询条件   
     function clearForm(){   
       	$('#dataPageList'). datagrid('clearSelections');  
-	    $('#queryForm')[0].reset();  
+	    $('#queryForm')[0].reset();
+	    $('#filter_status').combobox('setValue',0);
     }
    
 ///////////////////////////////////////////////////////////////////////    
@@ -335,6 +349,8 @@
 	       });		             		
 	    }	
 	}
+	
+	
 	</script>
 </script>
 </head>
@@ -344,20 +360,23 @@
 	    <form id="queryForm" name="queryForm">
 		    <center style="line-height:22spx;padding:5px;">
 			         姓名：
-			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
-			         <input type="text" id="filter_ownerRealName" name="filter_ownerRealName" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
-			      </span>
-			        电话：
-			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
-			         <input type="text" id="filter_ownerMobile" name="filter_ownerMobile" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
-			      </span>
+			       <span class="textbox easyui-fluid" style="width: 100px; height: 30px;">
+			         <input type="text" id="filter_ownerRealName" name="filter_ownerRealName" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 100px;" autocomplete="off" />
+			      </span>&nbsp;&nbsp;&nbsp;&nbsp;
 			         状态：
-			       <span class="textbox easyui-fluid" style="width: 300px; height: 30px;">
-			         <input type="text" id="filter_Status" name="filter_ownerMobile" size="20" class="textbox-text validatebox-text textbox-prompt" style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left:3px; height: 30px; line-height: 30px; width: 300px;" autocomplete="off" />
-			         <select id="filter_Status" name="filter_Status">
-			         	<option value=""></option>
-			         </select>
-			      </span>
+			       <span class="textbox easyui-fluid" style="width: 100px; height: 30px;">
+			         <input class="easyui-combobox " type="text" id="filter_status" name="filter_status" style="width:100%;"/>
+			      </span>&nbsp;&nbsp;&nbsp;&nbsp;
+			   开始日期： <span class="textbox easyui-fluid"
+					style="width: 120px; height: 30px;"><input type="text" id="filter_startDate" name="filter_startDate"
+					class="textbox-text validatebox-text textbox-prompt Wdate"
+					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 100px;"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></span>
+				&nbsp;&nbsp;结束日期： <span class="textbox easyui-fluid"
+					style="width: 120px; height: 30px;"><input
+					type="text" id="filter_endDate" name="filter_endDate" class="textbox-text validatebox-text textbox-prompt Wdate"
+					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 100px;"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></span>
 			    <a href="javascript:void(0);" onclick="searchList();" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 			    <a href="javascript:void(0);" onclick="clearForm();" class="easyui-linkbutton" iconCls="icon-cancel">清空</a>
 		    </center>

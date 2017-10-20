@@ -493,14 +493,14 @@
 		<form id="publishProductsDetailForm" action="">
 			<center style="line-height: 22spx; padding: 5px;">
 				开始日期： <span class="textbox easyui-fluid"
-					style="width: 150px; height: 30px;"><input type="text" id="startDate" name="startDate"
-					class="textbox-text validatebox-text textbox-prompt"
-					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 150px;"
+					style="width: 120px; height: 30px;"><input type="text" id="startDate" name="startDate"
+					class="textbox-text validatebox-text textbox-prompt Wdate"
+					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 100px;"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></span>
 				&nbsp;&nbsp;结束日期： <span class="textbox easyui-fluid"
-					style="width: 150px; height: 30px;"><input
-					type="text" id="endDate" name="endDate" class="textbox-text validatebox-text textbox-prompt"
-					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 150px;"
+					style="width: 120px; height: 30px;"><input
+					type="text" id="endDate" name="endDate" class="textbox-text validatebox-text textbox-prompt Wdate"
+					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 100px;"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></span>
 				<a href="javascript:void(0);" onclick="publishDetail();"
 					class="easyui-linkbutton" iconCls="icon-print">生成商品详情静态页面</a>	

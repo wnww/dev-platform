@@ -20,6 +20,7 @@ public class Orders {
 	private long expressFee; // 快递费
 	private java.lang.String postAddress;//
 	private int status;//
+	private String statusValue;
 	private java.lang.String createUserName;//
 	private long createTime;//
 	private long modifyTime;//
@@ -137,5 +138,14 @@ public class Orders {
 	public void setOrderDetailList(List<OrdersVo> orderDetailList) {
 		this.orderDetailList = orderDetailList;
 	}
+
+	public String getStatusValue() {
+		return statusValue;
+	}
+
+	public void setStatusValue(String statusValue) {
+		this.statusValue = statusValue;
+	}
+	
 	
 }

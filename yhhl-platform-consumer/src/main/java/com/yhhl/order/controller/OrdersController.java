@@ -25,6 +25,7 @@ import com.yhhl.core.Page;
 import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.order.model.Orders;
+import com.yhhl.order.model.StatusVo;
 import com.yhhl.order.service.OrdersServiceI;
  
 /**
@@ -58,7 +59,7 @@ public class OrdersController {
 	}
 	
 	/**
-	 * 查询用户 列表
+	 * 查询订单 列表
 	 * @param request
 	 * @return
 	 */
@@ -68,8 +69,21 @@ public class OrdersController {
 	public ResultBean<Orders> getOrdersDatas(HttpServletRequest request, @RequestParam(value = "page") int page,
 			@RequestParam(value = "rows") int rows) {
 		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		if(!StringUtil.isEmpty(filterMap.get("startDate"))){
+			String startDate = String.valueOf(filterMap.get("startDate"));
+			startDate = startDate.replaceAll("-", "")+"000000";
+			filterMap.put("startDate", Long.parseLong(startDate));
+		}
+		if(!StringUtil.isEmpty(filterMap.get("endDate"))){
+			String endDate = String.valueOf(filterMap.get("endDate"));
+			endDate = endDate.replaceAll("-", "")+"235959";
+			filterMap.put("endDate", Long.parseLong(endDate));
+		}
 		Page<Orders> dataPage = new Page<Orders>();
 		dataPage = ordersService.getPage(filterMap, dataPage, page, rows);
+		for(Orders order : dataPage.getResult()){
+			order.setStatusValue(Constants.OrderStatus.getValue(order.getStatus()));
+		}
 		ResultBean<Orders> result = new ResultBean<Orders>();
 		result.setTotal(dataPage.getTotalCount());
 		result.setRows(dataPage.getResult());
@@ -156,12 +170,19 @@ public class OrdersController {
 	@LoginCheck(backMustLogin=Constants.TRUE)
 	@RequestMapping("/getOrderStatus")
 	@ResponseBody
-	public ResultBean<List<OrderStatus>> getOrderStatus(HttpServletRequest request,String id){
-		ResultBean<List<OrderStatus>> result = new ResultBean<List<OrderStatus>>();
+	public List<StatusVo> getOrderStatus(HttpServletRequest request,String id){
 		OrderStatus[] status = Constants.OrderStatus.values();
-		result.setFlag(ResultBean.SUCCESS);
-		result.setMsg("删除成功");
-		result.setData(Arrays.asList(status));
-		return result;
+		List<StatusVo> list = new ArrayList<StatusVo>();
+		StatusVo svo = new StatusVo();
+		svo.setStatus(0);
+		svo.setValue("全部");
+		list.add(svo);
+		for(OrderStatus sta : status){
+			StatusVo sv = new StatusVo();
+			sv.setStatus(sta.getStatus());
+			sv.setValue(sta.getValue());
+			list.add(sv);
+		}
+		return list;
 	}
 }
