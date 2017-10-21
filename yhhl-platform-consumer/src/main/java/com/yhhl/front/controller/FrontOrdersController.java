@@ -306,7 +306,7 @@ public class FrontOrdersController {
 			result.setMsg("找不到该订单");
 		}
 		long time = DateUtils.getNowDateTime();
-		order.setCreateTime(time);
+		order.setModifyTime(time);
 		order.setOwnerRealName(request.getParameter("ownerRealName"));
 		order.setOwnerMobile(request.getParameter("ownerMobile"));
 		order.setPostAddress(request.getParameter("postAddress"));
@@ -315,6 +315,7 @@ public class FrontOrdersController {
 		}else{
 			order.setExpressFee(0l);
 		}
+		ordersService.updateOrders(order);
 		result.setFlag(ResultBean.SUCCESS);
 		result.setMsg("订单提交成功");
 		return result;

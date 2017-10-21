@@ -7,7 +7,7 @@
 <title>Demo</title>
 	<%@ include file="/common/meta.jsp" %>
     <%@ include file="/common/import.jsp" %>
-    <script type="text/javascript" src="${ctx}/js/money.js"></script>
+    <script type="text/javascript" src="${ctx}/js/money.js?v=1.0.0"></script>
 <script type="text/javascript">
 
 		$(function(){
@@ -29,7 +29,11 @@
 					{field:'expressFeeId',title:'编号',width:"18%",sortable:true},
 					{field:'province',title:'省/市',width:"28%",sortable:true},
 					{field:'city',title:'市/区/县',width:"28%",sortable:true},
-					{field:'fee',title:'运费',width:"17%",sortable:true}
+					{field:'fee',title:'运费',width:"17%",sortable:true,
+						formatter:function(value){
+							return moneyFormatterNoY(value / 100);
+						}
+					}
 				]],
 				toolbar:[{
 					text:'增加',

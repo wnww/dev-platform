@@ -115,13 +115,14 @@ public class ExpressFeeController {
 			// 将页面修改的信息在这里替换
 			expressFeeTemp.setProvince(expressFee.getProvince());
 			expressFeeTemp.setCity(expressFee.getCity());
-			expressFeeTemp.setFee(expressFee.getFee());
+			expressFeeTemp.setFee(expressFee.getFee()*100);
 			expressFeeService.updateExpressFee(expressFeeTemp);
 			cacheOperate.cacheExpressFee(request.getSession().getServletContext());
 			result.setFlag(ResultBean.SUCCESS);
 			result.setMsg("修改成功");
 			return result;
 		}
+		expressFee.setFee(expressFee.getFee()*100);
 		expressFeeService.saveExpressFee(expressFee);
 		cacheOperate.cacheExpressFee(request.getSession().getServletContext());
 		result.setFlag(ResultBean.SUCCESS);

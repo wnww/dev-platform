@@ -60,7 +60,7 @@
 	    </div>
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">运费</label>
-	        <input class="easyui-textbox theme-textbox-radius"  id="fee" name="fee" value="${expressFee.fee }" style="width:100%; " data-options="required:true" />
+	        <input class="easyui-textbox theme-textbox-radius"  id="fee" name="fee" value='<fmt:formatNumber value="${expressFee.fee/100}" type="currency" pattern="0"/>' style="width:100%; " data-options="required:true" />
 	    </div>
 		<div>
 	        <a href="javascript:void(0);" class="easyui-linkbutton button-default" iconCls="icon-ok" style="width:100%;height:32px" onclick="doSubmit();">提交</a>

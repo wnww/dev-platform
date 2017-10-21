@@ -199,7 +199,7 @@ function deleteCollect(){
 			}
 		},
 		error:function(messg)  { 
-       	    alertMsg("添加收藏失败："+messg.responseText);
+       	    alertMsg("删除收藏失败："+messg.responseText);
 		} 
 	});
 }

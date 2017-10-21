@@ -55,6 +55,7 @@
         <td align="right">
         	<strong class="orange">¥</strong>
         	<strong class="orange" id="expressFee">10</strong>
+        	<input type="hidden" name="expressFeehd" id="expressFeehd"/>
         </td>
        </tr>
       </table>

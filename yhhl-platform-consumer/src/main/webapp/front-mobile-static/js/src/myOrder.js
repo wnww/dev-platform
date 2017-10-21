@@ -35,6 +35,11 @@ function getOrderList(rows,status){
 				// 第一行 tr
 				var tr1 = $('<tr>');
 				var tr1Td1 = $('<td colspan="2" width="65%">订单号：<strong>'+item.orderId+'</strong></td>');
+				tr1Td1.on("click",function(){
+					if(status==11){
+						document.location.href=ctx+"/orders/pay.do?orderId="+item.orderId;
+					}
+				});
 				var tr1Td2 = $('<td width="35%" align="right"><div class="qingqu"><a href="javascript:;" class="orange">取消</a></div></td>');
 				tr1.append(tr1Td1);
 				tr1.append(tr1Td2);

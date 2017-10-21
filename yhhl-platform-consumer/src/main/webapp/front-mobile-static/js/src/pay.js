@@ -67,21 +67,21 @@ function getDefaultAddress(){
 				if(data.rows[0].province=="北京"){
 					for(var i=0; i<expressFeeData.length; i++){
 						if(expressFeeData[i].province=="北京"){
-							$("#expressFee").html(expressFeeData[i].fee);
-							console.log("expressFee==="+expressFeeData[i].fee);
+							$("#expressFee").html(moneyFormatterNoY(expressFeeData[i].fee/100));
+							$("#expressFeehd").val(expressFeeData[i].fee);
 							break;
 						}
 					}
 				}else if(data.rows[0].province=="河北"){
 					for(var i=0; i<expressFeeData.length; i++){
 						if(expressFeeData[i].province=="河北"){
-							$("#expressFee").html(expressFeeData[i].fee);
-							console.log("expressFee==="+expressFeeData[i].fee);
+							$("#expressFee").html(moneyFormatterNoY(expressFeeData[i].fee/100));
+							$("#expressFeehd").val(expressFeeData[i].fee);
 							break;
 						}
 					}
 				}
-				var amountT = parseFloat($("#expressFee").html())+parseFloat($("#orderAmount").val()/100);
+				var amountT = parseFloat($("#expressFeehd").val()/100)+parseFloat($("#orderAmount").val()/100);
 				$("#orderTotalAmount").html(moneyFormatterNoY(amountT));
 			}else{
 				$("#showtAddress").hide();
@@ -95,24 +95,19 @@ function getDefaultAddress(){
 }
 
 function sumbitOrder(){
-	var carts = "";
-	var i=0;
-	$('input[name="selectBox"]:checked').each(function(){
-		carts = carts+$(this).val()+",";
-	});
-	if(carts.endWith(",")){
-		carts = carts.substring(0,carts.length-1);
-	}
-	console.log(carts);
-
+	var orderId = $("#orderId").val();
+	var ownerRealName = $("#ownerRealName").val();
+	var ownerMobile = $("#ownerMobile").val();
+	var postAddress = $("#postAddress").val();
+	var expressFee = $("#expressFeehd").val();
 	$.ajax({
 		type : "post",
-		url : ctx+"/orders/saveOrdersByCarts.do",
-		data : "carts="+carts,
+		url : ctx+"/orders/updateOrder.do",
+		data : "orderId="+orderId+"&ownerRealName="+ownerRealName+"&ownerMobile="+ownerMobile+"&postAddress="+postAddress+"&expressFee="+expressFee,
 		dataType : "json",
 		success : function(data) {
 			if (data.flag == 1) {
-				alertMsg(data.msg,"/userCenter/myOrder.do");
+				alertMsg(data.msg,"/orders/myOrder.do");
 			} else if (data.flag == 3) {
 				alertMsg(data.msg,"/login.do");
 			} else {
