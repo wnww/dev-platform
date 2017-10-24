@@ -60,11 +60,29 @@
 						return dateFormat(value);
 					}
 				},
+				{field : 'status',title : '状态',	width : 50,sortable : true,
+					formatter:function(value,rec){
+						if(value=="1"){
+							return "上架";
+						}else{
+							return "下架"
+						}
+					}
+				},
 				{field:'button',title:'操作',width:150,align:'left',
 					formatter:function(value,rec){
-						var btn = '<a class="button-edit button-default l-btn l-btn-small" onclick="showProdStockData(\''+rec.prodId+'\',\''+rec.prodName+'\')" href="javascript:void(0)">';
+						var btn = "";
+						if(rec.status=="1"){
+							btn += '<a class="button-edit button-default l-btn l-btn-small" onclick="statusOpert(\''+rec.prodId+'\',\'0\')" href="javascript:void(0)">';
+						}else{
+							btn += '<a class="button-edit button-default l-btn l-btn-small" onclick="statusOpert(\''+rec.prodId+'\',\'1\')" href="javascript:void(0)">';
+						}
 						btn += '<span class="l-btn-left">';
-						btn += '<span class="l-btn-text">添加库存</span>';
+						if(rec.status=="1"){
+							btn += '<span class="l-btn-text">下架</span>';
+						}else{
+							btn += '<span class="l-btn-text">上架</span>';
+						}
 						btn += '</span>';
 						btn += '</a>';
 						
@@ -98,6 +116,9 @@
 				}
 			}, '-', {text : '增加产品详情',iconCls : 'icon-add',handler : function() {
 					saveEntityDetail();
+				}
+			},'-', {text : '添加库存',iconCls : 'icon-add',handler : function() {
+						showProdStockData();
 				}
 			}, '-', {text : '删除',iconCls : 'icon-remove',handler : function() {
 					deleteEntity();
@@ -161,6 +182,33 @@
 		$('#saveDiv').window('open');
 	}
 	
+	function statusOpert(prodId,status){
+		$.ajax({
+			type : "post",
+			url : "${ctx}/sysManage/products/operatProdStatus.do?prodId="+ prodId+"&status="+status+"&t="+new Date(),
+			dataType : "json",
+			success : function(data) {
+				if (data.flag == 1) {
+					$.messager.confirm('提交结果', '操作成功', function() {
+						winReload();// 刷新列表
+					});
+				} else if (data.flag == 2) {
+					$.messager.alert('结果', data.msg, 'info');
+				} else if (data.flag == 3) {
+					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+						document.location.href="${ctx}/sysManage/index.do";
+					});
+				} else {
+					$.messager.alert('结果', '操作失败，请重试', 'error');
+				}
+			},
+			error : function(messg) {
+				$.messager.alert('错误提示', '操作失败:'
+						+ messg.responseText, 'error');
+			}
+		});
+	}
+	
 	function saveEntityDetail() {
 		var node = getSelected();
 		if (node) {
@@ -193,7 +241,7 @@
 	function deleteEntity() {
 		var node = getSelected();
 		if (node) {
-			$.messager.confirm('确认', '您确定要删除：<font color=red>' + node.name
+			$.messager.confirm('确认', '您确定要删除：<font color=red>' + node.prodName
 					+ '</font> ？', function(r) {
 				if (r) {
 					$.ajax({
@@ -293,69 +341,72 @@
 	}
 	//////////////////商品规格、颜色、库存管理//////////////////////
 	// 库存列表		
-	function showProdStockData(prodId,prodName){
-		$('#dataItemPageList').datagrid({
-			title:'库存列表-商品ID【'+prodName+'】',
-			iconCls:'icon-ok',
-			url:'${ctx}/sysManage/stocks/getStocksDatas.do?filter_prodId='+prodId+'&t='+new Date(),
-			nowrap: false,
-			striped: true,
-			collapsible:false,				
-			fitColumns: true,
-			pagination:true,
-			singleSelect:true,
-			rownumbers:true,
-			remoteSort: false,
-			pageList:[3,5,10,50],
-			idField:'stockId',
-			columns:[[
-				{field:'prodId',title:'商品编号',width:100,sortable:true},
-				{field:'colorsId',title:'颜色名称',width:100,sortable:true},
-				{field:'specificationId',title:'规格',width:100},
-				{field:'remainNum',title:'库存数量',width:100,sortable:true},
-				{field:'selledNum',title:'已售数量',width:100,sortable:true}
-			]],
-			toolbar:[{
-				text:'增加',
-				iconCls:'icon-add',
-				handler:function(){
-					saveEntityExtend();
+	function showProdStockData(){
+		var node = getSelected();
+		if (node) {
+			$('#dataItemPageList').datagrid({
+				title:'库存列表-商品名称【'+node.prodName+'】',
+				iconCls:'icon-ok',
+				url:'${ctx}/sysManage/stocks/getStocksDatas.do?filter_prodId='+node.prodId+'&t='+new Date(),
+				nowrap: false,
+				striped: true,
+				collapsible:false,				
+				fitColumns: true,
+				pagination:true,
+				singleSelect:true,
+				rownumbers:true,
+				remoteSort: false,
+				pageList:[3,5,10,50],
+				idField:'stockId',
+				columns:[[
+					{field:'prodId',title:'商品编号',width:100,sortable:true},
+					{field:'colorsId',title:'颜色名称',width:100,sortable:true},
+					{field:'specificationId',title:'规格',width:100},
+					{field:'remainNum',title:'库存数量',width:100,sortable:true},
+					{field:'selledNum',title:'已售数量',width:100,sortable:true}
+				]],
+				toolbar:[{
+					text:'增加',
+					iconCls:'icon-add',
+					handler:function(){
+						saveEntityExtend();
+					}
+				},'-',{
+					text:'修改',
+					iconCls:'icon-edit',
+					handler:function(){
+						editProductExtend();
+					}
+				},'-',{
+					text:'删除',
+					iconCls:'icon-remove',
+					handler:function(){
+						deleteProductExtend();
+					}
+				},'-',{
+					text:'刷新',
+					iconCls:'icon-reload',
+					handler:function(){
+						$('#dataItemPageList').datagrid('reload');
+					}
 				}
-			},'-',{
-				text:'修改',
-				iconCls:'icon-edit',
-				handler:function(){
-					editProductExtend();
+				],
+				onDblClickRow:function(){
+					
+				},
+				onLoadSuccess : function(data){
+					if (data.flag == 2) {
+						$.messager.alert('结果', data.msg, 'error');
+					} else if (data.flag == 3){
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					} else if(data.flag!= 1){
+						$.messager.alert('结果', '操作失败，请重试', 'error');
+					}
 				}
-			},'-',{
-				text:'删除',
-				iconCls:'icon-remove',
-				handler:function(){
-					deleteProductExtend();
-				}
-			},'-',{
-				text:'刷新',
-				iconCls:'icon-reload',
-				handler:function(){
-					$('#dataItemPageList').datagrid('reload');
-				}
-			}
-			],
-			onDblClickRow:function(){
-				
-			},
-			onLoadSuccess : function(data){
-				if (data.flag == 2) {
-					$.messager.alert('结果', data.msg, 'error');
-				} else if (data.flag == 3){
-					$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
-						document.location.href="${ctx}/sysManage/index.do";
-					});
-				} else if(data.flag!= 1){
-					$.messager.alert('结果', '操作失败，请重试', 'error');
-				}
-			}
-		});
+			});
+		}
 	}
 	
 	// 判断是否选中一条记录

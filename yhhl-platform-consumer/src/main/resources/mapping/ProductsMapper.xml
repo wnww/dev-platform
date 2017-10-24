@@ -28,11 +28,12 @@
 	<result column="prod_come" property="prodCome"/>
 	<result column="prod_come_url" property="prodComeUrl"/>
 	<result column="recommend" property="recommend"/>
+	<result column="status" property="status"/>
 </resultMap>
        
 <!-- products table all fields -->
 <sql id="Base_Column_List" >
-	 prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time,express_fee,prod_come,prod_come_url,recommend 
+	 prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time,express_fee,prod_come,prod_come_url,recommend,status  
 </sql>
    
    
@@ -100,19 +101,22 @@ where 1=1
 	<if test="recommend != null and recommend != ''" >
 	    and recommend =  #{recommend}
 	</if>
+	<if test="status != null and status != ''" >
+	    and status =  #{status}
+	</if>
 </trim>
 </sql>
    
 
 <!-- 插入记录 -->
 <insert id="insert" parameterType="com.yhhl.product.model.Products" >
-  insert into products (prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time,express_fee,prod_come,prod_come_url,recommend)
- values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=BIGINT},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockSituation, jdbcType=VARCHAR},#{sellNum, jdbcType=VARCHAR},#{colors, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT},#{expressFee, jdbcType=BIGINT},#{prodCome, jdbcType=VARCHAR},#{prodComeUrl, jdbcType=VARCHAR},#{recommend, jdbcType=VARCHAR})
+  insert into products (prod_id,prod_code,prod_name,unit_price_cost,unit_price_sell,img_url,remark,brands,unit,specification,properties,mark,type,stock_situation,sell_num,colors,create_time,modify_time,express_fee,prod_come,prod_come_url,recommend,status)
+ values(#{prodId, jdbcType=VARCHAR},#{prodCode, jdbcType=VARCHAR},#{prodName, jdbcType=VARCHAR},#{unitPriceCost, jdbcType=BIGINT},#{unitPriceSell, jdbcType=BIGINT},#{imgUrl, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{brands, jdbcType=VARCHAR},#{unit, jdbcType=VARCHAR},#{specification, jdbcType=VARCHAR},#{properties, jdbcType=VARCHAR},#{mark, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{stockSituation, jdbcType=VARCHAR},#{sellNum, jdbcType=VARCHAR},#{colors, jdbcType=VARCHAR},#{createTime, jdbcType=BIGINT},#{modifyTime, jdbcType=BIGINT},#{expressFee, jdbcType=BIGINT},#{prodCome, jdbcType=VARCHAR},#{prodComeUrl, jdbcType=VARCHAR},#{recommend, jdbcType=VARCHAR},#{status, jdbcType=VARCHAR})
 </insert>
 
 <!-- 根据id，修改记录-->  
  <update id="updateByPrimaryKey" parameterType="com.yhhl.product.model.Products" >
-  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=BIGINT},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_situation=#{stockSituation, jdbcType=VARCHAR},sell_num=#{sellNum, jdbcType=VARCHAR},colors=#{colors, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT},express_fee=#{expressFee, jdbcType=BIGINT},prod_come=#{prodCome, jdbcType=VARCHAR},prod_come_url=#{prodComeUrl, jdbcType=VARCHAR},recommend=#{recommend, jdbcType=VARCHAR} where prod_id=#{prodId}
+  update products set prod_id=#{prodId, jdbcType=VARCHAR},prod_code=#{prodCode, jdbcType=VARCHAR},prod_name=#{prodName, jdbcType=VARCHAR},unit_price_cost=#{unitPriceCost, jdbcType=BIGINT},unit_price_sell=#{unitPriceSell, jdbcType=BIGINT},img_url=#{imgUrl, jdbcType=VARCHAR},remark=#{remark, jdbcType=VARCHAR},brands=#{brands, jdbcType=VARCHAR},unit=#{unit, jdbcType=VARCHAR},specification=#{specification, jdbcType=VARCHAR},properties=#{properties, jdbcType=VARCHAR},mark=#{mark, jdbcType=VARCHAR},type=#{type, jdbcType=VARCHAR},stock_situation=#{stockSituation, jdbcType=VARCHAR},sell_num=#{sellNum, jdbcType=VARCHAR},colors=#{colors, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=BIGINT},modify_time=#{modifyTime, jdbcType=BIGINT},express_fee=#{expressFee, jdbcType=BIGINT},prod_come=#{prodCome, jdbcType=VARCHAR},prod_come_url=#{prodComeUrl, jdbcType=VARCHAR},recommend=#{recommend, jdbcType=VARCHAR},status=#{status, jdbcType=VARCHAR} where prod_id=#{prodId}
  </update>
  
  <!-- 修改记录，只修改只不为空的字段 -->
@@ -182,6 +186,9 @@ where 1=1
 	<if test="recommend != null  ">
 		recommend=#{recommend, jdbcType=BIGINT}
 	</if>
+	<if test="status != null  ">
+		status=#{status, jdbcType=BIGINT}
+	</if>
 	</trim> where prod_id=#{prodId}
 </update>
 
@@ -246,6 +253,9 @@ where 1=1
 			<if test="object.recommend != null and object.recommend != ''" >
 			    and recommend =  #{object.recommend}
 			</if>
+			<if test="object.status != null and object.status != ''" >
+			    and status =  #{object.status}
+			</if>
 			</trim>
 		<if test="orderBys!=null">
 			order by
@@ -264,7 +274,7 @@ where 1=1
 		left join stocks st on ps.prod_id=st.prod_id
 		left join dicts dc on st.colors_id=dc.dict_id
 		left join dicts ds on st.specification_id=ds.dict_id
-		where 1=1
+		where status='1'
 			<if test="object.prodName != null and object.prodName != ''" >
 			    and prod_name like concat(concat('%', #{object.prodName}),'%') 
 			</if>
@@ -311,13 +321,16 @@ where 1=1
 			    and p.colors =  #{object.colors}
 			</if>
 			<if test="object.recommend != null and object.recommend != ''" >
-			    and recommend =  #{object.recommend}
+			    and p.recommend =  #{object.recommend}
 			</if>
 			<if test="object.keyWords != null and object.keyWords != ''" >
 				and 
 				<foreach collection="object.keyWords" item="item" open="(" close=")" separator="or">
-					prod_name like concat(concat('%',#{item}),'%')	
+					p.prod_name like concat(concat('%',#{item}),'%')	
 				</foreach>
+			</if>
+			<if test="object.status != null and object.status != ''" >
+			    and p.status =  #{object.status}
 			</if>
 			</trim>
 		<if test="orderBys!=null">
@@ -340,7 +353,7 @@ where 1=1
 			    and prod_id =  #{prodId}
 			</if>
 							<if test="prodName != null and prodName != ''" >
-			    and prod_name =  #{prodName}
+			    and prod_name like concat(concat('%', #{prodName}),'%') 
 			</if>
 							<if test="brands != null and brands != ''" >
 			    and brands =  #{brands}
@@ -377,6 +390,15 @@ where 1=1
 			</if>
 			<if test="recommend != null and recommend != ''" >
 			    and recommend =  #{recommend}
+			</if>
+			<if test="keyWords != null and keyWords != ''" >
+				and 
+				<foreach collection="keyWords" item="item" open="(" close=")" separator="or">
+					prod_name like concat(concat('%',#{item}),'%')	
+				</foreach>
+			</if>
+			<if test="status != null and status != ''" >
+			    and status =  #{status}
 			</if>
 			</trim>
    	</select>

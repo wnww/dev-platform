@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.yhhl.common.Constants;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.StringUtil;
 import com.yhhl.core.Page;
@@ -118,6 +119,7 @@ public class ProdDetailController {
 			}
 			filterMap.put("keyWords", conditions);
 		}
+		filterMap.put("status", Constants.TRUE);
 		dataPage = productsService.getFrontPage(filterMap, dataPage, page, rows);
 		
 		ResultBean<Products> result = new ResultBean<Products>();

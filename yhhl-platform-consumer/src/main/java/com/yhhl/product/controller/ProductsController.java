@@ -146,12 +146,44 @@ public class ProductsController {
 			result.setMsg("修改成功");
 			return result;
 		}
-		
+		products.setStatus(Constants.FALSE);// 产品默认下架，不在前台显示
+		products.setRecommend(Constants.FALSE);// 默认不推荐
 		products.setCreateTime(time);
 		products.setModifyTime(time);
 		productsService.saveProducts(products);
 		result.setFlag(ResultBean.SUCCESS);
 		result.setMsg("保存成功");
+		return result;
+	}
+	
+	/**
+	 * 设置产品状态：上架；下架
+	 * @param user
+	 * @param request
+	 * @return
+	 */
+	@LoginCheck(backMustLogin=Constants.TRUE)
+	@RequestMapping("/operatProdStatus")
+	@ResponseBody
+	public ResultBean<String> operatProdStatus(String prodId, String status, HttpServletRequest request) {
+		ResultBean<String> result = new ResultBean<String>();
+		long time = DateUtils.getNowDateTime();
+		Products product = productsService.getById(prodId);
+		if(product==null){
+			result.setFlag(ResultBean.FAIL);
+			result.setMsg("没有找到该商品");
+			return result;
+		}
+		
+		product.setStatus(status);
+		product.setModifyTime(time);
+		productsService.updateProducts(product);
+		result.setFlag(ResultBean.SUCCESS);
+		if(status.equals(Constants.TRUE)){
+			result.setMsg("上架成功！");
+		}else{
+			result.setMsg("下架成功！");
+		}
 		return result;
 	}
 	
