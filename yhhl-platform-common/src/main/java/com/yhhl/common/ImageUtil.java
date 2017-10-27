@@ -1,12 +1,17 @@
 package com.yhhl.common;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
+
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.Builder;
@@ -26,7 +31,7 @@ public class ImageUtil {
 	 * Description: 根据图片路径生成缩略图
 	 * </p>
 	 * 
-	 * @param imagePath
+	 * @param srcUrl
 	 *            原图片路径
 	 * @param w
 	 *            缩略图宽
@@ -37,49 +42,58 @@ public class ImageUtil {
 	 * @param force
 	 *            是否强制按照宽高生成缩略图(如果为false，则生成最佳比例缩略图)
 	 */
-	public void thumbnailImage(String imagePath, int w, int h, String prevfix, boolean force) {
-		File imgFile = new File(imagePath);
-		if (imgFile.exists()) {
-			try {
-				BufferedImage image = ImageIO.read(new File(imagePath));
-				Builder<BufferedImage> builder = null;
-				if (!force) {
-					// 根据原图与要求的缩略图比例，找到最合适的缩略图比例
-					int imageWidth = image.getWidth();  
-					int imageHeitht = image.getHeight();
-					if ((float)h / w != (float)imageWidth / imageHeitht) {  
-					    if (imageWidth > imageHeitht) {  
-					        image = Thumbnails.of(imagePath).outputQuality(0.8f).height(h).asBufferedImage();  
-					    } else {  
-					        image = Thumbnails.of(imagePath).outputQuality(0.8f).width(w).asBufferedImage();  
-					    }  
-					    builder = Thumbnails.of(image).outputQuality(0.8f).sourceRegion(Positions.CENTER, w, h).size(w, h);  
-					} else {  
-					    builder = Thumbnails.of(image).outputQuality(0.8f).size(w, h);  
-					}  
+	public void thumbnailImage(String srcUrl, String prevfix, double comBase, double scale) {
+		try {
+			File srcFile = new java.io.File(srcUrl);
+			Image src = ImageIO.read(srcFile);
+			int srcHeight = src.getHeight(null);
+			int srcWidth = src.getWidth(null);
+			int deskHeight = 0;// 缩略图高
+			int deskWidth = 0;// 缩略图宽
+			double srcScale = (double) srcHeight / srcWidth;
+			/** 缩略图宽高算法 */
+			if ((double) srcHeight > comBase || (double) srcWidth > comBase) {
+				if (srcScale >= scale || 1 / srcScale > scale) {
+					if (srcScale >= scale) {
+						deskHeight = (int) comBase;
+						deskWidth = srcWidth * deskHeight / srcHeight;
+					} else {
+						deskWidth = (int) comBase;
+						deskHeight = srcHeight * deskWidth / srcWidth;
+					}
+				} else {
+					if ((double) srcHeight > comBase) {
+						deskHeight = (int) comBase;
+						deskWidth = srcWidth * deskHeight / srcHeight;
+					} else {
+						deskWidth = (int) comBase;
+						deskHeight = srcHeight * deskWidth / srcWidth;
+					}
 				}
-				
-				String p = imgFile.getPath();
-				// 将图片保存在原目录并加上前缀
-				File smallImg = new File(
-						p.substring(0, p.lastIndexOf(File.separator)) + File.separator + prevfix + imgFile.getName().substring(2));
-				builder.outputFormat("jpg").toFile(smallImg);
-				log.debug("缩略图在原路径下生成成功");
-			} catch (IOException e) {
-				log.error("generate thumbnail image failed.", e);
+			} else {
+				deskHeight = srcHeight;
+				deskWidth = srcWidth;
 			}
-		} else {
-			log.warn("the image is not exist.");
+			BufferedImage tag = new BufferedImage(deskWidth, deskHeight, BufferedImage.TYPE_3BYTE_BGR);
+			tag.getGraphics().drawImage(src, 0, 0, deskWidth, deskHeight, null); // 绘制缩小后的图
+			String tmp = srcUrl.substring(srcUrl.indexOf("b_")+2,srcUrl.lastIndexOf("."));
+			String temp = srcUrl.substring(0,srcUrl.lastIndexOf("b_"))+tmp+prevfix;
+			String suffix = srcUrl.substring(srcUrl.lastIndexOf("."));
+			FileOutputStream deskImage = new FileOutputStream(temp+suffix); // 输出到文件流
+			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(deskImage);
+			encoder.encode(tag); // 近JPEG编码
+			deskImage.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	
-	public String getFilePath(String path){
+
+	public String getFilePath(String path) {
 		File file = new File(path);
 		return file.getParentFile().getParentFile().getParentFile().getAbsolutePath();
 	}
 
 	public static void main(String[] args) {
-		new ImageUtil().thumbnailImage("E:\\帽子2.jpg", 1200, 800, DEFAULT_PREVFIX,
-				DEFAULT_FORCE);
+		new ImageUtil().thumbnailImage("E:\\帽子2.jpg","", 550, 0.8d);
 	}
 }

@@ -22,7 +22,7 @@ import com.yhhl.common.LoginUser;
  * @Copyright(c)2014:瀛海科技
  */
 @Controller
-@RequestMapping("/sysManage/charts")
+@RequestMapping("/sysManage/chartsTest")
 public class EchartsTest {
 
 	@RequestMapping("/index")

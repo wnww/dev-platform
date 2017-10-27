@@ -340,7 +340,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             </div>   
                             <div title="图表测试">   
                                 <ul class="easyui-datalist" data-options="border:false,fit:true">
-                                    <li><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/sysManage/charts/index.do')">Echarts测试</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('订单统计','${ctx}/sysManage/charts/index.do')">订单统计</a></li>
+                                    <li><a href="javascript:void(0);" onclick="addTab('Echarts测试','${ctx}/sysManage/chartsTest/index.do')">Echarts测试</a></li>
                                 </ul>      
                             </div>
 

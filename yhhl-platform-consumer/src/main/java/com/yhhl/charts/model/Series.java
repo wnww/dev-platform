@@ -4,7 +4,18 @@ public class Series {
 
 	private String name;
 	private String type;
-	private long[] data;
+	private double[] data;
+	
+	
+	public Series(){
+		
+	}
+	
+	public Series(String name,String type){
+		this.name = name;
+		this.type = type;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -17,10 +28,13 @@ public class Series {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public long[] getData() {
+
+	public double[] getData() {
 		return data;
 	}
-	public void setData(long[] data) {
+
+	public void setData(double[] data) {
 		this.data = data;
 	}
+	
 }

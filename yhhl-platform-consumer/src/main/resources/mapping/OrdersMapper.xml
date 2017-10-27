@@ -267,7 +267,7 @@ where 1=1
 			</trim>
    	</select>
 
-	<select useCache="false" id="getMyOrderVoList" resultMap="myOrderList" parameterType="com.yhhl.common.SearchPageUtil">
+	<select useCache="false" id="getMyOrderVoList" resultMap="myOrderList" parameterType="java.util.Map">
 		select os.order_id,op.order_prod_id,op.prod_id,op.stock_id,op.prod_name,op.prod_num,os.order_amount,os.express_fee,os.owner_user_name,os.status,os.create_time,p.img_url from orders os 
 		left join order_products op on os.order_id=op.order_id 
 		left join products p on op.prod_id=p.prod_id

@@ -118,7 +118,7 @@ public class LoginController {
 		user.setName(userName);
 		user.setCreateTime(new Date());
 		user.setPwd(password);
-		userService.saveUser(user);
+		userService.registerFromFront(user);
 		LoginUser loginUser = new LoginUser();
 		loginUser.setUserId(user.getId());
 		loginUser.setUserName(user.getName());

@@ -284,16 +284,16 @@ where 1=1
 	<!-- 前台 分页 data-->
 	<select useCache="false" id="getFrontPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
 		select p.prod_id,p.prod_name,p.unit_price_sell,p.img_url,p.remark,p.brands,p.unit,
-		ds.dict_value AS specification,
+		
 		stks.remain_num AS stock_situation,
 		stks.selled_num as sell_num,
-		dc.dict_value AS colors,
+		
 		properties,mark,type 
 		from products p left join 
-		(select * from stocks where stock_id in(select max(stock_id) from stocks group by prod_id)) stks
+		(select prod_id,sum(remain_num) remain_num,sum(selled_num) selled_num from stocks group by prod_id) stks
 		on p.prod_id=stks.prod_id
-		left join dicts dc on stks.colors_id=dc.dict_id
-		left join dicts ds on stks.specification_id=ds.dict_id
+		
+		
 		where 1=1
 		<trim  suffixOverrides="," >
 			<if test="object.prodId != null and object.prodId != ''" >

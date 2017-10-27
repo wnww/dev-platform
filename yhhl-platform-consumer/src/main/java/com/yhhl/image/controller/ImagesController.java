@@ -93,7 +93,7 @@ public class ImagesController {
 				}
 				File uploadFile = new File(filePath);
 				FileCopyUtils.copy(file.getBytes(), uploadFile);
-				imageUtil.thumbnailImage(uploadFile.getAbsolutePath(), 800, 800, "", false);
+				imageUtil.thumbnailImage(uploadFile.getAbsolutePath(), "", 550, 0.8d);
 				File upf = new File(filePath);
 				if(upf.exists()){
 					upf.delete();
