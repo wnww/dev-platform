@@ -125,4 +125,10 @@ public class OrdersServiceImpl implements OrdersServiceI {
 		ordersMapper.deleteByPrimaryKey(id);
 	}
 
+	@Override
+	public OrdersVo getOrderTotalAmountAndTotalSellNum(Map<String, Object> filterMap) {
+		return ordersMapper.getOrderTotalAmountAndTotalSellNum(filterMap);
+	}
+
+	
 }

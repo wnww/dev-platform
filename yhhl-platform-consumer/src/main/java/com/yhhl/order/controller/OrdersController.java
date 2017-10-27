@@ -1,7 +1,6 @@
 package com.yhhl.order.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +24,7 @@ import com.yhhl.core.Page;
 import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.interceptor.Token;
 import com.yhhl.order.model.Orders;
+import com.yhhl.order.model.OrdersVo;
 import com.yhhl.order.model.StatusVo;
 import com.yhhl.order.service.OrdersServiceI;
  
@@ -78,6 +78,11 @@ public class OrdersController {
 			String endDate = String.valueOf(filterMap.get("endDate"));
 			endDate = endDate.replaceAll("-", "")+"235959";
 			filterMap.put("endDate", Long.parseLong(endDate));
+		}
+		if(!StringUtil.isEmpty(filterMap.get("status"))){
+			if(String.valueOf(filterMap.get("status")).equals("0")){
+				filterMap.put("status", null);
+			}
 		}
 		Page<Orders> dataPage = new Page<Orders>();
 		dataPage = ordersService.getPage(filterMap, dataPage, page, rows);
@@ -162,7 +167,7 @@ public class OrdersController {
 	}
 
 	/**
-	* 删除
+	* 获取订单所有状态
 	*
 	* @param request
 	* @param id
@@ -184,5 +189,36 @@ public class OrdersController {
 			list.add(sv);
 		}
 		return list;
+	}
+	
+	/**
+	* 获取订单总金额，总售出数量 
+	*
+	* @param request
+	* @param id
+	*/
+	@LoginCheck(backMustLogin=Constants.TRUE)
+	@RequestMapping("/getOrderTotalAmountAndTotalSellNum")
+	@ResponseBody
+	public ResultBean<OrdersVo> getOrderTotalAmountAndTotalSellNum(HttpServletRequest request){
+		ResultBean<OrdersVo> result = new ResultBean<OrdersVo>();
+		
+		Map<String, Object> filterMap = WebUtils.getParametersStartingWith(request, "filter_");
+		if(!StringUtil.isEmpty(filterMap.get("startDate"))){
+			String startDate = String.valueOf(filterMap.get("startDate"));
+			startDate = startDate.replaceAll("-", "")+"000000";
+			filterMap.put("startDate", Long.parseLong(startDate));
+		}
+		if(!StringUtil.isEmpty(filterMap.get("endDate"))){
+			String endDate = String.valueOf(filterMap.get("endDate"));
+			endDate = endDate.replaceAll("-", "")+"235959";
+			filterMap.put("endDate", Long.parseLong(endDate));
+		}
+		
+		OrdersVo ordersVo= ordersService.getOrderTotalAmountAndTotalSellNum(filterMap);
+		result.setFlag(ResultBean.SUCCESS);
+		result.setMsg("成功");
+		result.setData(ordersVo);
+		return result;
 	}
 }

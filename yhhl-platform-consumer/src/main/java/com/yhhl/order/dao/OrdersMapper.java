@@ -39,4 +39,6 @@ public interface OrdersMapper {
 	int updateByPrimaryKeySelective(Orders record) throws DataAccessException;
 
 	int updateByPrimaryKey(Orders record) throws DataAccessException;
+	
+	OrdersVo getOrderTotalAmountAndTotalSellNum(Map<String,Object> filterMap) throws DataAccessException;
 }

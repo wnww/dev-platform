@@ -37,5 +37,7 @@ public interface OrdersServiceI {
 	public void saveOrderAndOrderProduct(Orders order,List<OrderProducts> list,List<String> cartIds);
 	
 	List<OrdersVo> getMyOrderVoList(Map<String,Object> map);
+	
+	OrdersVo getOrderTotalAmountAndTotalSellNum(Map<String,Object> filterMap);
 
 }

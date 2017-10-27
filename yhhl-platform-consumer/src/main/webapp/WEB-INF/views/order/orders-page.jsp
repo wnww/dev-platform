@@ -14,7 +14,7 @@
 
 		$(function(){
 			$('#dataPageList').datagrid({
-				title:'订单列表',
+			    title:'订单列表',
 				iconCls:'icon-ok',
 				url:'${ctx}/sysManage/orders/getOrdersDatas.do?t='+new Date(),
 				nowrap: false,
@@ -81,7 +81,10 @@
 					//dataItemTree();
 				},
 				onLoadSuccess : function(data){
-					if (data.flag == 2) {
+					if(data.flag == 1){
+						// 获取订单总金额，订单总售出商品数量，订单总数量
+						getTotalOrderAmountAndSellNum();
+					}else if (data.flag == 2) {
 						$.messager.alert('结果', data.msg, 'error');
 					} else if (data.flag == 3){
 						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
@@ -90,6 +93,7 @@
 					} else if(data.flag!= 1){
 						$.messager.alert('结果', '操作失败，请重试', 'error');
 					}
+					
 				}
 			});
 			// 状态值
@@ -101,19 +105,46 @@
 			});
 		});
 		
-		function refresh(){
-			var url = '${ctx}/sysManage/orders/getOrdersDatas.action';
+		function getTotalOrderAmountAndSellNum(){
+			var filter_startDate = $('#filter_startDate').val();
+			var filter_endDate = $('#filter_endDate').val();
+			var filter_status = $('#filter_status').val();
+			var total_url = "${ctx}/sysManage/orders/getOrderTotalAmountAndTotalSellNum.do?filter_startDate="+filter_startDate+"&filter_endDate="+filter_endDate+"&t="+new Date();
+			if(filter_status!=0){
+				total_url = total_url+"&filter_status="+filter_status;
+			}
+			var filter_ownerRealName = $('#filter_ownerRealName').val();
+			if(filter_ownerRealName!=""){
+				total_url = total_url+"&filter_ownerRealName="+filter_ownerRealName;
+			}
 			$.ajax({
 				type: "post",
-				data: "",
-				dataType: "",
-				url: url,
-				success: function(data, textStatus){
-					alert("OK");
+				url: total_url,
+				dataType: "json",
+				success: function(data){
+					if(data.flag==1 && data.data){
+						if($("#showTotal")){
+							$("#showTotal").remove();
+						}
+						//var showContent = $("panel-tool").eq(1).html();
+						var total = "<span id='showTotal' style='color:#0000FF;text-align=center;padding-right:30px;font-weight:bold;'>订单总金额：<span style='font-size:18px'>"+moneyFormatterNoY(data.data.orderAmount/100)+"</span> 元 | 订单总购买量：<span style='font-size:18px'>"+data.data.prodNum+"</span></span>";
+						$(".panel-tool").eq(1).prepend(total);
+					}else if(data.flag==2){
+						$.messager.alert('结果', data.msg, 'info');	
+					}else if (data.flag == 3) {
+						$.messager.alert('结果', '您还未登录，请先登录！', 'error', function(){
+							document.location.href="${ctx}/sysManage/index.do";
+						});
+					}else{
+						//$.messager.alert('结果', '操作失败，请重试', 'error');	
+						if($("#showTotal")){
+							$("#showTotal").remove();
+						}
+					}
 				},
-				error: function(messg){
-					alert("error");
-				}
+				error:function(messg)  { 
+		       	    $.messager.alert('错误提示', '操作失败:'+messg.responseText, 'error');
+		       } 
 			});
 		}
 		
@@ -131,9 +162,9 @@
 			var node = getSelected();		
 			if (node){	
 				var url = '${ctx}/sysManage/orders/initAddOrders.do?id='+node.orderId;
-				$('#saveFrame').attr("title","修改"+node.prodName);
+				//$('#saveFrame').attr("title","修改"+node.orderId+"-");
 				$('#saveFrame').attr("src",url);
-				$("#saveDiv").window({title:"修改订单-"+node.prodName,iconCls:'icon-edit',height:"550px",width:"650px",left:"50px",top:"30px"});
+				$("#saveDiv").window({title:"修改订单-"+node.orderId+"-"+node.ownerRealName,iconCls:'icon-edit',height:"550px",width:"650px",left:"50px",top:"30px"});
 				$('#saveDiv').window('open');
 			}
 		}
@@ -199,9 +230,8 @@
 		$('#dataPageList').datagrid('getPager').pagination({pageNumber: 1});
     	//查询条件放到queryParams中：格式filter_params       
         queryParams.filter_ownerRealName = $('#filter_ownerRealName').val();
-        if($('#filter_status').val()!=0){
-    		queryParams.filter_status = $('#filter_status').val();
-        }
+        console.log($('#filter_status').combobox('getValue'));
+    	queryParams.filter_status = $('#filter_status').combobox('getValue');
         queryParams.filter_startDate = $('#filter_startDate').val();
         queryParams.filter_endDate = $('#filter_endDate').val();
         $('#dataPageList').datagrid("reload");
@@ -211,7 +241,7 @@
     function clearForm(){   
       	$('#dataPageList'). datagrid('clearSelections');  
 	    $('#queryForm')[0].reset();
-	    $('#filter_status').combobox('setValue',0);
+	    $('#filter_status').combobox("setValue",0);
     }
    
 ///////////////////////////////////////////////////////////////////////    
