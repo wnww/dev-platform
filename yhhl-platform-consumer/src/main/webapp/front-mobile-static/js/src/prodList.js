@@ -45,7 +45,7 @@ function getProdList(rows,type,orderBy,keyWords){
 				var dl = $('<dl>');
 				var dt = $('<dt style="width:30%"><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'"><img src="'+getFirstImg(ctx,item.imgUrl)+'" width="150" /></a></dt>');
 				var dd = $('<dd>');
-				var h3 = $('<h3><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'">'+item.prodName+'</a></h3>');
+				var h3 = $('<h3 style="white-space:normal;width:191px;"><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'">'+item.prodName+'</a></h3>');
 				var div1 = $('<div class="prolist-price"><strong>¥'+moneyFormatterNoY(item.unitPriceSell / 100)+'</strong></div>');
 				var div2 = $('<div class="prolist-yishou"><em>库存：'+item.stockSituation+'</em> <em>已售：'+item.sellNum+'</em></div>');
 				dd.append(h3);

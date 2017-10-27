@@ -303,6 +303,8 @@
 		});
 		//查询条件放到queryParams中：格式filter_params       
 		queryParams.filter_prodName = $('#filter_prodName').val();
+		queryParams.filter_status = $('#filter_status').val();
+		
 		$('#dataPageList').datagrid("reload");
 	}
 
@@ -529,13 +531,18 @@
 		style="padding: 5px;">
 		<form id="queryForm" name="queryForm">
 			<center style="line-height: 22spx; padding: 5px;">
-				产品名称： <span class="textbox easyui-fluid"
-					style="width: 350px; height: 30px;"> <input type="text"
-					id="filter_prodName" name="filter_prodName" size="20"
+				产品名称： <span class="textbox easyui-fluid" 	style="width: 200px; height: 30px;"> 
+				<input type="text" id="filter_prodName" name="filter_prodName" size="20"
 					class="textbox-text validatebox-text textbox-prompt"
-					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 350px;"
+					style="margin: 0px 0px 0px 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 3px; height: 30px; line-height: 30px; width: 200px;"
 					autocomplete="off" />
-				</span> <a href="javascript:void(0);" onclick="searchList();"
+				</span>
+				&nbsp;&nbsp;是否上架：
+					<select style="width:60px; height:30px;" id="filter_status" name="filter_status">
+						<option value="1">上架</option>
+						<option value="0">下架</option>
+					</select> 
+				<a href="javascript:void(0);" onclick="searchList();"
 					class="easyui-linkbutton" iconCls="icon-search">查询</a> <a
 					href="javascript:void(0);" onclick="clearForm();"
 					class="easyui-linkbutton" iconCls="icon-cancel">清空</a>

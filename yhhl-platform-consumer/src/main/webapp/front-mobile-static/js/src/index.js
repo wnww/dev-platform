@@ -39,10 +39,14 @@ function getIndexList(page,rows){
 			$("#totalCount").html(data.total);
 			$.each(rows,function(index, item) {
 				//console.log(item.prodName);
+				var prodName = item.prodName;
+				if(prodName.length>8){
+					prodName = prodName.substring(0,8)+"...";
+				}
 				var div = $('<div class="index-pro1-list">');
 				var dl = $('<dl>');
-				var dt = $('<dt><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'"><img src='+getFirstImg(ctx,item.imgUrl)+' /></a></dt>');
-				var dd1 = $('<dd class="ip-text"><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'">'+item.prodName+'</a></dd>');
+				var dt = $('<dt><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'"><img src='+getFirstImg(ctx,item.imgUrl)+' style="max-height:116px" /></a></dt>');
+				var dd1 = $('<dd class="ip-text"><a href="'+ctx+'/prodDetail.do?prodId='+item.prodId+'">'+prodName+'</a></dd>');
 				var dd2 = $('<dd class="ip-text" style="padding-left:0px;"><span>库存&nbsp;'+item.stockSituation+'&nbsp;件</span>&nbsp;&nbsp;<span>已售&nbsp;'+item.sellNum+'&nbsp;件</span></dd>');
 				var dd3 = $('<dd class="ip-price"><strong>¥'+moneyFormatterNoY(item.unitPriceSell / 100)+'</strong></dd>');
 				dl.append(dt);

@@ -98,5 +98,5 @@
 	</div><!-- /.modal -->
 </div>
 </body>
-<script type="text/javascript" src="${frontMobileStaticCtx}/js/src/index.js?v=1.0.0"></script>
+<script type="text/javascript" src="${frontMobileStaticCtx}/js/src/index.js?v=1.0.1"></script>
 </html>
