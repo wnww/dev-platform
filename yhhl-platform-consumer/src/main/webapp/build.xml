@@ -34,7 +34,7 @@
 		</concat>
 		<echo message="JS文件合并完成!!!" />
 	</target>
-
+	
 	<!-- ====   target: mergeCSS 拼接（合并）文件        ==== -->
 	<target name="mergeCSS" depends="" description="concat code">
 		<echo message="开始合并文件" />
@@ -47,7 +47,6 @@
 		</concat>
 		<echo message="CSS文件合并完成!!!" />
 	</target>
-
 
 
 	<!-- ==  target: compressJS 压缩 js  == -->
@@ -70,6 +69,58 @@
 		<compress linebreak="150" warn="false" munge="yes" charset="UTF-8"  
 	            preserveallsemicolons="true" outputfolder="${targetDirCSS}">  
 	        <fileset dir="${targetDirCSS}/">  
+	            <include name="all.css"/>
+	        </fileset>  
+	    </compress>  
+		<echo message="压缩CSS文件完成" /> 
+	</target>
+	
+	<!-- ====   target: mergeBackJS 后台JS 拼接（合并）文件        ==== -->
+	<target name="mergeBackJS" depends="" description="拼接后台JS">
+		<echo message="开始合并文件" />
+		<concat destfile="${basedir}/js/dist/all.js" encoding="utf-8" fixlastline="on">
+			<path path="${basedir}/js/easyui/jquery.insdep-extend.min.js" />
+			<path path="${basedir}/js/easyui/locale/easyui-lang-zh_CN.js" />
+			<path path="${basedir}/js/jquery-validation/jquery.validate.min.js" />
+			<path path="${basedir}/js/jquery-validation/messages_cn.js" />
+			<path path="${basedir}/js/easyui/extendvalidate.js" />
+		</concat>
+		<echo message="JS文件合并完成!!!" />
+	</target>
+	<!-- ==  target: compressBackJS 后台 压缩 js  == -->
+	<target name="compressBackJS" depends="mergeBackJS" description="压缩后台JS">
+		<echo message="开始压缩JS" />
+		<java jar="${compiler.jar}" fork="true">
+			<arg line="--js=${basedir}/js/dist/all.js"/>
+			<arg line="--js_output_file=${basedir}/js/dist/all.min.js"/>
+		</java>
+		<!-- 删除中间文件，减少每次提交后冲突情况 -->
+		<delete file="${basedir}/js/dist/all.js" />
+		<echo message="编译core文件完成"/>
+	</target>
+	
+	<!-- ====   target: mergeBackCSS 后台 CSS拼接（合并）文件        ==== -->
+	<target name="mergeBackCSS" depends="" description="拼接后台CSS">
+		<echo message="开始合并文件" />
+		<!-- CSS -->
+		<concat destfile="${basedir}/css/dist/all.css" encoding="utf-8">
+			<path path="${basedir}/js/easyui/themes/insdep/easyui.css" />
+			<path path="${basedir}/js/easyui/themes/insdep/insdep_theme_default.css" />
+			<path path="${basedir}/js/easyui/themes/insdep/icon.css" />
+			<path path="${basedir}/css/font-awesome.min.css" />
+			<path path="${basedir}/js/jquery-validation/milk.css" />
+		</concat>
+		<echo message="CSS文件合并完成!!!" />
+	</target>
+	<!-- 后台CSS 压缩 -->
+	<target name="compressBackCSS" depends="mergeBackCSS" description="后台css压缩">	
+		<echo message="开始压缩CSS文件" />
+		<taskdef name="compress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">  
+	        <classpath refid="path.build.classpath.yuicompress"/>  
+	    </taskdef>
+		<compress linebreak="150" warn="false" munge="yes" charset="UTF-8"  
+	            preserveallsemicolons="true" outputfolder="${basedir}/css/dist/">  
+	        <fileset dir="${basedir}/css/dist/">  
 	            <include name="all.css"/>
 	        </fileset>  
 	    </compress>  

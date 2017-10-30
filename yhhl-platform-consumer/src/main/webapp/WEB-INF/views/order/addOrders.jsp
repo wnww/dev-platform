@@ -41,6 +41,10 @@
 			var inputValue = (Number($("#orderAmountTemp").val())*100).toFixed(0);
     		inputValue = parseInt(inputValue);
     		$("#orderAmount").val(inputValue);
+    		
+    		var expressFee = (Number($("#expressFeeTemp").val())*100).toFixed(0);
+    		expressFee = parseInt(expressFee);
+    		$("#expressFee").val(expressFee);
 			$(inputForm).submit();
 		}
 	}
@@ -56,9 +60,14 @@
 	        <input class="easyui-textbox theme-textbox-radius" type="text" name="ownerRealName" value="${orders.ownerRealName }" style="width:100%;" data-options="required:true">
 	    </div>
 	    <div style="margin-bottom:20px">
-	        <label class="label-top">订单总价</label>
+	        <label class="label-top">订单商品总价</label>
 	        <input class="easyui-textbox theme-textbox-radius" type="text" id="orderAmountTemp" name="orderAmountTemp" value='<fmt:formatNumber value="${orders.orderAmount/100}" type="currency" pattern="0.00"/>' style="width:100%;" data-options="required:true">
 	        <input type="hidden" name="orderAmount" id="orderAmount"/>
+	    </div>
+	    <div style="margin-bottom:20px">
+	        <label class="label-top">快递费用</label>
+	        <input class="easyui-textbox theme-textbox-radius" type="text" id="expressFeeTemp" name="expressFeeTemp" value='<fmt:formatNumber value="${orders.expressFee/100}" type="currency" pattern="0.00"/>' style="width:100%;" data-options="required:true">
+	        <input type="hidden" name="expressFee" id="expressFee"/>
 	    </div>
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">购买人电话</label>

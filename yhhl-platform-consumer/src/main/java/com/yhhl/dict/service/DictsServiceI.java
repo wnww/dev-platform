@@ -1,8 +1,9 @@
 package com.yhhl.dict.service;
 
-import org.apache.log4j.Logger;
-
+import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.yhhl.core.Page;
 import com.yhhl.dict.model.Dicts;
@@ -31,4 +32,5 @@ public interface DictsServiceI {
 	
 	public void deleteById(String id);
 
+	public List<Dicts> selectByDictTypeName(Map<String,Object> filterMap);
 }

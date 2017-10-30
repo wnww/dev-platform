@@ -134,6 +134,7 @@ public class OrdersController {
 			ordersTemp.setOwnerMobile(orders.getOwnerMobile());
 			ordersTemp.setStatus(orders.getStatus());
 			ordersTemp.setPostAddress(orders.getPostAddress());
+			ordersTemp.setExpressFee(orders.getExpressFee());
 			ordersTemp.setRemark(orders.getRemark());
 			ordersService.updateOrders(ordersTemp);
 			result.setFlag(ResultBean.SUCCESS);

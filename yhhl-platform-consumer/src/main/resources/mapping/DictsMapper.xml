@@ -135,5 +135,11 @@ where 1=1
 			</if>
 			</trim>
    	</select>
-  	
+  	<select id="selectByDictTypeName"  resultMap="BaseResultMap" parameterType="java.util.Map">
+		select <include refid="Base_Column_List" /> 
+	 	from dicts where 1=1
+	 	<if test="dictTypeName != null and dictTypeName != ''" >
+		    and dict_type_name like concat(#{dictTypeName}, '%')
+		</if>
+</select>
 </mapper>   

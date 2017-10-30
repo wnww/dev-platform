@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import com.yhhl.common.ConfigUtils;
 import com.yhhl.common.SpringContextHolder;
 import com.yhhl.platform.service.CacheOperateI;
+import com.yhhl.weixin.util.AccessTokenUtil;
 
 public class InitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +28,11 @@ public class InitServlet extends HttpServlet {
     	CacheOperateI cacheOperate = SpringContextHolder.getBean("cacheOperate");
 
     	cacheOperate.cacheExpressFee(application);
+    	
+    	// 微信初始化
+    	AccessTokenUtil.getWeiXinConfig();
+    	AccessTokenUtil.obtainAccessToken();
+    	AccessTokenUtil.obtainJsApiTicket();
 	}
 
 }

@@ -1,10 +1,14 @@
 package com;
 
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
+
+import com.yhhl.weixin.util.AccessTokenUtil;
 
 public class Testmain {
 
@@ -31,12 +35,22 @@ public class Testmain {
 
 		// String str = "016";
 		// System.out.println(Integer.parseInt(str));
-		String str = "牛仔裤 男";
-		Result result = ToAnalysis.parse(str);
-		List<Term> terms = result.getTerms();
-		for(Term tm : terms){
-			System.out.println(tm.getName()+"|"+tm.getNatureStr()+"|"+tm.getRealName());
+//		String str = "牛仔裤 男";
+//		Result result = ToAnalysis.parse(str);
+//		List<Term> terms = result.getTerms();
+//		for(Term tm : terms){
+//			System.out.println(tm.getName()+"|"+tm.getNatureStr()+"|"+tm.getRealName());
+//		}
+		
+		SortedSet<String> set = new TreeSet<String>();
+		set.add("myShopPlatform");
+		set.add("1509340130");
+		set.add("1577649814");
+		StringBuffer sb = new StringBuffer();
+		for(String str : set){
+			sb.append(str);
 		}
+		System.out.println(sb.toString());
 	}
 
 }

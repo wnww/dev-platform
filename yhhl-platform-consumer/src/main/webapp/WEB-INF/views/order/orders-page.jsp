@@ -31,8 +31,14 @@
 					{field:'orderId',title:'订单编号',width:130,sortable:true},
 					{field:'ownerRealName',title:'用户姓名',width:100,sortable:true},
 					{field:'ownerMobile',title:'联系电话',width:100,sortable:true},
-					{field:'orderAmount',title:'订单总额',width:90,formatter:function(value){
+					{field:'orderAmount',title:'商品总价',width:60,formatter:function(value,rec){
 						return moneyFormatterNoY(value/100);
+					}},
+					{field:'expressFee',title:'快递费用',width:60,formatter:function(value,rec){
+						return moneyFormatterNoY(value/100);
+					}},
+					{field:'totalAmount',title:'订单总额',width:70,formatter:function(value,rec){
+						return moneyFormatterNoY((rec.orderAmount+rec.expressFee)/100);
 					}},
 					{field:'statusValue',title:'订单状态',width:70,sortable:true},
 					{field:'createTime',title:'创建时间',width:100,sortable:true,

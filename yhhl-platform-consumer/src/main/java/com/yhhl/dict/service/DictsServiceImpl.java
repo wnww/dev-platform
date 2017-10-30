@@ -44,10 +44,12 @@ public class DictsServiceImpl implements DictsServiceI {
 	 */
 	@Override
 	public Page<Dicts> getPage(Map<String, Object> filterMap, Page<Dicts> page, int pageNo, int pageSize) {
-		int count = dictsMapper.getCount(filterMap);
+		if(pageSize!=0){
+			int count = dictsMapper.getCount(filterMap);
+			page.setTotalCount(count);
+		}
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
-		page.setTotalCount(count);
 		SearchPageUtil searchPageUtil = new SearchPageUtil();
 		String order[] = { "dict_type_name asc", "dict_id desc" };// 排序字段，可以是多个 类似：{ "name desc", "id asc" };
 		searchPageUtil.setOrderBys(order);
@@ -90,5 +92,11 @@ public class DictsServiceImpl implements DictsServiceI {
 	public void deleteById(String id) {
 		dictsMapper.deleteByPrimaryKey(id);
 	}
+
+	@Override
+	public List<Dicts> selectByDictTypeName(Map<String, Object> filterMap) {
+		return dictsMapper.selectByDictTypeName(filterMap);
+	}
+	
 
 }

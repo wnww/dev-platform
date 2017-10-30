@@ -23,7 +23,7 @@ public interface DictsMapper {
 	
 	List<Dicts> getPage(SearchPageUtil searchPageUtil) throws DataAccessException;
 
-	List<Dicts> findPageByParams(Map<String, Object> filterMap) throws DataAccessException;
+	List<Dicts> selectByDictTypeName(Map<String, Object> filterMap) throws DataAccessException;
 
 	int deleteByPrimaryKey(String id) throws DataAccessException;
 

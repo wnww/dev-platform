@@ -8,11 +8,16 @@ package com.yhhl.platform.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -24,12 +29,17 @@ import com.yhhl.common.Constants;
 import com.yhhl.common.LocaleMessage;
 import com.yhhl.common.LoginUser;
 import com.yhhl.common.MD5Utils;
+import com.yhhl.common.RandomUtils;
 import com.yhhl.common.ResultBean;
+import com.yhhl.common.Sha1Util;
+import com.yhhl.common.WebUtil;
 import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.roles.model.Roles;
 import com.yhhl.roles.service.RolesServiceI;
 import com.yhhl.user.model.User;
 import com.yhhl.user.service.UserServiceI;
+import com.yhhl.weixin.util.AccessTokenUtil;
+import com.yhhl.weixin.util.MessageUtil;
 
 /**
  * description:
@@ -40,6 +50,8 @@ import com.yhhl.user.service.UserServiceI;
 @RequestMapping("/sysManage")
 public class MainAction {
 
+	private final static Logger log= Logger.getLogger(MainAction.class);
+	
 	@Autowired
 	private UserServiceI userService;
 	@Autowired 
@@ -135,6 +147,41 @@ public class MainAction {
 		}
 		view.addObject("Errorcode", error);
 		return view;
+	}
+	
+	@RequestMapping("/getToken")
+	@ResponseBody
+	public String getToken(HttpServletRequest request){
+		String signature = request.getParameter("signature");
+		String timestamp = request.getParameter("timestamp");
+		String nonce = request.getParameter("nonce");
+		String echostr = request.getParameter("echostr");
+		log.debug("signature:"+ signature);
+		log.debug("timestamp:"+ timestamp);
+		log.debug("nonce:"+ nonce);
+		log.debug("echostr:"+ echostr);
+		
+		SortedSet<String> set = new TreeSet<>();
+		set.add(AccessTokenUtil.getTestToke());
+		set.add(timestamp);
+		set.add(nonce);
+		StringBuffer sb = new StringBuffer();
+		for(String str : set){
+			sb.append(str);
+		}
+		try {
+			String sign = Sha1Util.getSha1(sb.toString());
+			log.debug("sign============"+sign);
+			if(sign.equals(signature)){
+				return echostr;
+			}else{
+				log.debug("签名验证失败=============signature="+signature+"|timestamp="+timestamp+"|nonce="+nonce+"|echostr="+echostr);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return AccessTokenUtil.getTestToke();
 	}
 
 }

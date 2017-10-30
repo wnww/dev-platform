@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +27,7 @@ import com.yhhl.common.IdWorker;
 import com.yhhl.common.ResultBean;
 import com.yhhl.common.SpringWebUtil;
 import com.yhhl.common.StringUtil;
+import com.yhhl.common.WebUtil;
 import com.yhhl.core.Page;
 import com.yhhl.interceptor.LoginCheck;
 import com.yhhl.order.model.Orders;
@@ -35,6 +38,8 @@ import com.yhhl.orderproduct.service.OrderProductsServiceI;
 import com.yhhl.product.model.Products;
 import com.yhhl.product.service.ProductsServiceI;
 import com.yhhl.stock.service.StocksServiceI;
+import com.yhhl.weixin.util.AccessTokenUtil;
+import com.yhhl.weixin.util.MessageUtil;
 
 /**
  * 
@@ -62,6 +67,8 @@ public class FrontOrdersController {
 	private ProductsServiceI productsService;
 	@Autowired
 	private IdWorker idWorker;
+	
+	private ExecutorService executorService = Executors.newCachedThreadPool();
 
 	/**
 	 * 进入待支付页面
@@ -316,6 +323,19 @@ public class FrontOrdersController {
 			order.setExpressFee(0l);
 		}
 		ordersService.updateOrders(order);
+
+		// 通知店主有人下单了，利用微信的消息
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				String params = MessageUtil.buildTemplateMsg(order.getOrderId(),order.getOwnerRealName(),DateUtils.dateTime2YMDHMS(order.getCreateTime()));
+				String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+AccessTokenUtil.getAccessToken();
+				String result = WebUtil.postJSON(url, params);
+				System.out.println("params==========================="+params);
+				System.out.println("result==========================="+result);
+			}
+		});
+		
 		result.setFlag(ResultBean.SUCCESS);
 		result.setMsg("订单提交成功");
 		return result;
