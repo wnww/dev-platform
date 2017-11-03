@@ -313,9 +313,9 @@ public final class WebUtil {
 		return value;
 	}
 
-	public static Map<String, Object> executeGet(String url) throws Exception {  
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		StringBuilder sb = new StringBuilder();
+	public static ResultBean<String> executeGet(String url) throws Exception {  
+		ResultBean<String> resultBean = new ResultBean<String>();
+		String result = null;
 		// 构造httpclient的实例
 		HttpClient htpc = new HttpClient();
 		// 创建Get方法的实例
@@ -328,43 +328,27 @@ public final class WebUtil {
 			// 执行getMethod
 			int statusCode = htpc.executeMethod(getMethod);
 			if (statusCode == HttpStatus.SC_OK) {
-				InputStream inputStream = getMethod.getResponseBodyAsStream();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-				String line = null;
-				try {
-					while ((line = reader.readLine()) != null) {
-						sb.append(line);// 读取内容
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-					sb = null;
-				} finally {
-					inputStream.close();
-				}
+				result = getMethod.getResponseBodyAsString();
 			}
-			
 		} catch (HttpException e) {
 			e.printStackTrace();
-			resultMap.put("result", "");
-			resultMap.put("status", "300");
-			resultMap.put("message", "参数或服务器异常");
-			return resultMap;
+			resultBean.setFlag(ResultBean.FAIL);
+			resultBean.setMsg("参数或服务器异常");
+			return resultBean;
 		} catch (IOException e) {
 			// 发生网络异常
 			e.printStackTrace();
-			resultMap.put("result", "");
-			resultMap.put("status", "400");
-			resultMap.put("message", "网络异常");
-			return resultMap;
+			resultBean.setFlag(ResultBean.FAIL);
+			resultBean.setMsg("网络异常");
+			return resultBean;
 		} finally {
 			// 释放连接
 			getMethod.releaseConnection();
 		}
-		String str = sb.toString();
-		resultMap.put("result", str);
-		resultMap.put("status", "200");
-		resultMap.put("message", "正常返回");
-		return resultMap;// sb.toString();
+		resultBean.setData(result);
+		resultBean.setFlag(ResultBean.SUCCESS);
+		resultBean.setMsg("调用成功！");
+		return resultBean;// sb.toString();
     } 
 	
 	public static String postJSON(String url, String jsonString) {

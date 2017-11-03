@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.accept.ServletPathExtensionContentNegotiationStrategy;
 
 import com.yhhl.common.MD5Utils;
 import com.yhhl.common.RandomUtils;
+import com.yhhl.common.ResultBean;
+import com.yhhl.common.Sha1Util;
 import com.yhhl.common.SpringContextHolder;
 import com.yhhl.common.WebUtil;
 import com.yhhl.dict.model.Dicts;
@@ -29,6 +32,9 @@ public class AccessTokenUtil {
 	private static String appSecret;
 	private static String getJsApiTicketUrl;
 	private static String testToken;
+	
+	private static long timestamp;
+	private static String nonceStr;
 	
 	private static String accessToken;
 	
@@ -91,6 +97,7 @@ public class AccessTokenUtil {
 	 * 
 	 */
 	public static void obtainAccessToken(){
+		System.out.println("=================这里执行了");
 		RETRY_COUNT_ACCESS_TOKEN++;
 		if(RETRY_COUNT_ACCESS_TOKEN>=3){
 			log.error("==================重试3次后仍然无法获取Access_Token，停止获取");
@@ -103,14 +110,15 @@ public class AccessTokenUtil {
 		url.append("&secret=").append(appSecret);
 		try {
 			// 调用微信服务，获取Access_Token
-			Map<String,Object> map = WebUtil.executeGet(url.toString());
-			if("200".equals(map.get("status"))){ // 正常返回 
-				Map<String, Object> result = WebUtil.parseJSON2Map(String.valueOf(map.get("result")));
+			ResultBean<String> resultBean = WebUtil.executeGet(url.toString());
+			if(resultBean.getFlag() == 1){ // 正常返回 
+				Map<String, Object> result = WebUtil.parseJSON2Map(resultBean.getData());
 				if(result.get("access_token")!=null && !"".equals(result.get("access_token"))){
 					RETRY_COUNT_ACCESS_TOKEN = 0;
 					// 赋值accessTOken
 					accessToken = String.valueOf(result.get("access_token"));
-					log.debug("获取accessToken=================="+accessToken);
+					System.out.println("获取accessToken=================="+accessToken);
+					obtainJsApiTicket();
 					return;
 				}else{
 					obtainAccessToken(); // 失败后重试
@@ -142,15 +150,15 @@ public class AccessTokenUtil {
 		url.append("access_token=").append(accessToken);
 		url.append("&type=jsapi");
 		try {
-			Map<String,Object> map = WebUtil.executeGet(url.toString());
-			if("200".equals(map.get("status"))){ // 正常返回 
-				Map<String, Object> result = WebUtil.parseJSON2Map(String.valueOf(map.get("result")));
+			ResultBean<String> resultBean = WebUtil.executeGet(url.toString());
+			if(resultBean.getFlag() == 1){ // 正常返回 
+				Map<String, Object> result = WebUtil.parseJSON2Map(resultBean.getData());
 				// errcode：0正常返回，errmsg："ok" 正常返回
 				if(((Integer)result.get("errcode"))==0 && "ok".equals(result.get("errmsg")) && !"".equals(result.get("ticket"))){
 					RETRY_COUNT_JSAPI_TICKET = 0;
 					// 赋值jsApiTicket
 					jsApiTicket = String.valueOf(result.get("ticket"));
-					log.debug("获取jsApiTicket=================="+jsApiTicket);
+					System.out.println("获取jsApiTicket=================="+jsApiTicket);
 					return;
 				}else{
 					obtainJsApiTicket(); // 失败后重试
@@ -172,13 +180,45 @@ public class AccessTokenUtil {
 	 */
 	public static String getSignature(String url){
 		StringBuffer sb = new StringBuffer();
+		System.out.println("获取jsApiTicket=================="+jsApiTicket);
 		sb.append("jsapi_ticket=").append(jsApiTicket);
-		sb.append("&noncestr=").append(RandomUtils.generateString(10));
-		sb.append("&timestamp=").append(System.currentTimeMillis());
+		setNonceStr(RandomUtils.getRandom(6));
+		sb.append("&noncestr=").append(getNonceStr());
+		setTimestamp(System.currentTimeMillis()/1000);
+		sb.append("&timestamp=").append(getTimestamp());
 		sb.append("&url=").append(url);
 		String signature = "";
-		signature = MD5Utils.MD5(sb.toString());
+		signature = Sha1Util.getSha1(sb.toString());
+		System.out.println("noncestr=============="+getNonceStr());
+		System.out.println("timestamp==============="+getTimestamp());
+		System.out.println("url================"+url);
 		return signature;
 	}
+
+	public static String getAppId() {
+		return appId;
+	}
+
+	public static void setAppId(String appId) {
+		AccessTokenUtil.appId = appId;
+	}
+
+	public static long getTimestamp() {
+		return timestamp;
+	}
+
+	public static void setTimestamp(long timestamp) {
+		AccessTokenUtil.timestamp = timestamp;
+	}
+
+	public static String getNonceStr() {
+		return nonceStr;
+	}
+
+	public static void setNonceStr(String nonceStr) {
+		AccessTokenUtil.nonceStr = nonceStr;
+	}
+
+	
 	
 }

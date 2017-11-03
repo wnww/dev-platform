@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.lottery.dao.LotteryMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.lottery.model.Lottery" >
+	<result column="expect_id" property="expectId"/>
+	<result column="codes" property="codes"/>
+	<result column="code1" property="code1"/>
+	<result column="code2" property="code2"/>
+	<result column="code3" property="code3"/>
+	<result column="code4" property="code4"/>
+	<result column="code5" property="code5"/>
+	<result column="code1_lost" property="code1Lost"/>
+	<result column="code2_lost" property="code2Lost"/>
+	<result column="code3_lost" property="code3Lost"/>
+	<result column="code4_lost" property="code4Lost"/>
+	<result column="code5_lost" property="code5Lost"/>
+	<result column="odd_count" property="oddCount"/>
+	<result column="big_count" property="bigCount"/>
+	<result column="prime_count" property="primeCount"/>
+	<result column="open_time" property="openTime"/>
+	<result column="open_timestamp" property="openTimestamp"/>
+	<result column="space1" property="space1"/>
+	<result column="space2" property="space2"/>
+	<result column="space3" property="space3"/>
+	<result column="space4" property="space4"/>
+	<result column="space5" property="space5"/>
+</resultMap>
+       
+<!-- lottery table all fields -->
+<sql id="Base_Column_List" >
+	 expect_id,codes,code1,code2,code3,code4,code5,code1_lost,code2_lost,code3_lost,code4_lost,code5_lost,odd_count,big_count,prime_count,open_time,open_timestamp,space1,space2,space3,space4,space5
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereLotteryClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="expectId != null and expectId != ''" >
+	    and expect_id =  #{expectId}
+	</if>
+	<if test="codes != null and codes != ''" >
+	    and codes =  #{codes}
+	</if>
+	<if test="code1 != null and code1 != ''" >
+	    and code1 =  #{code1}
+	</if>
+	<if test="code2 != null and code2 != ''" >
+	    and code2 =  #{code2}
+	</if>
+	<if test="code3 != null and code3 != ''" >
+	    and code3 =  #{code3}
+	</if>
+	<if test="code4 != null and code4 != ''" >
+	    and code4 =  #{code4}
+	</if>
+	<if test="code5 != null and code5 != ''" >
+	    and code5 =  #{code5}
+	</if>
+	<if test="code1Lost != null and code1Lost != ''" >
+	    and code1_lost =  #{code1Lost}
+	</if>
+	<if test="code2Lost != null and code2Lost != ''" >
+	    and code2_lost =  #{code2Lost}
+	</if>
+	<if test="code3Lost != null and code3Lost != ''" >
+	    and code3_lost =  #{code3Lost}
+	</if>
+	<if test="code4Lost != null and code4Lost != ''" >
+	    and code4_lost =  #{code4Lost}
+	</if>
+	<if test="code5Lost != null and code5Lost != ''" >
+	    and code5_lost =  #{code5Lost}
+	</if>
+	<if test="oddCount != null and oddCount != ''" >
+	    and odd_count =  #{oddCount}
+	</if>
+	<if test="bigCount != null and bigCount != ''" >
+	    and big_count =  #{bigCount}
+	</if>
+	<if test="primeCount != null and primeCount != ''" >
+	    and prime_count =  #{primeCount}
+	</if>
+	<if test="openTime != null and openTime != ''" >
+	    and open_time =  #{openTime}
+	</if>
+	<if test="openTimestamp != null and openTimestamp != ''" >
+	    and open_timestamp =  #{openTimestamp}
+	</if>
+	<if test="space1 != null and space1 != ''" >
+	    and space1 =  #{space1}
+	</if>
+	<if test="space2 != null and space2 != ''" >
+	    and space2 =  #{space2}
+	</if>
+	<if test="space3 != null and space3 != ''" >
+	    and space3 =  #{space3}
+	</if>
+	<if test="space4 != null and space4 != ''" >
+	    and space4 =  #{space4}
+	</if>
+	<if test="space5 != null and space5 != ''" >
+	    and space5 =  #{space5}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.lottery.model.Lottery" >
+  insert into lottery (expect_id,codes,code1,code2,code3,code4,code5,code1_lost,code2_lost,code3_lost,code4_lost,code5_lost,odd_count,big_count,prime_count,open_time,open_timestamp,space1,space2,space3,space4,space5)
+ values(#{expectId, jdbcType=VARCHAR},#{codes, jdbcType=VARCHAR},#{code1, jdbcType=INTEGER},#{code2, jdbcType=INTEGER},#{code3, jdbcType=INTEGER},#{code4, jdbcType=INTEGER},#{code5, jdbcType=INTEGER},#{code1Lost, jdbcType=INTEGER},#{code2Lost, jdbcType=INTEGER},#{code3Lost, jdbcType=INTEGER},#{code4Lost, jdbcType=INTEGER},#{code5Lost, jdbcType=INTEGER},#{oddCount, jdbcType=INTEGER},#{bigCount, jdbcType=INTEGER},#{primeCount, jdbcType=INTEGER},#{openTime, jdbcType=TIMESTAMP},#{openTimestamp, jdbcType=BIGINT},#{space1, jdbcType=INTEGER},#{space2, jdbcType=INTEGER},#{space3, jdbcType=INTEGER},#{space4, jdbcType=VARCHAR},#{space5, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.lottery.model.Lottery" >
+  update lottery set expect_id=#{expectId, jdbcType=VARCHAR},codes=#{codes, jdbcType=VARCHAR},code1=#{code1, jdbcType=INTEGER},code2=#{code2, jdbcType=INTEGER},code3=#{code3, jdbcType=INTEGER},code4=#{code4, jdbcType=INTEGER},code5=#{code5, jdbcType=INTEGER},code1_lost=#{code1Lost, jdbcType=INTEGER},code2_lost=#{code2Lost, jdbcType=INTEGER},code3_lost=#{code3Lost, jdbcType=INTEGER},code4_lost=#{code4Lost, jdbcType=INTEGER},code5_lost=#{code5Lost, jdbcType=INTEGER},odd_count=#{oddCount, jdbcType=INTEGER},big_count=#{bigCount, jdbcType=INTEGER},prime_count=#{primeCount, jdbcType=INTEGER},open_time=#{openTime, jdbcType=TIMESTAMP},open_timestamp=#{openTimestamp, jdbcType=BIGINT},space1=#{space1, jdbcType=INTEGER},space2=#{space2, jdbcType=INTEGER},space3=#{space3, jdbcType=INTEGER},space4=#{space4, jdbcType=VARCHAR},space5=#{space5, jdbcType=VARCHAR} where expect_id=#{expectId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.lottery.model.Lottery" >
+	update lottery set 
+	<trim  suffixOverrides="," >
+	<if test="codes != null  ">
+		codes=#{codes, jdbcType=VARCHAR},
+	</if>
+	<if test="code1 != null  ">
+		code1=#{code1, jdbcType=INTEGER},
+	</if>
+	<if test="code2 != null  ">
+		code2=#{code2, jdbcType=INTEGER},
+	</if>
+	<if test="code3 != null  ">
+		code3=#{code3, jdbcType=INTEGER},
+	</if>
+	<if test="code4 != null  ">
+		code4=#{code4, jdbcType=INTEGER},
+	</if>
+	<if test="code5 != null  ">
+		code5=#{code5, jdbcType=INTEGER},
+	</if>
+	<if test="code1Lost != null  ">
+		code1_lost=#{code1Lost, jdbcType=INTEGER},
+	</if>
+	<if test="code2Lost != null  ">
+		code2_lost=#{code2Lost, jdbcType=INTEGER},
+	</if>
+	<if test="code3Lost != null  ">
+		code3_lost=#{code3Lost, jdbcType=INTEGER},
+	</if>
+	<if test="code4Lost != null  ">
+		code4_lost=#{code4Lost, jdbcType=INTEGER},
+	</if>
+	<if test="code5Lost != null  ">
+		code5_lost=#{code5Lost, jdbcType=INTEGER},
+	</if>
+	<if test="oddCount != null  ">
+		odd_count=#{oddCount, jdbcType=INTEGER},
+	</if>
+	<if test="bigCount != null  ">
+		big_count=#{bigCount, jdbcType=INTEGER},
+	</if>
+	<if test="primeCount != null  ">
+		prime_count=#{primeCount, jdbcType=INTEGER},
+	</if>
+	<if test="openTime != null  ">
+		open_time=#{openTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="openTimestamp != null  ">
+		open_timestamp=#{openTimestamp, jdbcType=BIGINT},
+	</if>
+	<if test="space1 != null  ">
+		space1=#{space1, jdbcType=INTEGER},
+	</if>
+	<if test="space2 != null  ">
+		space2=#{space2, jdbcType=INTEGER},
+	</if>
+	<if test="space3 != null  ">
+		space3=#{space3, jdbcType=INTEGER},
+	</if>
+	<if test="space4 != null  ">
+		space4=#{space4, jdbcType=VARCHAR},
+	</if>
+	<if test="space5 != null  ">
+		space5=#{space5, jdbcType=VARCHAR}
+	</if>
+	</trim> where expect_id=#{expectId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from lottery where expect_id = #{expectId}
+</delete>
+ 
+<!-- 根据id查询 lottery -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from lottery where expect_id = #{expectId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from lottery
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.expectId != null and object.expectId != ''" >
+			    and expect_id =  #{object.expectId}
+			</if>
+							<if test="object.codes != null and object.codes != ''" >
+			    and codes =  #{object.codes}
+			</if>
+							<if test="object.code1 != null and object.code1 != ''" >
+			    and code1 =  #{object.code1}
+			</if>
+							<if test="object.code2 != null and object.code2 != ''" >
+			    and code2 =  #{object.code2}
+			</if>
+							<if test="object.code3 != null and object.code3 != ''" >
+			    and code3 =  #{object.code3}
+			</if>
+							<if test="object.code4 != null and object.code4 != ''" >
+			    and code4 =  #{object.code4}
+			</if>
+							<if test="object.code5 != null and object.code5 != ''" >
+			    and code5 =  #{object.code5}
+			</if>
+							<if test="object.code1Lost != null and object.code1Lost != ''" >
+			    and code1_lost =  #{object.code1Lost}
+			</if>
+							<if test="object.code2Lost != null and object.code2Lost != ''" >
+			    and code2_lost =  #{object.code2Lost}
+			</if>
+							<if test="object.code3Lost != null and object.code3Lost != ''" >
+			    and code3_lost =  #{object.code3Lost}
+			</if>
+							<if test="object.code4Lost != null and object.code4Lost != ''" >
+			    and code4_lost =  #{object.code4Lost}
+			</if>
+							<if test="object.code5Lost != null and object.code5Lost != ''" >
+			    and code5_lost =  #{object.code5Lost}
+			</if>
+							<if test="object.oddCount != null and object.oddCount != ''" >
+			    and odd_count =  #{object.oddCount}
+			</if>
+							<if test="object.bigCount != null and object.bigCount != ''" >
+			    and big_count =  #{object.bigCount}
+			</if>
+							<if test="object.primeCount != null and object.primeCount != ''" >
+			    and prime_count =  #{object.primeCount}
+			</if>
+							<if test="object.openTime != null and object.openTime != ''" >
+			    and open_time =  #{object.openTime}
+			</if>
+							<if test="object.openTimestamp != null and object.openTimestamp != ''" >
+			    and open_timestamp =  #{object.openTimestamp}
+			</if>
+							<if test="object.space1 != null and object.space1 != ''" >
+			    and space1 =  #{object.space1}
+			</if>
+							<if test="object.space2 != null and object.space2 != ''" >
+			    and space2 =  #{object.space2}
+			</if>
+							<if test="object.space3 != null and object.space3 != ''" >
+			    and space3 =  #{object.space3}
+			</if>
+							<if test="object.space4 != null and object.space4 != ''" >
+			    and space4 =  #{object.space4}
+			</if>
+							<if test="object.space5 != null and object.space5 != ''" >
+			    and space5 =  #{object.space5}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM lottery 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="expectId != null and expectId != ''" >
+			    and expect_id =  #{expectId}
+			</if>
+							<if test="codes != null and codes != ''" >
+			    and codes =  #{codes}
+			</if>
+							<if test="code1 != null and code1 != ''" >
+			    and code1 =  #{code1}
+			</if>
+							<if test="code2 != null and code2 != ''" >
+			    and code2 =  #{code2}
+			</if>
+							<if test="code3 != null and code3 != ''" >
+			    and code3 =  #{code3}
+			</if>
+							<if test="code4 != null and code4 != ''" >
+			    and code4 =  #{code4}
+			</if>
+							<if test="code5 != null and code5 != ''" >
+			    and code5 =  #{code5}
+			</if>
+							<if test="code1Lost != null and code1Lost != ''" >
+			    and code1_lost =  #{code1Lost}
+			</if>
+							<if test="code2Lost != null and code2Lost != ''" >
+			    and code2_lost =  #{code2Lost}
+			</if>
+							<if test="code3Lost != null and code3Lost != ''" >
+			    and code3_lost =  #{code3Lost}
+			</if>
+							<if test="code4Lost != null and code4Lost != ''" >
+			    and code4_lost =  #{code4Lost}
+			</if>
+							<if test="code5Lost != null and code5Lost != ''" >
+			    and code5_lost =  #{code5Lost}
+			</if>
+							<if test="oddCount != null and oddCount != ''" >
+			    and odd_count =  #{oddCount}
+			</if>
+							<if test="bigCount != null and bigCount != ''" >
+			    and big_count =  #{bigCount}
+			</if>
+							<if test="primeCount != null and primeCount != ''" >
+			    and prime_count =  #{primeCount}
+			</if>
+							<if test="openTime != null and openTime != ''" >
+			    and open_time =  #{openTime}
+			</if>
+							<if test="openTimestamp != null and openTimestamp != ''" >
+			    and open_timestamp =  #{openTimestamp}
+			</if>
+							<if test="space1 != null and space1 != ''" >
+			    and space1 =  #{space1}
+			</if>
+							<if test="space2 != null and space2 != ''" >
+			    and space2 =  #{space2}
+			</if>
+							<if test="space3 != null and space3 != ''" >
+			    and space3 =  #{space3}
+			</if>
+							<if test="space4 != null and space4 != ''" >
+			    and space4 =  #{space4}
+			</if>
+							<if test="space5 != null and space5 != ''" >
+			    and space5 =  #{space5}
+			</if>
+			</trim>
+   	</select>
+  	
+  	
+  	<insert id="insertBatch" parameterType="java.util.List" >
+		  insert into lottery (expect_id,codes,code1,code2,code3,code4,code5,code1_lost,code2_lost,code3_lost,code4_lost,code5_lost,odd_count,big_count,prime_count,open_time,open_timestamp,space1,space2,space3,space4,space5)
+		  values
+		  <foreach collection="list" item="item" index="index" separator=",">
+			  (
+			  	#{item.expectId},#{item.codes},#{item.code1},#{item.code2},#{item.code3},#{item.code4},#{item.code5},
+			  	#{item.code1Lost},#{item.code2Lost},#{item.code3Lost},#{item.code4Lost},#{item.code5Lost},#{item.oddCount},
+			  	#{item.bigCount},#{item.primeCount},#{item.openTime},#{item.openTimestamp},#{item.space1},
+			  	#{item.space2},#{item.space3},#{item.space4},#{item.space5}
+			  )
+		  </foreach >
+	</insert>
+  	
+  	<select useCache="false" id="getByIds" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select <include refid="Base_Column_List"/> from lottery
+		where expect_id in
+	    <foreach collection="ids" item="item" open="(" close=")" separator=",">
+			${item}
+		</foreach>
+	</select>
+</mapper>   

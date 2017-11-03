@@ -31,8 +31,7 @@ public class InitServlet extends HttpServlet {
     	
     	// 微信初始化
     	AccessTokenUtil.getWeiXinConfig();
-    	AccessTokenUtil.obtainAccessToken();
-    	AccessTokenUtil.obtainJsApiTicket();
+    	AccessTokenUtil.obtainAccessToken(); 
 	}
 
 }

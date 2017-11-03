@@ -1,7 +1,9 @@
 package com.yhhl.common;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class DateUtils {
 
@@ -61,14 +63,20 @@ public class DateUtils {
 		return dt.substring(8);
 	}
 	
-	public static void main(String[] args){
-		long dateTime = 20170922181834l;
-		System.out.println(dateTime);
-		System.out.println(dateTime2YMDHMS(dateTime));
-		System.out.println(dateTime2YMD(dateTime));
-		System.out.println(dateTime2Y(dateTime));
-		System.out.println(dateTime2M(dateTime));
-		System.out.println(dateTime2MD(dateTime));
-		System.out.println(dateTime2D(dateTime));
+	public static Date parse(String strDate) throws Exception{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sdf.parse(strDate);
+	}
+	
+	public static void main(String[] args) throws Exception{
+//		long dateTime = 20170922181834l;
+//		System.out.println(dateTime);
+//		System.out.println(dateTime2YMDHMS(dateTime));
+//		System.out.println(dateTime2YMD(dateTime));
+//		System.out.println(dateTime2Y(dateTime));
+//		System.out.println(dateTime2M(dateTime));
+//		System.out.println(dateTime2MD(dateTime));
+//		System.out.println(dateTime2D(dateTime));
+		System.out.println(parse("2017-11-01 14:41:10"));
 	}
 }
