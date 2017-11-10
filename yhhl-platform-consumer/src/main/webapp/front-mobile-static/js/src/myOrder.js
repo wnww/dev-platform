@@ -40,7 +40,10 @@ function getOrderList(rows,status){
 						document.location.href=ctx+"/orders/pay.do?orderId="+item.orderId;
 					}
 				});
-				var tr1Td2 = $('<td width="35%" align="right"><div class="qingqu"><a href="javascript:;" class="orange">取消</a></div></td>');
+				var tr1Td2 = $('<td width="35%" align="right"><div class="qingqu"><a href="javascript:void(0);" class="orange">物流</a></div></td>');
+				tr1Td2.on("click",function(){
+					document.location.href=ctx+"/express/index.do?orderId="+item.orderId;
+				});
 				tr1.append(tr1Td1);
 				tr1.append(tr1Td2);
 				table.append(tr1);
@@ -100,3 +103,4 @@ function gotoNextPage(rows,status){
         }
 	});
 }
+

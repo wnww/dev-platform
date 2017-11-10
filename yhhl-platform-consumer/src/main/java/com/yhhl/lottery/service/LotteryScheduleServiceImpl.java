@@ -28,13 +28,13 @@ import com.yhhl.lottery.model.Lottery;
  * <b>日期：</b> June 2, 2013 <br>
  * <b>版权所有：<b>版权所有(C) 2015 瀛海互联<br>
  */
-@Lazy(false)
+//@Lazy(false)
 @Service("lotteryScheduleService")
 public class LotteryScheduleServiceImpl implements LotteryScheduleServiceI {
 	@Autowired
 	private LotteryServiceI lotteryService; 
 	
-	@Scheduled(cron = "0 */1 09-22  * * ?") // 每天9~22点每  1  分钟执行一次
+	//@Scheduled(cron = "0 */1 09-22  * * ?") // 每天9~22点每  1  分钟执行一次
 	@Override
 	public void getLotteryAPIData() throws Exception{
 		List<Lottery> list = new ArrayList<Lottery>();

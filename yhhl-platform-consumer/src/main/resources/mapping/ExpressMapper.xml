@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhhl.express.dao.ExpressMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.yhhl.express.model.Express" >
+	<result column="express_id" property="expressId"/>
+	<result column="express_code" property="expressCode"/>
+	<result column="express_com_code" property="expressComCode"/>
+	<result column="express_com_name" property="expressComName"/>
+	<result column="order_id" property="orderId"/>
+	<result column="send_time" property="sendTime"/>
+	<result column="space1" property="space1"/>
+	<result column="sapce2" property="sapce2"/>
+</resultMap>
+       
+<!-- express table all fields -->
+<sql id="Base_Column_List" >
+	 express_id,express_code,express_com_code,express_com_name,order_id,send_time,space1,sapce2
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="whereExpressClause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="expressId != null and expressId != ''" >
+	    and express_id =  #{expressId}
+	</if>
+	<if test="expressCode != null and expressCode != ''" >
+	    and express_code =  #{expressCode}
+	</if>
+	<if test="expressComCode != null and expressComCode != ''" >
+	    and express_com_code =  #{expressComCode}
+	</if>
+	<if test="expressComName != null and expressComName != ''" >
+	    and express_com_name =  #{expressComName}
+	</if>
+	<if test="orderId != null and orderId != ''" >
+	    and order_id =  #{orderId}
+	</if>
+	<if test="sendTime != null and sendTime != ''" >
+	    and send_time =  #{sendTime}
+	</if>
+	<if test="space1 != null and space1 != ''" >
+	    and space1 =  #{space1}
+	</if>
+	<if test="sapce2 != null and sapce2 != ''" >
+	    and sapce2 =  #{sapce2}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="insert" parameterType="com.yhhl.express.model.Express" >
+  insert into express (express_id,express_code,express_com_code,express_com_name,order_id,send_time,space1,sapce2)
+ values(#{expressId, jdbcType=VARCHAR},#{expressCode, jdbcType=VARCHAR},#{expressComCode, jdbcType=VARCHAR},#{expressComName, jdbcType=VARCHAR},#{orderId, jdbcType=VARCHAR},#{sendTime, jdbcType=BIGINT},#{space1, jdbcType=VARCHAR},#{sapce2, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateByPrimaryKey" parameterType="com.yhhl.express.model.Express" >
+  update express set express_id=#{expressId, jdbcType=VARCHAR},express_code=#{expressCode, jdbcType=VARCHAR},express_com_code=#{expressComCode, jdbcType=VARCHAR},express_com_name=#{expressComName, jdbcType=VARCHAR},order_id=#{orderId, jdbcType=VARCHAR},send_time=#{sendTime, jdbcType=BIGINT},space1=#{space1, jdbcType=VARCHAR},sapce2=#{sapce2, jdbcType=VARCHAR} where express_id=#{expressId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateByPrimaryKeySelective" parameterType="com.yhhl.express.model.Express" >
+	update express set 
+	<trim  suffixOverrides="," >
+	<if test="expressCode != null  ">
+		express_code=#{expressCode, jdbcType=VARCHAR},
+	</if>
+	<if test="expressComCode != null  ">
+		express_com_code=#{expressComCode, jdbcType=VARCHAR},
+	</if>
+	<if test="expressComName != null  ">
+		express_com_name=#{expressComName, jdbcType=VARCHAR},
+	</if>
+	<if test="orderId != null  ">
+		order_id=#{orderId, jdbcType=VARCHAR},
+	</if>
+	<if test="sendTime != null  ">
+		send_time=#{sendTime, jdbcType=BIGINT},
+	</if>
+	<if test="space1 != null  ">
+		space1=#{space1, jdbcType=VARCHAR},
+	</if>
+	<if test="sapce2 != null  ">
+		sapce2=#{sapce2, jdbcType=VARCHAR}
+	</if>
+	</trim> where express_id=#{expressId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+	delete 	 from express where express_id = #{expressId}
+</delete>
+ 
+<!-- 根据id查询 express -->
+<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from express where express_id = #{expressId}
+</select>
+
+<!-- 根据orderId查询 express -->
+<select id="selectByOrderId"  resultMap="BaseResultMap" parameterType="java.util.Map">
+	select <include refid="Base_Column_List" /> 
+	 from express where order_id = #{orderId}
+</select>
+
+<!-- 分页 data-->
+	<select useCache="false" id="getPage" resultMap="BaseResultMap" parameterType="com.yhhl.common.SearchPageUtil">
+		select <include refid="Base_Column_List"/> from express
+		where 1=1
+		<trim  suffixOverrides="," >
+							<if test="object.expressId != null and object.expressId != ''" >
+			    and express_id =  #{object.expressId}
+			</if>
+							<if test="object.expressCode != null and object.expressCode != ''" >
+			    and express_code =  #{object.expressCode}
+			</if>
+							<if test="object.expressComCode != null and object.expressComCode != ''" >
+			    and express_com_code =  #{object.expressComCode}
+			</if>
+							<if test="object.expressComName != null and object.expressComName != ''" >
+			    and express_com_name =  #{object.expressComName}
+			</if>
+							<if test="object.orderId != null and object.orderId != ''" >
+			    and order_id =  #{object.orderId}
+			</if>
+							<if test="object.sendTime != null and object.sendTime != ''" >
+			    and send_time =  #{object.sendTime}
+			</if>
+							<if test="object.space1 != null and object.space1 != ''" >
+			    and space1 =  #{object.space1}
+			</if>
+							<if test="object.sapce2 != null and object.sapce2 != ''" >
+			    and sapce2 =  #{object.sapce2}
+			</if>
+			</trim>
+		<if test="orderBys!=null">
+			order by
+			<foreach collection="orderBys" item="item" open="" close=""
+				separator=",">
+				${item}
+			</foreach>
+		</if> 
+	</select>
+<!-- 分页 count -->	
+	<select useCache="false" id="getCount" parameterType="java.util.Map" resultType="int">
+     SELECT
+     count(*)
+     FROM express 
+     where 1=1 
+     <trim  suffixOverrides="," >
+							<if test="expressId != null and expressId != ''" >
+			    and express_id =  #{expressId}
+			</if>
+							<if test="expressCode != null and expressCode != ''" >
+			    and express_code =  #{expressCode}
+			</if>
+							<if test="expressComCode != null and expressComCode != ''" >
+			    and express_com_code =  #{expressComCode}
+			</if>
+							<if test="expressComName != null and expressComName != ''" >
+			    and express_com_name =  #{expressComName}
+			</if>
+							<if test="orderId != null and orderId != ''" >
+			    and order_id =  #{orderId}
+			</if>
+							<if test="sendTime != null and sendTime != ''" >
+			    and send_time =  #{sendTime}
+			</if>
+							<if test="space1 != null and space1 != ''" >
+			    and space1 =  #{space1}
+			</if>
+							<if test="sapce2 != null and sapce2 != ''" >
+			    and sapce2 =  #{sapce2}
+			</if>
+			</trim>
+   	</select>
+  	
+</mapper>   

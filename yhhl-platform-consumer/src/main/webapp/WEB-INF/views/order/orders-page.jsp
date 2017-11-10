@@ -76,6 +76,12 @@
 						editEntity();
 					}
 				},'-',{
+					text:'增加快递单号',
+					iconCls:'icon-edit',
+					handler:function(){
+						addExpressCode();
+					}
+				},'-',{
 					text:'刷新',
 					iconCls:'icon-reload',
 					handler:function(){
@@ -249,6 +255,17 @@
 	    $('#queryForm')[0].reset();
 	    $('#filter_status').combobox("setValue",0);
     }
+   
+   function addExpressCode(){
+	   var node = getSelected();		
+		if (node){	
+			var url = '${ctx}/sysManage/express/initAddExpress.do?orderId='+node.orderId;
+			//$('#saveFrame').attr("title","修改"+node.orderId+"-");
+			$('#saveFrame').attr("src",url);
+			$("#saveDiv").window({title:"维护快递信息-"+node.orderId+"-"+node.ownerRealName,iconCls:'icon-edit',height:"300px",width:"400px",left:"50px",top:"30px"});
+			$('#saveDiv').window('open');
+		}
+   }
    
 ///////////////////////////////////////////////////////////////////////    
     //订单商品列表		
