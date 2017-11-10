@@ -33,6 +33,12 @@
 	       }  
 		});
 		
+		// 获取订单所有状态
+		$('#filter_status').combobox({
+		    url:'${ctx}/sysManage/orders/getOrderStatus.do',
+		    valueField:'status',
+		    textField:'value'
+		});
 	});
 	
 	function doSubmit(){
@@ -75,7 +81,7 @@
 	    </div>
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">订单状态</label>
-	        <input class="easyui-textbox theme-textbox-radius" type="text" name="status" value="${orders.status }" style="width:100%;" data-options="required:true">
+	        <input class="easyui-textbox theme-textbox-radius" type="text" id="filter_status" name="status" value="${orders.status }" style="width:100%;" data-options="required:true">
 	    </div>
 	    <div style="margin-bottom:20px">
 	        <label class="label-top">邮寄地址</label>

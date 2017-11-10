@@ -82,6 +82,12 @@
 						addExpressCode();
 					}
 				},'-',{
+					text:'物流查询',
+					iconCls:'icon-edit',
+					handler:function(){
+						showExpressInfo();
+					}
+				},'-',{
 					text:'刷新',
 					iconCls:'icon-reload',
 					handler:function(){
@@ -263,6 +269,17 @@
 			//$('#saveFrame').attr("title","修改"+node.orderId+"-");
 			$('#saveFrame').attr("src",url);
 			$("#saveDiv").window({title:"维护快递信息-"+node.orderId+"-"+node.ownerRealName,iconCls:'icon-edit',height:"300px",width:"400px",left:"50px",top:"30px"});
+			$('#saveDiv').window('open');
+		}
+   }
+   // 显示订单物流信息
+   function showExpressInfo(){
+	    var node = getSelected();		
+		if (node){	
+			var url = '${ctx}/sysManage/express/index.do?orderId='+node.orderId;
+			//$('#saveFrame').attr("title","修改"+node.orderId+"-");
+			$('#saveFrame').attr("src",url);
+			$("#saveDiv").window({title:"订单号："+node.orderId+" 的物流信息",iconCls:'icon-edit',height:"500px",width:"600px",left:"50px",top:"30px"});
 			$('#saveDiv').window('open');
 		}
    }

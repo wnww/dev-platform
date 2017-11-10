@@ -13,20 +13,32 @@ $(function(){
 	var orderTotalCount = parseInt('${orderTotalCount}');
 	var dflt = {
 	  min: 0,
-	  max: ,
+	  max: orderTotalCount,
 	  donut: true,
 	  gaugeWidthScale: 0.6,
 	  counter: true,
 	  hideInnerShadow: true
 	}
+	
+	var productTotalCount = parseInt('${prodTotalCount}');
+	var dflt2 = {
+		  min: 0,
+		  max: productTotalCount,
+		  donut: true,
+		  gaugeWidthScale: 0.6,
+		  counter: true,
+		  hideInnerShadow: true
+	}
+	var obligationCount = parseInt('${obligationCount}');
 	var gg1 = new JustGage({
 	  id: 'gg1',
-	  value: 125,
+	  value : obligationCount,
 	  defaults: dflt
 	});
-
+	var waitSendCount = parseInt('${waitSendCount}');
 	var gg2 = new JustGage({
 	  id: 'gg2',
+	  value : waitSendCount,
 	  defaults: dflt
 	});
 	var gg3 = new JustGage({
@@ -35,7 +47,7 @@ $(function(){
 	});
 	var gg4 = new JustGage({
 	  id: 'gg4',
-	  defaults: dflt
+	  defaults: dflt2
 	});
 
   });
@@ -55,10 +67,10 @@ $(function(){
 						  }
 						  </style>
                     	<ul>
-                        	<li><div id="gg1" class="gauge"  data-value="${obligationCount}"></div><span>待付款</span></li>
-                            <li><div id="gg2" class="gauge"  data-value="${waitSendCount}"></div><span>待发货</span></li>
-                        	<li><div id="gg3" class="gauge"  data-value="${waitReceiveCount}"></div><span>待收货</span></li>
-                            <li><div id="gg4" class="gauge"  data-value="${prodTotalCount}"></div><span>商品总量</span></li>
+                        	<li><div id="gg1" class="gauge"  data-value="${obligationCount}"></div><span>待付款数量</span></li>
+                            <li><div id="gg2" class="gauge"  data-value="${waitSendCount}"></div><span>待发货数量</span></li>
+                        	<li><div id="gg3" class="gauge"  data-value="${waitReceiveCount}"></div><span>待收货数量</span></li>
+                            <li><div id="gg4" class="gauge"  data-value="${prodTotalCount}"></div><span>商品总数量</span></li>
                         </ul>
                     </div>
                     <div class="center">
@@ -73,7 +85,7 @@ $(function(){
                 </div>
                 <div id="user-info-more" class="easyui-tabs theme-tab-blue-line theme-tab-body-unborder" data-options="tools:'#tab-tools',fit:true">
                     <div title="帮助" data-options="closable:true" style="padding:10px">
-                        	系统使用帮助......
+                        	目前系统设置状态为“待支付”，“支付成功”，“已出库”，“已发货”，“已收货”，“已取消”，“已退货”，对于“已出库”可以不使用。
                     </div>
                 </div>
                 

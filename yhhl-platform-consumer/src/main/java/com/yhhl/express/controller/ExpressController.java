@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
@@ -23,6 +24,7 @@ import com.yhhl.core.Page;
 import com.yhhl.interceptor.Token;
 import com.yhhl.common.DateUtils;
 import com.yhhl.common.ResultBean;
+import com.yhhl.common.SpringWebUtil;
 import com.yhhl.express.model.Express;
 import com.yhhl.express.service.ExpressServiceI;
  
@@ -45,14 +47,25 @@ public class ExpressController {
 	private ExpressServiceI expressService; 
 	
 	
-	/**
-	 * 进入列表页面
-	 * 
-	 * @return
-	 */
 	@RequestMapping("/index")
-	public ModelAndView index() {
-	       return new ModelAndView("express/express-page");
+	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = new ModelAndView("express/expressInfo");
+		String orderId = request.getParameter("orderId");
+		if(StringUtil.isEmpty(orderId)){
+			request.setAttribute("expressInfo", "订单不存在！");
+			return view;
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("orderId", orderId);
+		Express express = expressService.selectByOrderId(map);
+		if(express==null){
+			String expressInfo = "<center style='padding-top:50px;'><img src='"+SpringWebUtil.getContextPath()+"/front-mobile-static/images/noexpress.jpg'/></center>";
+			request.setAttribute("expressInfo", expressInfo);
+			return view;
+		}
+		String expressInfo = expressService.getExpressInfo(express.getExpressComCode(),express.getExpressCode());
+		request.setAttribute("expressInfo", expressInfo);
+		return view;
 	}
 	
 	/**

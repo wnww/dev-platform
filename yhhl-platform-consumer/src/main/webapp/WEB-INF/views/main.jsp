@@ -54,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     }
                 }]
             });
-            var content = '<iframe scrolling="auto" frameborder="0"  src="${ctx}/common/about.jsp" style="width:100%;height:100%;"></iframe>';
+            var content = '<iframe scrolling="auto" frameborder="0"  src="${ctx}/sysManage/about/getOrderCounts.do" style="width:100%;height:100%;"></iframe>';
             
             $('#control').tabs('add', {
                 title: "用户中心",
